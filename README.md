@@ -1,19 +1,15 @@
-<div>
-    <h style="color: #8658FF;font-size: 70px">
-6wrni Bot
-    </h>
-    <p style="font-size: 20px">
+#6wrni Bot
+
 An Arabic discord Bot made with discord.py for 6wrni community server.
-    </p>
-</div>
 
 
-#Runnig the bot:
+
+##Runnig the bot:
 Don't try to, since it was based to run on one server only so just don't bother.
 if u want to try it out enter the [6wrni server](https://discord.gg/weQf9REBTH)
 
 
-#Features:
+##Features:
 - ###**Moderation**
     - ####ban and hackban : ban a discord user from the server.
     - ####unban : unban a discord user that was previously banned.  
@@ -38,7 +34,7 @@ if u want to try it out enter the [6wrni server](https://discord.gg/weQf9REBTH)
     - ####Help : shows a message containing all configutred commands only and only if the command was not set to hidden.
     - ####Help <command> : shows information about a specific command and how to use it.
 
-#Contributors:
+##Contributors:
 - **MURF#6310**
 - **shadow400#4664**
 - **عبد الرحمان أبو سعدة**#1703
