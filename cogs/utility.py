@@ -24,7 +24,7 @@ class Utility(commands.Cog):
         embed = discord.Embed(color=const.default_color)
         embed.add_field(name="الإسم:", value=self.bot.user.display_name, inline=False)
         embed.add_field(name="إصدار البوت:", value=self.version, inline=False)
-        embed.add_field(name="مصدر الكود:", value="[Github repository](https://github.com/Murf-y/6wrni_Bot)",
+        embed.add_field(name="مصدر الكود:", value="[Github repository](https://github.com/Murf-y/6wrni-Bot)",
                         inline=False)
         embed.add_field(name="صنع باستخدام:", value="Discord.py", inline=False)
         embed.set_thumbnail(url=self.bot.user.avatar_url)
