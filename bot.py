@@ -20,6 +20,8 @@ TOKEN = os.environ['TOKEN']
 PREFIX = os.environ['PREFIX']
 VERSION = os.environ['VERSION']
 
+
+
 intents = discord.Intents.default()
 intents.members = True
 intents.messages = True
