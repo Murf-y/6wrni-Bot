@@ -32,12 +32,14 @@ if u want to try it out enter the [6wrni server](https://discord.gg/weQf9REBTH)
 - ### **Level**
     - #### Rank :
       shows the current xp and the current level of a member.
-    - #### Remove-xp : 
-      removes a set amout of xp from a member (require a moderator).
+    - #### Delete-xp : 
+      Deletes all xp from a member (require a moderator).
     - #### Give-xp : 
       Give a set amout of xp from a member (require a moderator).
     - #### Message event :
       Add a random amout of xp between 15 and 25 for a member works only once in a minute to avoid spam.
+    - #### Rewarded Role Event:
+      Give the corresponding role ro a member when they reach a certain level (lvl 5 / lvl 10 / lvl 20 / lvl 100) 
 - ### **User**
     - #### Userinfo : 
       send a message contain a discord member information (e.g. id and joined date ...ect)
