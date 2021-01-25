@@ -32,7 +32,7 @@ class Levels(commands.Cog):
             query = "SELECT * FROM users WHERE user_id = $1 AND guild_id = $2"
             user = await self.bot.pg_con.fetchrow(query, user_id, guild_id)
             if time.time() - user['time'] > 60:
-                xp = user['xp'] + 100
+                xp = user['xp'] + 5
                 query = "UPDATE users SET xp = $1 , time = $2 WHERE user_id = $3 AND guild_id = $4"
                 await self.bot.pg_con.execute(query, xp, time.time(), user_id, guild_id)
                 lvl = 0
@@ -76,7 +76,7 @@ class Levels(commands.Cog):
                         break
                     lvl += 1
                 xp -= ((50*((lvl-1)**2))+(50*(lvl-1)))
-                boxes = int((xp/(200+((1/2) * lvl)))*20)
+                #boxes = int((xp/(200+((1/2) * lvl)))*20)
 
                 query = "SELECT 1 + COUNT(*) AS rank FROM users WHERE xp > (SELECT xp FROM users WHERE user_id = $1 AND guild_id = $2)"
                 user = await self.bot.pg_con.fetchrow(query, user_id, guild_id)
@@ -88,8 +88,8 @@ class Levels(commands.Cog):
                 embed.add_field(name="XP:", value=f"{xp}/{int(200*((1/2)*lvl))}",inline=True)
                 embed.add_field(name='Rank:', value=f"# {rank}/{ctx.guild.member_count}",inline=True)
                 embed.add_field(name='Level:', value=lvl, inline=True)
-                if boxes <= 20 :
-                    embed.add_field(name='Progress Bar:', value= boxes * ":purple_square:" + (20-boxes) * ":white_large_square:", inline=True)
+                #if boxes <= 20 :
+                #    embed.add_field(name='Progress Bar:', value= boxes * ":purple_square:" + (20-boxes) * ":white_large_square:", inline=True)
                 await ctx.send(embed=embed)
 
 
