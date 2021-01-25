@@ -167,8 +167,8 @@ class Moderation(commands.Cog):
     # ----------------------------------SLOWMODE Command------------------------------------------------
 
     # ----------------------------------BAN Command------------------------------------------------
-    @commands.command(name="ban", description="حظر عضو من السيرفير لي سبب اختياري, يمكن طرد العضو حتى لو لم بكن في "
-                                              "السييرفير.\n\n يجب ان تكون من المشرفين لإستخدامها. ")
+    @commands.command(name="ban", description="حظر عضو من السيرفير لي سبب اختياري, يمكن طرد العضو حتى لو لم يكن في "
+                                              "السيرفير.\n\n يجب ان تكون من المشرفين لإستخدامها. ")
     @commands.has_role(const.moderator_role_name)
     async def ban_async(self, ctx, user: discord.User, *, reason: Optional[str] = "غير محدد"):
 

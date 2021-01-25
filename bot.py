@@ -23,6 +23,8 @@ VERSION = os.environ['VERSION']
 
 
 
+
+
 intents = discord.Intents.default()
 intents.members = True
 intents.messages = True
@@ -42,7 +44,7 @@ async def create_db_pool():
 
 
 async def init_db():
-    init_uesrs_query = "CREATE TABLE IF NOT EXISTS users (user_id CHARACTER VARYING NOT NULL,guild_id CHARACTER VARYING ,xp integer ,rawxp integer ,lvl integer,time REAL)"
+    init_uesrs_query = "DROP TABLE users"
     await bot.pg_con.execute(init_uesrs_query)
 
 
