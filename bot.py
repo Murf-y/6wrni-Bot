@@ -44,7 +44,7 @@ async def create_db_pool():
 
 
 async def init_db():
-    init_uesrs_query = "DROP TABLE users"
+    init_uesrs_query = "CREATE TABLE IF NOT EXISTS users ( user_id numeric NOT NULL, guild_id numeric , xp integer, time REAL)"
     await bot.pg_con.execute(init_uesrs_query)
 
 
