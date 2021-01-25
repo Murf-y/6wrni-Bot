@@ -49,8 +49,10 @@ if u want to try it out enter the [6wrni server](https://discord.gg/weQf9REBTH)
     - #### change-status :
       change the bot current status.
 - ### **Help** 
-    - #### Help : shows a message containing all configutred categories .
-    - #### Help <category> : shows information about a specific category revealing all commands in that category only and only if that command was not set to hidden.
+    - #### Help : 
+      shows a message containing all configutred categories .
+    - #### Help <category> :
+      shows information about a specific category revealing all commands in that category only and only if that command was not set to hidden.
 
 ## Contributors:
 - **MURF#6310**
