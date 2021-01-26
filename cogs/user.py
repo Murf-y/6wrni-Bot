@@ -52,7 +52,7 @@ class User(commands.Cog):
     @commands.command(name="removerole", description="إزالة الرول المحدد!")
     async def removerole_async(self, ctx, role: discord.Role):
         if role.id in const.users_giveable_roles_id:
-            if role.id not in [role.id for role in ctx.author.roles]:
+            if role.id in [role.id for role in ctx.author.roles]:
                 embed = discord.Embed(color=const.default_color, title=f"[Remove-role] - {ctx.author}",
                                       description=F"تم إزالة رول {role.name} !")
                 await ctx.author.remove_roles(role)
