@@ -4,7 +4,6 @@ from discord.ext import commands
 import constants as const
 import random
 import time
-from better_profanity import profanity
 
 goodwords = ['شكرا', 'يعطيك العافية', 'جزاك الله خير', 'جزاك الله خيرا', 'يعطيك العافيه']
 
