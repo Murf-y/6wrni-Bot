@@ -22,7 +22,6 @@ VERSION = os.environ['VERSION']
 
 
 
-
 intents = discord.Intents.default()
 intents.members = True
 intents.messages = True
@@ -96,12 +95,15 @@ async def on_command_completion(ctx):
 @bot.event
 async def on_member_join(member):
     welcome_channel = bot.get_channel(const.welcome_channel_id)
-    rules_channel = bot.get_channel(const.channels_channel_id)
+    channels_channel = bot.get_channel(const.channels_channel_id)
     await welcome_channel.send(
-        f" اهلا بك {member.mention} ! الرجاء زيارة {rules_channel.mention} لتتعرف على وظائف الغرف !")
+        f" اهلا بك {member.mention} ! الرجاء زيارة {channels_channel.mention} لتتعرف على وظائف الغرف !")
     guild = bot.get_guild(const.guild_id)
     role = guild.get_role(const.new_member_role_id)
     await member.add_roles(role)
+
+
+
 
 
 @bot.listen('on_message')

@@ -4,11 +4,16 @@ from discord.ext import commands
 import constants as const
 import random
 import time
+from better_profanity import profanity
+
+goodwords = ['شكرا', 'يعطيك العافية', 'جزاك الله خير', 'جزاك الله خيرا', 'يعطيك العافيه']
 
 
 class Levels(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+
+        profanity.load_censor_words(goodwords)
 
     # ----------------------------------BOT EVENTS------------------------------------------------
     @commands.Cog.listener()
@@ -28,7 +33,18 @@ class Levels(commands.Cog):
 
         query = "SELECT * FROM users WHERE user_id = $1 AND guild_id = $2"
         user = await self.bot.pg_con.fetchrow(query, user_id, guild_id)
-        if True or time.time() - user['time'] > 0:
+
+        if True or time.time() - user['time'] > 60:
+            if message.mentions:
+                for goodword in goodwords:
+                    if goodword in message.content:
+                        for mention in message.mentions:
+                            if mention.id == message.author.id:
+                                await message.channel.send(f"أخذ {mention.mention} زائد خمسة نقاط!")
+                                xp = user['xp'] + 5
+                                query = "UPDATE users SET xp = $1 , time = $2 WHERE user_id = $3 AND guild_id = $4"
+                                await self.bot.pg_con.execute(query, xp, time.time(), user_id, guild_id)
+
             xp = user['xp'] + 5
             query = "UPDATE users SET xp = $1 , time = $2 WHERE user_id = $3 AND guild_id = $4"
             await self.bot.pg_con.execute(query, xp, time.time(), user_id, guild_id)

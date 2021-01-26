@@ -39,10 +39,16 @@ if u want to try it out enter the [6wrni server](https://discord.gg/weQf9REBTH)
     - #### Message event :
       Add a random amout of xp between 15 and 25 for a member works only once in a minute to avoid spam.
     - #### Rewarded Role Event:
-      Give the corresponding role ro a member when they reach a certain level (lvl 5 / lvl 10 / lvl 20 / lvl 100) 
+      Give the corresponding role to a member when they reach a certain level (lvl 5 / lvl 10 / lvl 20 / lvl 100)
+    - #### ThanksWords:
+      Give a member 5 points if he was thanked by a user!
 - ### **User**
     - #### Userinfo : 
       send a message contain a discord member information (e.g. id and joined date ...ect)
+    - #### GiveRole :
+      give a member the specified role if allowable.
+    - #### RemoveRole:
+      remove a role from a member if he already have it.
 - ### **Utility**
     - #### Botinfo :
       shows information of the bot.
