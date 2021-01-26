@@ -12,7 +12,6 @@ class Levels(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-        profanity.load_censor_words(goodwords)
 
     # ----------------------------------BOT EVENTS------------------------------------------------
     @commands.Cog.listener()
