@@ -15,7 +15,7 @@ class Help(commands.Cog):
             if key not in ("self", "ctx"):
                 params.append(f"[{key}]" if "None" in str(value) else f"<{key}>")
         params = " ".join(params)
-        return f"```{cmd_and_aliases} {params}```"
+        return f"`{cmd_and_aliases} {params}`"
 
     @commands.command(name="help",description="إظهار جميع الفئات")
     async def show_help(self, ctx, category: str = None):
@@ -23,13 +23,13 @@ class Help(commands.Cog):
         if category is None:
 
             embed = discord.Embed(color=const.default_color, title="Help",
-                                  description=f"  هذه مجموعة الفئات, لمعلومات عن فئة معينة أكتب: {self.bot.command_prefix}help ```إسم الفئة``` ")
+                                  description=f"  هذه مجموعة الفئات, لمعلومات عن فئة معينة أكتب: {self.bot.command_prefix}help `إسم الفئة` ")
 
             for cog in self.bot.cogs:
                 if cog == "Help":
                     continue
                 else:
-                    embed.add_field(name=cog, value="-------------------------")
+                    embed.add_field(name=cog, value="-------------------------",inline=False)
             await ctx.channel.send(embed=embed)
         else:
             _cog = self.bot.get_cog(category)
@@ -42,7 +42,7 @@ class Help(commands.Cog):
             for command in commands:
                 embed.add_field(name=f"{self.bot.command_prefix}{command.name}", value=f"{self.syntax(command)}\n"
                                                                                        f"وصف: {command.description}"
-                                                                                       f"\n---------------------\n")
+                                                                                       f"\n---------------------\n",inline=False)
             await ctx.channel.send(embed=embed)
 
 

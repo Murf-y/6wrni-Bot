@@ -9,6 +9,7 @@ exception_color = 0xFF3B6E
 # channels
 mod_Channel_id = 780819394115797012
 welcome_channel_id = 780819394115797012
+channels_channel_id = 780819394115797012
 rules_channel_id = 780819394115797012
 introduce_channel_id = 780819394115797012
 NoXpchannels_id = []
