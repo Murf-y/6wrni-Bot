@@ -84,7 +84,7 @@ class User(commands.Cog):
         for role_id in const.users_giveable_roles_id:
             role = ctx.guild.get_role(role_id)
             roles += f"• {role.name}\n"
-        embed = discord.Embed(color=const.default_color, title="Roles:", description=roles)
+        embed = discord.Embed(color=const.default_color, title="User Roles:", description=roles)
         await ctx.channel.send(embed=embed)
 
     # --------------------------------- ROLES Command---------------------------------------------
