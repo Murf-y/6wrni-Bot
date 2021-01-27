@@ -30,7 +30,7 @@ class Utility(commands.Cog):
         embed.add_field(name="الإسم:", value=self.bot.user.display_name, inline=False)
         embed.add_field(name="إصدار البوت:", value=self.version, inline=False)
         embed.add_field(name=""
-                             "مدة العمل", value=uptime, inline=False)
+                             "مدة العمل:", value=uptime, inline=False)
         embed.add_field(name="مصدر الكود:", value="[Github repository](https://github.com/Murf-y/6wrni-Bot)",
                         inline=False)
         embed.add_field(name="صنع باستخدام:", value="Discord.py", inline=False)
