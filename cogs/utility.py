@@ -25,7 +25,7 @@ class Utility(commands.Cog):
     async def b_info_async(self, ctx):
         current_time = time.time()
         difference = int(round(current_time - start_time))
-        uptime = str(datetime.datetime.timedelta(seconds= difference))
+        uptime = str(datetime.timedelta(seconds= difference))
         embed = discord.Embed(color=const.default_color)
         embed.add_field(name="الإسم:", value=self.bot.user.display_name, inline=False)
         embed.add_field(name="إصدار البوت:", value=self.version, inline=False)
