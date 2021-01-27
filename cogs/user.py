@@ -47,7 +47,7 @@ class User(commands.Cog):
         else:
             embed = discord.Embed(color=const.exception_color, title="لا يمكنك الحصول على هذا الرول!")
             await ctx.channel.send(embed=embed)
-    @giverole_async.error()
+    @giverole_async.error
     async def giverole_async_error(self,ctx,error):
         embed=discord.Embed(color=const.exception_color,title="خطأ:",description="هذا الول غير موجود!")
         await ctx.channnel.send(embed=embed)
@@ -71,7 +71,7 @@ class User(commands.Cog):
             embed = discord.Embed(color=const.exception_color, title="لا يمكنك إزالة هذا الرول!")
             await ctx.channel.send(embed=embed)
 
-    @removerole_async.error()
+    @removerole_async.error
     async def removerole_async_error(self, ctx, error):
         embed = discord.Embed(color=const.exception_color, title="خطأ:", description="هذا الول غير موجود!")
         await ctx.channnel.send(embed=embed)
