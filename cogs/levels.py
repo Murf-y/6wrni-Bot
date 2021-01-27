@@ -36,7 +36,7 @@ class Levels(commands.Cog):
                 for goodword in goodwords:
                     if goodword in message.content:
                         for mention in message.mentions:
-                            if mention.id == message.author.id:
+                            if mention.id != message.author.id:
                                 await message.channel.send(f"أخذ {mention.mention} زائد خمسة نقاط!")
                                 xp = user['xp'] + 5
                                 query = "UPDATE users SET xp = $1 , time = $2 WHERE user_id = $3 AND guild_id = $4"
