@@ -2,7 +2,9 @@ import discord
 from discord.ext import commands
 
 import constants as const
+import time,datetime
 
+start_time= time.time()
 
 class Utility(commands.Cog):
 
@@ -21,9 +23,14 @@ class Utility(commands.Cog):
     # ----------------------------------BOTINFO Command------------------------------------------------
     @commands.command(name="botinfo", description="معلومات عن 6wrni Bot")
     async def b_info_async(self, ctx):
+        current_time = time.time()
+        difference = int(round(current_time - start_time))
+        uptime = str(datetime.datetime.timedelta(seconds= difference))
         embed = discord.Embed(color=const.default_color)
         embed.add_field(name="الإسم:", value=self.bot.user.display_name, inline=False)
         embed.add_field(name="إصدار البوت:", value=self.version, inline=False)
+        embed.add_field(name=""
+                             "مدة العمل", value=uptime, inline=False)
         embed.add_field(name="مصدر الكود:", value="[Github repository](https://github.com/Murf-y/6wrni-Bot)",
                         inline=False)
         embed.add_field(name="صنع باستخدام:", value="Discord.py", inline=False)

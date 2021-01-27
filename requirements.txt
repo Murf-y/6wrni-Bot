@@ -19,3 +19,4 @@ docutils==0.16
 entrypoints==0.3
 jsonschema==3.2.0
 typing-extensions==3.7.4.3
+datetime
