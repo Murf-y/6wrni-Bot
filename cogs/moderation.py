@@ -258,6 +258,59 @@ class Moderation(commands.Cog):
             await ctx.channel.send(embed=embed)
     # ----------------------------------UNBAN Command------------------------------------------------
 
+    # ----------------------------------MUTE Command------------------------------------------------
+    @commands.command(name="mute",description="ميوت عضو معين لسبب إختياري,.\n\n يجب ان تكون من المشرفين لإستخدامها.")
+    @commands.has_role(const.moderator_role_name)
+    async def mute_async(self,ctx , member:discord.Member, *, reason:Optional[str] = "غير محدد"):
+        mutedrole = ctx.guild.get_role(const.muted_role_id)
+
+        if mutedrole not in member.roles:
+            await member.add_roles(mutedrole)
+            embed = discord.Embed(color=const.default_color, title=f"[Mute] - {member.display_name}")
+            embed.add_field(name="سبب:",value=reason)
+            await ctx.channel.send(embed=embed)
+        else:
+            embed= discord.Embed(color=const.exception_color,title="خطأ:",description="هذا العضو أخذ Mute سابقا!")
+            await ctx.channel.send(embed=embed)
+
+    @mute_async.error
+    async def mute_async_error(self,ctx,error):
+        if isinstance(error, commands.MissingRole):
+            embed = discord.Embed(color=const.exception_color, title="خطأ:",
+                                  description="لا يمكنك إستخدام هذا الأمر!")
+            await ctx.channel.send(embed=embed)
+        else:
+            embed = discord.Embed(color=const.exception_color, title="خطأ:",
+                                  description="يجب ذكر المستخدم!")
+            await ctx.channel.send(embed=embed)
+    # ----------------------------------MUTE Command------------------------------------------------
+
+    # ----------------------------------UNMUTE Command------------------------------------------------
+    @commands.command(name="unmute", description="إزالة الميوت عن عضو معين لسبب إختياري,.\n\n يجب ان تكون من المشرفين لإستخدامها.")
+    @commands.has_role(const.moderator_role_name)
+    async def unmute_async(self, ctx, member: discord.Member,*,reason:Optional[str]="غير محدد"):
+        mutedrole = ctx.guild.get_role(const.muted_role_id)
+
+        if mutedrole in member.roles:
+            await member.remove_roles(mutedrole)
+            embed = discord.Embed(color=const.default_color, title=f"[Unmute] - {member.display_name}")
+            embed.add_field(name="سبب:", value=reason)
+            await ctx.channel.send(embed=embed)
+        else:
+            embed = discord.Embed(color=const.exception_color, title="خطأ:", description="هذا العضو ما معه Mute أصلا!ص")
+            await ctx.channel.send(embed=embed)
+
+    @unmute_async.error
+    async def unmute_async_error(self, ctx, error):
+        if isinstance(error, commands.MissingRole):
+            embed = discord.Embed(color=const.exception_color, title="خطأ:",
+                                  description="لا يمكنك إستخدام هذا الأمر!")
+            await ctx.channel.send(embed=embed)
+        else:
+            embed = discord.Embed(color=const.exception_color, title="خطأ:",
+                                  description="يجب ذكر المستخدم!")
+            await ctx.channel.send(embed=embed)
+    # ----------------------------------UNMUTE Command------------------------------------------------
 
 def setup(bot):
     bot.add_cog(Moderation(bot))

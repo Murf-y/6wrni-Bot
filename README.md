@@ -19,6 +19,10 @@ if u want to try it out enter the [6wrni server](https://discord.gg/weQf9REBTH)
       kick a discord member from the server.
     - #### clear :
       clear a set amout of message.
+    - #### mute :
+      mute a member for an optional reason.
+    - #### unmute :
+      unmute a member for an optional reason.
     - #### slowmode :
       set the slowmode of a channel.
     - #### DeleteMessage events :
