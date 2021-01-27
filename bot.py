@@ -22,6 +22,7 @@ VERSION = os.environ['VERSION']
 
 
 
+
 intents = discord.Intents.default()
 intents.members = True
 intents.messages = True

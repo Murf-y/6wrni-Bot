@@ -12,6 +12,9 @@ class User(commands.Cog):
     # --------------------------------- UserInfo Command---------------------------------------------
     @commands.command(name="userinfo", description="معلومات عن عضو معين", aliases=["info"])
     async def userinfo_async(self, ctx, member: discord.Member = None):
+        if ctx.channel.id != const.botchannel_id:
+            bot_channel = self.bot.get_channel(const.botchannel_id)
+            return await ctx.channel.send(f"لا يمكنك إستعملها هنا, إذهب الى {bot_channel.mention}!")
         member = ctx.author if not member else member
 
         embed = discord.Embed(color=member.color)
@@ -34,6 +37,9 @@ class User(commands.Cog):
     # --------------------------------- GIVEROLE Command---------------------------------------------
     @commands.command(name="giverole", description="يحصل مستخدمها على الرول المحدد!")
     async def giverole_async(self, ctx, role: discord.Role):
+        if ctx.channel.id != const.botchannel_id:
+            bot_channel = self.bot.get_channel(const.botchannel_id)
+            return await ctx.channel.send(f"لا يمكنك إستعملها هنا, إذهب الى {bot_channel.mention}!")
         if role.id in const.users_giveable_roles_id:
             if role.id not in [role.id for role in ctx.author.roles]:
                 embed = discord.Embed(color=const.default_color, title=f"[Give-role] - {ctx.author}",
@@ -50,13 +56,16 @@ class User(commands.Cog):
     @giverole_async.error
     async def giverole_async_error(self,ctx,error):
         embed=discord.Embed(color=const.exception_color,title="خطأ:",description="هذا الول غير موجود!")
-        await ctx.channnel.send(embed=embed)
+        await ctx.channel.send(embed=embed)
 
     # --------------------------------- GIVEROLE Command---------------------------------------------
 
     # --------------------------------- REMOVEROLE Command---------------------------------------------
     @commands.command(name="removerole", description="إزالة الرول المحدد!")
     async def removerole_async(self, ctx, role: discord.Role):
+        if ctx.channel.id != const.botchannel_id:
+            bot_channel = self.bot.get_channel(const.botchannel_id)
+            return await ctx.channel.send(f"لا يمكنك إستعملها هنا, إذهب الى {bot_channel.mention}!")
         if role.id in const.users_giveable_roles_id:
             if role.id in [role.id for role in ctx.author.roles]:
                 embed = discord.Embed(color=const.default_color, title=f"[Remove-role] - {ctx.author}",
@@ -74,12 +83,15 @@ class User(commands.Cog):
     @removerole_async.error
     async def removerole_async_error(self, ctx, error):
         embed = discord.Embed(color=const.exception_color, title="خطأ:", description="هذا الول غير موجود!")
-        await ctx.channnel.send(embed=embed)
+        await ctx.channel.send(embed=embed)
     # --------------------------------- REMOVEROLE Command---------------------------------------------
 
     # --------------------------------- ROLES Command---------------------------------------------
     @commands.command(name="roles", description="إظهار كل الرتب الذي يمكن ان يأخذها العضو يدويا!")
     async def roles_async(self, ctx):
+        if ctx.channel.id != const.botchannel_id:
+            bot_channel = self.bot.get_channel(const.botchannel_id)
+            return await ctx.channel.send(f"لا يمكنك إستعملها هنا, إذهب الى {bot_channel.mention}!")
         roles = ""
         for role_id in const.users_giveable_roles_id:
             role = ctx.guild.get_role(role_id)

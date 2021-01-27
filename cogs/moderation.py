@@ -25,8 +25,8 @@ class Moderation(commands.Cog):
 
         try:
             embed.title = f"[حذف رسالة] - {message.author}"
-            embed.add_field(name="في قناة:", value=message.channel, inline=False)
-            embed.add_field(name="محتوى الرسالة:", value=message.content, inline=False)
+            embed.add_field(name="في قناة:", value=message.channel, inline=True)
+            embed.add_field(name="محتوى الرسالة:", value=message.content, inline=True)
             embed.set_footer(text=datetime.datetime.utcnow().strftime('%a, %#d %B %Y'))
             await mod_channel.send(embed=embed)
         except AttributeError:
@@ -37,21 +37,24 @@ class Moderation(commands.Cog):
     @commands.Cog.listener()
     async def on_member_update(self, before: discord.Member, after: discord.Member):
         mod_channel = self.bot.get_channel(const.mod_Channel_id)
+        mutedrole = after.guild.get_role(const.muted_role_id)
         if before.roles != after.roles:
             for role in after.roles:
                 if role not in before.roles:
-                    embed = discord.Embed(color=const.default_color,
-                                          title=f"[اخذ رول] - {before}")
-                    embed.add_field(name="رول:", value=role.mention)
-                    embed.set_footer(text=datetime.datetime.utcnow().strftime('%a, %#d %B %Y'))
-                    return await mod_channel.send(embed=embed)
+                    if role != mutedrole:
+                        embed = discord.Embed(color=const.default_color,
+                                              title=f"[اخذ رول] - {before}")
+                        embed.add_field(name="رول:", value=role.mention)
+                        embed.set_footer(text=datetime.datetime.utcnow().strftime('%a, %#d %B %Y'))
+                        return await mod_channel.send(embed=embed)
             for role in before.roles:
                 if role not in after.roles:
-                    embed = discord.Embed(color=const.default_color,
-                                          title=f"[ازالة رول] - {before}")
-                    embed.add_field(name="رول:", value=role.mention)
-                    embed.set_footer(text=datetime.datetime.utcnow().strftime('%a, %#d %B %Y'))
-                    return await mod_channel.send(embed=embed)
+                    if role != mutedrole:
+                        embed = discord.Embed(color=const.default_color,
+                                              title=f"[ازالة رول] - {before}")
+                        embed.add_field(name="رول:", value=role.mention)
+                        embed.set_footer(text=datetime.datetime.utcnow().strftime('%a, %#d %B %Y'))
+                        return await mod_channel.send(embed=embed)
 
         if before.nick != after.nick:
             embed = discord.Embed(color=const.default_color,
@@ -269,6 +272,14 @@ class Moderation(commands.Cog):
             embed = discord.Embed(color=const.default_color, title=f"[Mute] - {member.display_name}")
             embed.add_field(name="سبب:",value=reason)
             await ctx.channel.send(embed=embed)
+            mod_channel = self.bot.get_channel(const.mod_Channel_id)
+            embed = discord.Embed(
+                title=f"[Mute عضو] - {member}",
+                color=const.default_color,
+
+            )
+            embed.add_field(name="سبب:",value=reason)
+            await mod_channel.send(embed=embed)
         else:
             embed= discord.Embed(color=const.exception_color,title="خطأ:",description="هذا العضو أخذ Mute سابقا!")
             await ctx.channel.send(embed=embed)
@@ -296,6 +307,14 @@ class Moderation(commands.Cog):
             embed = discord.Embed(color=const.default_color, title=f"[Unmute] - {member.display_name}")
             embed.add_field(name="سبب:", value=reason)
             await ctx.channel.send(embed=embed)
+            mod_channel = self.bot.get_channel(const.mod_Channel_id)
+            embed = discord.Embed(
+                title=f"[Unmute عضو] - {member}",
+                color=const.default_color,
+
+            )
+            embed.add_field(name="سبب:", value=reason)
+            await mod_channel.send(embed=embed)
         else:
             embed = discord.Embed(color=const.exception_color, title="خطأ:", description="هذا العضو ما معه Mute أصلا!ص")
             await ctx.channel.send(embed=embed)

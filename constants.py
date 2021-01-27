@@ -12,9 +12,9 @@ welcome_channel_id = 780819394115797012
 channels_channel_id = 780819394115797012
 rules_channel_id = 780819394115797012
 introduce_channel_id = 780819394115797012
-NoXpchannels_id = []
+NoXpchannels_id = [792859261112680498]
 botchannel_id = 780819394115797012
-members_show_channel = 780819394115797012
+
 
 # guild
 guild_id = 769544667972763680

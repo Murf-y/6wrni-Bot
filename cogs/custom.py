@@ -1,4 +1,3 @@
-import discord
 from discord.ext import commands
 
 import constants as const
@@ -26,7 +25,7 @@ class Custom(commands.Cog):
     @commands.command(name="nullrefrence", description="لا وصف", aliases=["nullref", ])
     async def nullrefrence_async(self, ctx):
         nulltext = "NullRefrenceException\n"
-        nulltext += "يعني أنك إما لم تقم بتعيين الوبجيكت إلى متغير مطلقًا، أو قمت بتعيينه على قيمة null, قم بتنفيذ:\n"
+        nulltext += "يعني أنك إما لم تقم بتعيين الوبجيكت إلى متغير مطلقًا، أو قمت بتعيينه على قيمة فارغة, قم بتنفيذ: \n"
         nulltext += "```cs\n"
         nulltext += "Debug.Log(YourVariable == null)\n"
         nulltext += "```\n"

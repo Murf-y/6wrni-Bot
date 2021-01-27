@@ -2,7 +2,8 @@ import discord
 from discord.ext import commands
 
 import constants as const
-import time,datetime
+import time
+import datetime
 
 start_time= time.time()
 
@@ -15,6 +16,9 @@ class Utility(commands.Cog):
     # ----------------------------------Ping Command------------------------------------------------
     @commands.command(name="ping", description=" وقت استجابة البوت", aliases=["latency"])
     async def ping_async(self, ctx):
+        if ctx.channel.id != const.botchannel_id:
+            bot_channel = self.bot.get_channel(const.botchannel_id)
+            return await ctx.channel.send(f"لا يمكنك إستعملها هنا, إذهب الى {bot_channel.mention}!")
         embed = discord.Embed(color=const.default_color,title=f" وقت الإستجابة الحالي هو :{round((self.bot.latency * 1000))}ms")
         await ctx.channel.send(embed=embed)
 
@@ -23,6 +27,9 @@ class Utility(commands.Cog):
     # ----------------------------------BOTINFO Command------------------------------------------------
     @commands.command(name="botinfo", description="معلومات عن 6wrni Bot")
     async def b_info_async(self, ctx):
+        if ctx.channel.id != const.botchannel_id:
+            bot_channel = self.bot.get_channel(const.botchannel_id)
+            return await ctx.channel.send(f"لا يمكنك إستعملها هنا, إذهب الى {bot_channel.mention}!")
         current_time = time.time()
         difference = int(round(current_time - start_time))
         uptime = str(datetime.timedelta(seconds= difference))
@@ -33,7 +40,8 @@ class Utility(commands.Cog):
                              "مدة العمل:", value=uptime, inline=False)
         embed.add_field(name="مصدر الكود:", value="[Github repository](https://github.com/Murf-y/6wrni-Bot)",
                         inline=False)
-        embed.add_field(name="صنع باستخدام:", value="Discord.py", inline=False)
+        embed.add_field(name="تاريخ إنشاء الحساب:",
+                        value=f"{self.bot.user.created_at.strftime('%a, %#d %B %Y')}\n", inline=False)
         embed.set_thumbnail(url=self.bot.user.avatar_url)
         await ctx.channel.send(embed=embed)
 

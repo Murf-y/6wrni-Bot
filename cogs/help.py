@@ -19,6 +19,9 @@ class Help(commands.Cog):
 
     @commands.command(name="help",description="إظهار جميع الفئات")
     async def show_help(self, ctx, category: str = None):
+        if ctx.channel.id != const.botchannel_id:
+            bot_channel = self.bot.get_channel(const.botchannel_id)
+            return await ctx.channel.send(f"لا يمكنك إستعملها هنا, إذهب الى {bot_channel.mention}!")
         """إظهار جميع الفئات"""
         if category is None:
 
@@ -37,7 +40,7 @@ class Help(commands.Cog):
                 embed = discord.Embed(color=const.exception_color)
                 embed.add_field(name="خطأ:", value="هذه الفئة غير موجودة !")
                 return await ctx.send(embed=embed)
-            embed = discord.Embed(color=const.default_color, title=category)
+            embed = discord.Embed(color=const.default_color, title=category,description="هذه كل الأوامر في هذه الفئة:")
             commands = _cog.get_commands()
             for command in commands:
                 embed.add_field(name=f"{self.bot.command_prefix}{command.name}", value=f"{self.syntax(command)}\n"

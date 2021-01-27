@@ -2,7 +2,6 @@ import discord
 from discord.ext import commands
 
 import constants as const
-import random
 import time
 
 goodwords = ['شكرا', 'يعطيك العافية', 'جزاك الله خير', 'جزاك الله خيرا', 'يعطيك العافيه']
@@ -67,7 +66,9 @@ class Levels(commands.Cog):
     # ----------------------------------RANK Command------------------------------------------------
     @commands.command(name="rank", description="إظهار XP و level للمستخدم")
     async def show_rank(self, ctx, member: discord.Member = None):
-
+        if ctx.channel.id != const.botchannel_id:
+            bot_channel = self.bot.get_channel(const.botchannel_id)
+            return await ctx.channel.send(f"لا يمكنك إستعملها هنا, إذهب الى {bot_channel.mention}!")
         member = ctx.author if not member else member
         user_id = member.id
         guild_id = ctx.guild.id
@@ -146,7 +147,7 @@ class Levels(commands.Cog):
             lvl += 1
         xp -= ((50 * ((lvl - 1) ** 2)) + (50 * (lvl - 1)))
         if xp == 0:
-            await ctx.channel.send(f"مبروك {member.mention}, لقد وصلت الى المستوى {lvl}.")
+            await ctx.channel.send(f"مبروك {member.mention}, لقد وصلت الى المستوى {lvl} !")
         if xp >= 0:
             for key in const.rewarded_roles.keys():
                 if key <= lvl:
@@ -191,7 +192,6 @@ class Levels(commands.Cog):
                 await member.remove_roles(role)
 
         embed = discord.Embed(color=const.default_color, title=f"[delete-xp] - {member}")
-        embed.set_thumbnail(url=member.avatar_url)
         await ctx.channel.send(embed=embed)
 
     @deletexp_async.error
