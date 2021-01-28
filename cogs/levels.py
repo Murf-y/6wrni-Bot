@@ -31,7 +31,7 @@ class Levels(commands.Cog):
         query = "SELECT * FROM users WHERE user_id = $1 AND guild_id = $2"
         user = await self.bot.pg_con.fetchrow(query, user_id, guild_id)
 
-        if True or time.time() - user['time'] > 60:
+        if time.time() - user['time'] > 60:
             if message.mentions:
                 for goodword in goodwords:
                     if goodword in message.content:
