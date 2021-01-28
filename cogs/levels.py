@@ -3,8 +3,9 @@ from discord.ext import commands
 
 import constants as const
 import time
+import math
 
-goodwords = ['شكرا', 'يعطيك العافية', 'جزاك الله خير', 'جزاك الله خيرا', 'يعطيك العافيه']
+
 
 
 class Levels(commands.Cog):
@@ -33,7 +34,7 @@ class Levels(commands.Cog):
 
         if time.time() - user['time'] > 60:
             if message.mentions:
-                for goodword in goodwords:
+                for goodword in const.goodwords:
                     if goodword in message.content:
                         for mention in message.mentions:
                             if mention.id != message.author.id:
@@ -52,10 +53,10 @@ class Levels(commands.Cog):
                     break
                 lvl += 1
             xp -= ((50 * ((lvl - 1) ** 2)) + (50 * (lvl - 1)))
-            if xp == 0:
+            if xp == 0 :
                 await message.channel.send(f"مبروك {message.author.mention}, لقد وصلت الى المستوى {lvl}.")
                 for key in const.rewarded_roles.keys():
-                    if key == lvl:
+                    if key <= lvl:
                         role = message.guild.get_role(const.rewarded_roles[key])
                         await message.author.add_roles(role)
 
@@ -88,31 +89,33 @@ class Levels(commands.Cog):
                     break
                 lvl += 1
             xp -= ((50 * ((lvl - 1) ** 2)) + (50 * (lvl - 1)))
-            # boxes = int((xp/(200+((1/2) * lvl)))*20)
 
             query = "SELECT 1 + COUNT(*) AS rank FROM users WHERE xp > (SELECT xp FROM users WHERE user_id = $1 AND guild_id = $2)"
             user = await self.bot.pg_con.fetchrow(query, user_id, guild_id)
             rank = user['rank']
             if xp >= 0:
+                nb_of_purple_boxes = int(xp * 20/int(200 * ((1 / 2) * lvl)))
+                nb_of_white_boxes = 20 - nb_of_purple_boxes
                 embed = discord.Embed(color=member.color, timestamp=ctx.message.created_at)
                 embed.set_author(name=f"[Rank] - {member.display_name}")
                 embed.set_thumbnail(url=member.avatar_url)
                 embed.add_field(name="XP:", value=f"{xp}/{int(200 * ((1 / 2) * lvl))}", inline=True)
                 embed.add_field(name='Rank:', value=f"# {rank}/{ctx.guild.member_count}", inline=True)
                 embed.add_field(name='Level:', value=lvl, inline=True)
-                # if boxes <= 20 :
-                #    embed.add_field(name='Progress Bar:', value= boxes * ":purple_square:" + (20-boxes) * ":white_large_square:", inline=True)
+
+                embed.add_field(name='Progress Bar:', value= nb_of_purple_boxes * ":purple_square:" + nb_of_white_boxes * ":white_large_square:", inline=True)
                 await ctx.send(embed=embed)
             else:
                 realxp = int(200 * ((1 / 2) * (lvl - 1))) + xp
+                nb_of_purple_boxes = int(realxp * 20/int(200 * ((1 / 2) * (lvl - 1))))
+                nb_of_white_boxes = 20 - nb_of_purple_boxes
                 embed = discord.Embed(color=member.color, timestamp=ctx.message.created_at)
                 embed.set_author(name=f"[Rank] - {member.display_name}")
                 embed.set_thumbnail(url=member.avatar_url)
                 embed.add_field(name="XP:", value=f"{realxp}/{int(200 * ((1 / 2) * (lvl - 1)))}", inline=True)
                 embed.add_field(name='Rank:', value=f"# {rank}/{ctx.guild.member_count}", inline=True)
                 embed.add_field(name='Level:', value=lvl - 1, inline=True)
-                # if boxes <= 20 :
-                #    embed.add_field(name='Progress Bar:', value= boxes * ":purple_square:" + (20-boxes) * ":white_large_square:", inline=True)
+                embed.add_field(name='Progress Bar:', value= nb_of_purple_boxes * ":purple_square:" + nb_of_white_boxes * ":white_large_square:", inline=True)
                 await ctx.send(embed=embed)
 
     # ----------------------------------RANK Command------------------------------------------------
@@ -123,44 +126,48 @@ class Levels(commands.Cog):
                                                   "لإستخدامها.")
     @commands.has_role(const.moderator_role_name)
     async def givexp_async(self, ctx, member: discord.Member, amount: int):
-        user_id = member.id
-        guild_id = ctx.guild.id
-        query = "SELECT * FROM users WHERE user_id = $1 AND guild_id = $2"
-        user = await self.bot.pg_con.fetch(query, user_id, guild_id)
+        if amount%5 == 0 :
+            user_id = member.id
+            guild_id = ctx.guild.id
+            query = "SELECT * FROM users WHERE user_id = $1 AND guild_id = $2"
+            user = await self.bot.pg_con.fetch(query, user_id, guild_id)
 
-        if not user:
-            query = "INSERT INTO users (user_id, guild_id, xp, time) VALUES ($1,$2,$3,$4)"
-            await self.bot.pg_con.execute(query, user_id, guild_id, 0, time.time())
+            if not user:
+                query = "INSERT INTO users (user_id, guild_id, xp, time) VALUES ($1,$2,$3,$4)"
+                await self.bot.pg_con.execute(query, user_id, guild_id, 0, time.time())
 
-        query = "SELECT * FROM users WHERE user_id = $1 AND guild_id = $2"
-        user = await self.bot.pg_con.fetchrow(query, user_id, guild_id)
+            query = "SELECT * FROM users WHERE user_id = $1 AND guild_id = $2"
+            user = await self.bot.pg_con.fetchrow(query, user_id, guild_id)
 
-        xp = user['xp'] + amount
+            xp = user['xp'] + amount
 
-        query = "UPDATE users SET xp = $1 , time = $2 WHERE user_id = $3 AND guild_id = $4"
-        await self.bot.pg_con.execute(query, xp, time.time(), user_id, guild_id)
-        lvl = 0
+            query = "UPDATE users SET xp = $1 , time = $2 WHERE user_id = $3 AND guild_id = $4"
+            await self.bot.pg_con.execute(query, xp, time.time(), user_id, guild_id)
+            lvl = 0
 
-        while True:
-            if xp < ((50 * (lvl ** 2)) + (50 * (lvl - 1))):
-                break
-            lvl += 1
-        xp -= ((50 * ((lvl - 1) ** 2)) + (50 * (lvl - 1)))
-        if xp == 0:
-            await ctx.channel.send(f"مبروك {member.mention}, لقد وصلت الى المستوى {lvl} !")
-        if xp >= 0:
-            for key in const.rewarded_roles.keys():
-                if key <= lvl:
-                    role = ctx.guild.get_role(const.rewarded_roles[key])
-                    await member.add_roles(role)
+            while True:
+                if xp < ((50 * (lvl ** 2)) + (50 * (lvl - 1))):
+                    break
+                lvl += 1
+            xp -= ((50 * ((lvl - 1) ** 2)) + (50 * (lvl - 1)))
+            if xp == 0:
+                await ctx.channel.send(f"مبروك {member.mention}, لقد وصلت الى المستوى {lvl} !")
+            if xp >= 0:
+                for key in const.rewarded_roles.keys():
+                    if key <= lvl:
+                        role = ctx.guild.get_role(const.rewarded_roles[key])
+                        await member.add_roles(role)
+            else:
+                for key in const.rewarded_roles.keys():
+                    if key <= (lvl - 1):
+                        role = ctx.guild.get_role(const.rewarded_roles[key])
+                        await member.add_roles(role)
+            embed = discord.Embed(color=const.default_color, title=f"[Give-xp] - {member}")
+            await ctx.channel.send(embed=embed)
         else:
-            for key in const.rewarded_roles.keys():
-                if key <= (lvl - 1):
-                    role = ctx.guild.get_role(const.rewarded_roles[key])
-                    await member.add_roles(role)
-        embed = discord.Embed(color=const.default_color, title=f"[Give-xp] - {member}")
-        await ctx.channel.send(embed=embed)
-
+            embed = discord.Embed(color=const.exception_color, title="خطأ:",
+                                  description="القيمة المحددة يجب ان تكون من مضاعفات العدد خمسة!")
+            await ctx.channel.send(embed=embed)
     @givexp_async.error
     async def givexp_async_error(self, ctx, error):
         if isinstance(error, commands.MissingRole):

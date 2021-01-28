@@ -39,7 +39,7 @@ if u want to try it out enter the [6wrni server](https://discord.gg/weQf9REBTH)
     - #### Delete-xp : 
       Deletes all xp from a member (require a moderator).
     - #### Give-xp : 
-      Give a set amout of xp from a member (require a moderator).
+      Give a set amout of xp from a member the amount should be a multiple of 5(require a moderator).
     - #### Message event :
       Add a random amout of xp between 15 and 25 for a member works only once in a minute to avoid spam.
     - #### Rewarded Role Event:
