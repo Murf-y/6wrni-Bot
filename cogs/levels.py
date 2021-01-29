@@ -54,7 +54,7 @@ class Levels(commands.Cog):
                 lvl += 1
             xp -= ((50 * ((lvl - 1) ** 2)) + (50 * (lvl - 1)))
             if xp == 0 :
-                await message.channel.send(f"مبروك {message.author.mention}, لقد وصلت الى المستوى {lvl}.")
+                await message.channel.send(f"مبروك {message.author.mention}, لقد وصلت الى المستوى {lvl} !")
                 for key in const.rewarded_roles.keys():
                     if key <= lvl:
                         role = message.guild.get_role(const.rewarded_roles[key])
@@ -89,7 +89,9 @@ class Levels(commands.Cog):
                     break
                 lvl += 1
             xp -= ((50 * ((lvl - 1) ** 2)) + (50 * (lvl - 1)))
-
+            query = "SELECT count(*) FROM users"
+            counts = await self.bot.pg_con.fetchrow(query)
+            count = counts['count']
             query = "SELECT 1 + COUNT(*) AS rank FROM users WHERE xp > (SELECT xp FROM users WHERE user_id = $1 AND guild_id = $2)"
             user = await self.bot.pg_con.fetchrow(query, user_id, guild_id)
             rank = user['rank']
@@ -100,7 +102,7 @@ class Levels(commands.Cog):
                 embed.set_author(name=f"[Rank] - {member.display_name}")
                 embed.set_thumbnail(url=member.avatar_url)
                 embed.add_field(name="XP:", value=f"{xp}/{int(200 * ((1 / 2) * lvl))}", inline=True)
-                embed.add_field(name='Rank:', value=f"# {rank}/{ctx.guild.member_count}", inline=True)
+                embed.add_field(name='Rank:', value=f"# {rank}/{count}", inline=True)
                 embed.add_field(name='Level:', value=lvl, inline=True)
 
                 embed.add_field(name='Progress Bar:', value= nb_of_purple_boxes * ":purple_square:" + nb_of_white_boxes * ":white_large_square:", inline=True)
@@ -113,7 +115,7 @@ class Levels(commands.Cog):
                 embed.set_author(name=f"[Rank] - {member.display_name}")
                 embed.set_thumbnail(url=member.avatar_url)
                 embed.add_field(name="XP:", value=f"{realxp}/{int(200 * ((1 / 2) * (lvl - 1)))}", inline=True)
-                embed.add_field(name='Rank:', value=f"# {rank}/{ctx.guild.member_count}", inline=True)
+                embed.add_field(name='Rank:', value=f"# {rank}/{count}", inline=True)
                 embed.add_field(name='Level:', value=lvl - 1, inline=True)
                 embed.add_field(name='Progress Bar:', value= nb_of_purple_boxes * ":purple_square:" + nb_of_white_boxes * ":white_large_square:", inline=True)
                 await ctx.send(embed=embed)
