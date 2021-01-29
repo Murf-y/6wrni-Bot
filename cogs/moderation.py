@@ -316,7 +316,7 @@ class Moderation(commands.Cog):
             embed.add_field(name="سبب:", value=reason)
             await mod_channel.send(embed=embed)
         else:
-            embed = discord.Embed(color=const.exception_color, title="خطأ:", description="هذا العضو ما معه Mute أصلا!ص")
+            embed = discord.Embed(color=const.exception_color, title="خطأ:", description="هذا العضو ما معه Mute أصلا!")
             await ctx.channel.send(embed=embed)
 
     @unmute_async.error
