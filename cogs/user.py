@@ -36,7 +36,7 @@ class User(commands.Cog):
 
     # --------------------------------- GIVEROLE Command---------------------------------------------
     @commands.command(name="giverole", description="يحصل مستخدمها على الرول المحدد!")
-    async def giverole_async(self, ctx, role: discord.Role):
+    async def giverole_async(self, ctx, *, role: discord.Role):
         if ctx.channel.id != const.botchannel_id:
             bot_channel = self.bot.get_channel(const.botchannel_id)
             return await ctx.channel.send(f"لا يمكنك إستعملها هنا, إذهب الى {bot_channel.mention}!")
@@ -62,7 +62,7 @@ class User(commands.Cog):
 
     # --------------------------------- REMOVEROLE Command---------------------------------------------
     @commands.command(name="removerole", description="إزالة الرول المحدد!")
-    async def removerole_async(self, ctx, role: discord.Role):
+    async def removerole_async(self, ctx, *, role: discord.Role):
         if ctx.channel.id != const.botchannel_id:
             bot_channel = self.bot.get_channel(const.botchannel_id)
             return await ctx.channel.send(f"لا يمكنك إستعملها هنا, إذهب الى {bot_channel.mention}!")
