@@ -55,7 +55,7 @@ class User(commands.Cog):
             await ctx.channel.send(embed=embed)
     @giverole_async.error
     async def giverole_async_error(self,ctx,error):
-        embed=discord.Embed(color=const.exception_color,title="خطأ:",description="هذا الول غير موجود!")
+        embed=discord.Embed(color=const.exception_color,title="خطأ:",description="هذا الرول غير موجود!")
         await ctx.channel.send(embed=embed)
 
     # --------------------------------- GIVEROLE Command---------------------------------------------
@@ -82,7 +82,7 @@ class User(commands.Cog):
 
     @removerole_async.error
     async def removerole_async_error(self, ctx, error):
-        embed = discord.Embed(color=const.exception_color, title="خطأ:", description="هذا الول غير موجود!")
+        embed = discord.Embed(color=const.exception_color, title="خطأ:", description="هذا الرول غير موجود!")
         await ctx.channel.send(embed=embed)
     # --------------------------------- REMOVEROLE Command---------------------------------------------
 
