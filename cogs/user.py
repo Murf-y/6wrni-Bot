@@ -33,7 +33,7 @@ class User(commands.Cog):
             elif payload.emoji.id ==const._2dEmoji:
                 role = payload.member.guild.get_role(const.users_giveable_roles_id[5])
                 await payload.member.add_roles(role)
-            elif payload.emoji == const.SoundEmoji:
+            elif str(payload.emoji) == const.SoundEmoji:
                 role = payload.member.guild.get_role(const.users_giveable_roles_id[7])
                 await payload.member.add_roles(role)
     @commands.Cog.listener()
@@ -74,7 +74,7 @@ class User(commands.Cog):
                 role = guild.get_role(const.users_giveable_roles_id[5])
                 member = guild.get_member(payload.user_id)
                 await member.remove_roles(role)
-            elif payload.emoji == const.SoundEmoji:
+            elif str(payload.emoji) == const.SoundEmoji:
                 guild = self.bot.get_guild(const.guild_id)
                 role = guild.get_role(const.users_giveable_roles_id[7])
                 member = guild.get_member(payload.user_id)
