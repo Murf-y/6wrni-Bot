@@ -1,14 +1,14 @@
 # EMOJIS
 crossmark_emoji = "<:1_:725771516272181379>"
 checkmark_emoji = "<:2_:725771516725297223>"
-UnityEmoji = "<:unityW:735850638252048426> "
-UnrealEmoji= "<:unreal:780024117637152769>"
-BlenderEmoji= "<:blender:780024507867987988>"
-GodotEmoji= "<:godot:780024321040449556> "
-GamemakerEmoji= "<:gamemaker:780024651187355678> "
-_3dEmoji= "<:3d:780025103709765704>"
-_2dEmoji = "<:2d:780025147268530187>"
-SoundEmoji = "\U0001f3b5"
+UnityEmoji = 735850638252048426
+UnrealEmoji= 780024117637152769
+BlenderEmoji= 780024507867987988
+GodotEmoji= 780024321040449556
+GamemakerEmoji= 780024651187355678
+_3dEmoji= 780025103709765704
+_2dEmoji = 780025147268530187
+SoundEmoji = "musical_note"
 
 # COLORS
 default_color = 0x8658FF

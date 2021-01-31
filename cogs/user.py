@@ -12,70 +12,70 @@ class User(commands.Cog):
     @commands.Cog.listener()
     async def on_raw_reaction_add(self,payload:discord.RawReactionActionEvent):
         if payload.message_id == 805480651532795975:
-            if payload.emoji == const.UnityEmoji:
+            if payload.emoji.id == const.UnityEmoji:
                 role = payload.member.guild.get_role(const.users_giveable_roles_id[0])
                 await payload.member.add_roles(role)
-            elif payload.emoji == const.UnrealEmoji:
+            elif payload.emoji.id == const.UnrealEmoji:
                 role = payload.member.guild.get_role(const.users_giveable_roles_id[1])
                 await payload.member.add_roles(role)
-            elif payload.emoji == const.GodotEmoji:
+            elif payload.emoji.id == const.GodotEmoji:
                 role = payload.member.guild.get_role(const.users_giveable_roles_id[2])
                 await payload.member.add_roles(role)
-            elif payload.emoji == const.GamemakerEmoji:
+            elif payload.emoji.id == const.GamemakerEmoji:
                 role = payload.member.guild.get_role(const.users_giveable_roles_id[4])
                 await payload.member.add_roles(role)
-            elif payload.emoji == const.BlenderEmoji:
+            elif payload.emoji.id == const.BlenderEmoji:
                 role = payload.member.guild.get_role(const.users_giveable_roles_id[3])
                 await payload.member.add_roles(role)
-            elif payload.emoji == const._3dEmoji:
+            elif payload.emoji.id == const._3dEmoji:
                 role = payload.member.guild.get_role(const.users_giveable_roles_id[6])
                 await payload.member.add_roles(role)
-            elif payload.emoji ==const._2dEmoji:
+            elif payload.emoji.id ==const._2dEmoji:
                 role = payload.member.guild.get_role(const.users_giveable_roles_id[5])
                 await payload.member.add_roles(role)
-            elif payload.emoji == const.SoundEmoji:
+            elif payload.emoji.name == const.SoundEmoji:
                 role = payload.member.guild.get_role(const.users_giveable_roles_id[7])
                 await payload.member.add_roles(role)
 
     @commands.Cog.listener()
     async def on_raw_reaction_remove(self, payload: discord.RawReactionActionEvent):
         if payload.message_id == 805480651532795975:
-            if payload.emoji == const.UnityEmoji:
+            if payload.emoji.id == const.UnityEmoji:
                 guild = self.bot.get_guild(const.guild_id)
                 role = guild.get_role(const.users_giveable_roles_id[0])
                 member = guild.get_member(payload.user_id)
                 await member.remove_roles(role)
-            elif payload.emoji == const.UnrealEmoji:
+            elif payload.emoji.id == const.UnrealEmoji:
                 guild = self.bot.get_guild(const.guild_id)
                 role = guild.get_role(const.users_giveable_roles_id[1])
                 member = guild.get_member(payload.user_id)
                 await member.remove_roles(role)
-            elif payload.emoji == const.GodotEmoji:
+            elif payload.emoji.id == const.GodotEmoji:
                 guild = self.bot.get_guild(const.guild_id)
                 role = guild.get_role(const.users_giveable_roles_id[2])
                 member = guild.get_member(payload.user_id)
                 await member.remove_roles(role)
-            elif payload.emoji == const.GamemakerEmoji:
+            elif payload.emoji.id == const.GamemakerEmoji:
                 guild = self.bot.get_guild(const.guild_id)
                 role = guild.get_role(const.users_giveable_roles_id[4])
                 member = guild.get_member(payload.user_id)
                 await member.remove_roles(role)
-            elif payload.emoji == const.BlenderEmoji:
+            elif payload.emoji.id == const.BlenderEmoji:
                 guild = self.bot.get_guild(const.guild_id)
                 role = guild.get_role(const.users_giveable_roles_id[3])
                 member = guild.get_member(payload.user_id)
                 await member.remove_roles(role)
-            elif payload.emoji == const._3dEmoji:
+            elif payload.emoji.id == const._3dEmoji:
                 guild = self.bot.get_guild(const.guild_id)
                 role = guild.get_role(const.users_giveable_roles_id[6])
                 member = guild.get_member(payload.user_id)
                 await member.remove_roles(role)
-            elif payload.emoji== const._2dEmoji:
+            elif payload.emoji.id == const._2dEmoji:
                 guild = self.bot.get_guild(const.guild_id)
                 role = guild.get_role(const.users_giveable_roles_id[5])
                 member = guild.get_member(payload.user_id)
                 await member.remove_roles(role)
-            elif payload.emoji == const.SoundEmoji:
+            elif payload.emoji.name == const.SoundEmoji:
                 guild = self.bot.get_guild(const.guild_id)
                 role = guild.get_role(const.users_giveable_roles_id[7])
                 member = guild.get_member(payload.user_id)
