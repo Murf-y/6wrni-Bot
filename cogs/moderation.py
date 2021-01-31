@@ -81,7 +81,7 @@ class Moderation(commands.Cog):
         embed.set_footer(text=f"من قبل: {ctx.author.display_name}")
         await member.kick(reason=reason)
         await ctx.channel.send(embed=embed)
-        embed.set_footer(text={const.warningEmoji}*3)
+        embed.set_footer(text=":no_entry:"*3)
         mod_channel = self.bot.get_channel(const.mod_Channel_id)
         await mod_channel.send(embed=embed)
 
@@ -210,7 +210,7 @@ class Moderation(commands.Cog):
             embed.add_field(name="سبب:", value=reason)
             embed.set_footer(text=f"من قبل: {ctx.author.display_name}")
             await ctx.channel.send(embed=embed)
-            embed.set_footer(text={const.warningEmoji} * 3)
+            embed.set_footer(text=":no_entry:" * 3)
             await mod_channel.send(embed=embed)
 
     @ban_async.error
@@ -243,7 +243,7 @@ class Moderation(commands.Cog):
             embed.add_field(name="سبب:", value=reason)
             embed.set_footer(text=f"من قبل: {ctx.author.display_name}")
             await ctx.channel.send(embed=embed)
-            embed.set_footer(text={const.warningEmoji} * 3)
+            embed.set_footer(text=":no_entry:" * 3)
             await mod_channel.send(embed=embed)
         except discord.NotFound:
             embed = discord.Embed(
@@ -280,7 +280,7 @@ class Moderation(commands.Cog):
                 embed.set_footer(text=f"من قبل: {ctx.author.display_name}")
                 mod_channel = self.bot.get_channel(const.mod_Channel_id)
                 await ctx.channel.send(embed=embed)
-                embed.set_footer(text={const.warningEmoji} * 3)
+                embed.set_footer(text=":no_entry:" * 3)
                 await mod_channel.send(embed=embed)
 
             else:
@@ -317,7 +317,7 @@ class Moderation(commands.Cog):
                 embed.set_footer(text=f"من قبل: {ctx.author.display_name}")
                 await ctx.channel.send(embed=embed)
                 mod_channel = self.bot.get_channel(const.mod_Channel_id)
-                embed.set_footer(text={const.warningEmoji} * 3)
+                embed.set_footer(text=":no_entry:" * 3)
                 await mod_channel.send(embed=embed)
             else:
                 embed = discord.Embed(color=const.exception_color, title="خطأ:", description="هذا العضو ما معه Mute أصلا!")
