@@ -120,7 +120,7 @@ class Moderation(commands.Cog):
                 description=f"القيمة المحدد غير مقبولة.\n يجب ان تكون بين 1 و 100 فقط!",
                 color=const.exception_color,
             )
-            await ctx.channel.send(embed=embed)
+            await ctx.channel.send(embed=embed,delete_after=10)
 
     @clear_async.error
     async def clear_async_error(self, ctx, error):

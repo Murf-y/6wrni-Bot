@@ -67,7 +67,7 @@ class Levels(commands.Cog):
     # ----------------------------------RANK Command------------------------------------------------
     @commands.command(name="rank", description="إظهار XP و level للمستخدم")
     async def show_rank(self, ctx, member: discord.Member = None):
-        if ctx.channel.id != const.botchannel_id and ctx.channel.id != const.private_channel_id:
+        if ctx.channel.id != const.botchannel_id and ctx.channel.id != const.private_channel_id and ctx.channel.id != const.private2_channel_id:
             bot_channel = self.bot.get_channel(const.botchannel_id)
             return await ctx.channel.send(f"لا يمكنك إستعملها هنا, إذهب الى {bot_channel.mention}!")
         member = ctx.author if not member else member
