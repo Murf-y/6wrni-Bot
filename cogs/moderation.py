@@ -265,22 +265,27 @@ class Moderation(commands.Cog):
     # ----------------------------------MUTE Command------------------------------------------------
     @commands.command(name="mute",description="ميوت عضو معين لسبب إختياري,.\n\n يجب ان تكون من المشرفين لإستخدامها.")
     @commands.has_role(const.moderator_role_name)
-    async def mute_async(self,ctx , member:discord.Member, *, reason:Optional[str] = "غير محدد"):
-        mutedrole = ctx.guild.get_role(const.muted_role_id)
+    async def mute_async(self,ctx , user:discord.User, *, reason:Optional[str] = "غير محدد"):
+        member = ctx.guild.get_member(user.id)
+        if member!= None:
+            mutedrole = ctx.guild.get_role(const.muted_role_id)
 
-        if mutedrole not in member.roles:
-            await member.add_roles(mutedrole)
-            embed = discord.Embed(color=const.default_color, title=f"[Mute] - {member.display_name}")
-            embed.add_field(name="سبب:",value=reason)
-            embed.set_footer(text=f"من قبل: {ctx.author.display_name}")
-            mod_channel = self.bot.get_channel(const.mod_Channel_id)
-            await mod_channel.send(embed=embed)
-            await ctx.channel.send(embed=embed)
+            if mutedrole not in member.roles:
+                await member.add_roles(mutedrole)
+                embed = discord.Embed(color=const.default_color, title=f"[Mute] - {member.display_name}")
+                embed.add_field(name="سبب:",value=reason)
+                embed.set_footer(text=f"من قبل: {ctx.author.display_name}")
+                mod_channel = self.bot.get_channel(const.mod_Channel_id)
+                await mod_channel.send(embed=embed)
+                await ctx.channel.send(embed=embed)
 
+            else:
+                embed= discord.Embed(color=const.exception_color,title="خطأ:",description="هذا العضو أخذ Mute سابقا!")
+                await ctx.channel.send(embed=embed)
         else:
-            embed= discord.Embed(color=const.exception_color,title="خطأ:",description="هذا العضو أخذ Mute سابقا!")
+            embed = discord.Embed(color=const.exception_color, title="خطأ:",
+                                  description="هذا العضو ليس موجود في السيرفير!")
             await ctx.channel.send(embed=embed)
-
     @mute_async.error
     async def mute_async_error(self,ctx,error):
         if isinstance(error, commands.MissingRole):
@@ -296,19 +301,24 @@ class Moderation(commands.Cog):
     # ----------------------------------UNMUTE Command------------------------------------------------
     @commands.command(name="unmute", description="إزالة الميوت عن عضو معين لسبب إختياري,.\n\n يجب ان تكون من المشرفين لإستخدامها.")
     @commands.has_role(const.moderator_role_name)
-    async def unmute_async(self, ctx, member: discord.Member,*,reason:Optional[str]="غير محدد"):
-        mutedrole = ctx.guild.get_role(const.muted_role_id)
+    async def unmute_async(self, ctx, user: discord.User,*,reason:Optional[str]="غير محدد"):
+        member = ctx.guild.get_member(user.id)
+        if member != None:
+            mutedrole = ctx.guild.get_role(const.muted_role_id)
 
-        if mutedrole in member.roles:
-            await member.remove_roles(mutedrole)
-            embed = discord.Embed(color=const.default_color, title=f"[Unmute] - {member.display_name}")
-            embed.add_field(name="سبب:", value=reason)
-            embed.set_footer(text=f"من قبل: {ctx.author.display_name}")
-            await ctx.channel.send(embed=embed)
-            mod_channel = self.bot.get_channel(const.mod_Channel_id)
-            await mod_channel.send(embed=embed)
+            if mutedrole in member.roles:
+                await member.remove_roles(mutedrole)
+                embed = discord.Embed(color=const.default_color, title=f"[Unmute] - {member.display_name}")
+                embed.add_field(name="سبب:", value=reason)
+                embed.set_footer(text=f"من قبل: {ctx.author.display_name}")
+                await ctx.channel.send(embed=embed)
+                mod_channel = self.bot.get_channel(const.mod_Channel_id)
+                await mod_channel.send(embed=embed)
+            else:
+                embed = discord.Embed(color=const.exception_color, title="خطأ:", description="هذا العضو ما معه Mute أصلا!")
+                await ctx.channel.send(embed=embed)
         else:
-            embed = discord.Embed(color=const.exception_color, title="خطأ:", description="هذا العضو ما معه Mute أصلا!")
+            embed = discord.Embed(color=const.exception_color, title="خطأ:", description="هذا العضو ليس موجود في السيرفير!")
             await ctx.channel.send(embed=embed)
 
     @unmute_async.error
