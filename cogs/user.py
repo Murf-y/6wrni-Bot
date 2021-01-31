@@ -101,7 +101,12 @@ class User(commands.Cog):
 
     # --------------------------------- ROLES Command---------------------------------------------
 
-
+    @commands.command(name="create")
+    @commands.has_role(const.moderator_role_name)
+    async def tst(self,ctx,*,message):
+        msg = await ctx.channel.send(message)
+        for emogi in const.reactionsemgies:
+            await msg.add_reaction(emogi)
 
 def setup(bot):
     bot.add_cog(User(bot))
