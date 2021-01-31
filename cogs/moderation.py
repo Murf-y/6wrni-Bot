@@ -112,7 +112,7 @@ class Moderation(commands.Cog):
                                               after=datetime.datetime.utcnow() - datetime.timedelta(days=14))
             embed = discord.Embed(color=const.default_color,
                                   title=f" تم حذف {len(deleted)} رسالة/رسأل{const.checkmark_emoji} ")
-            await ctx.channel.send(embed=embed)
+            await ctx.channel.send(embed=embed,delete_after=10)
 
         else:
             embed = discord.Embed(
@@ -120,7 +120,7 @@ class Moderation(commands.Cog):
                 description=f"القيمة المحدد غير مقبولة.\n يجب ان تكون بين 1 و 100 فقط!",
                 color=const.exception_color,
             )
-            await ctx.channel.send(embed=embed,delete_after=10)
+            await ctx.channel.send(embed=embed)
 
     @clear_async.error
     async def clear_async_error(self, ctx, error):
