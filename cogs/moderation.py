@@ -76,12 +76,12 @@ class Moderation(commands.Cog):
                                       description="لا يمكنك إستخدام هذا الأمر!")
                 return await ctx.channel.send(embed=embed)
         embed = discord.Embed(color=const.default_color, timestamp=ctx.message.created_at,
-                              title="[إخراج عضو] - {member}")
+                              title="[kick] - {member}")
         embed.add_field(name="سبب:", value=reason)
         embed.set_footer(text=f"من قبل: {ctx.author.display_name}")
         await member.kick(reason=reason)
         await ctx.channel.send(embed=embed)
-        embed.title = f":no_entry: [إخراج عضو] - {member} :no_entry:"
+        embed.title = f":no_entry: [kick] - {member} :no_entry:"
         mod_channel = self.bot.get_channel(const.mod_Channel_id)
         await mod_channel.send(embed=embed)
 
@@ -202,7 +202,7 @@ class Moderation(commands.Cog):
             await ctx.guild.ban(user=user, reason=reason, delete_message_days=0)
             mod_channel = self.bot.get_channel(const.mod_Channel_id)
             embed = discord.Embed(
-                title=f"[حظر عضو] - {user}",
+                title=f"[Ban] - {user}",
                 description=f"تم طرد {user}",
                 color=const.default_color,
 
@@ -210,7 +210,7 @@ class Moderation(commands.Cog):
             embed.add_field(name="سبب:", value=reason)
             embed.set_footer(text=f"من قبل: {ctx.author.display_name}")
             await ctx.channel.send(embed=embed)
-            embed.set_footer(text=":no_entry:" * 3)
+            embed.title = f":no_entry: [Ban] - {user.display_name} :no_entry:"
             await mod_channel.send(embed=embed)
 
     @ban_async.error
@@ -236,14 +236,14 @@ class Moderation(commands.Cog):
             await ctx.guild.unban(user=user, reason=reason)
             mod_channel = self.bot.get_channel(const.mod_Channel_id)
             embed = discord.Embed(
-                title=f"[ازالة الحظر عن عضو] - {user.display_name}",
+                title=f"[Unban] - {user.display_name}",
                 description=f"تم ازالة الحظر عن {user}",
                 color=const.default_color
             )
             embed.add_field(name="سبب:", value=reason)
             embed.set_footer(text=f"من قبل: {ctx.author.display_name}")
             await ctx.channel.send(embed=embed)
-            embed.title = f":no_entry:[ازالة الحظر عن عضو] - {user.display_name} :no_entry:"
+            embed.title = f":no_entry: [Unban] - {user.display_name} :no_entry:"
             await mod_channel.send(embed=embed)
         except discord.NotFound:
             embed = discord.Embed(
@@ -280,7 +280,7 @@ class Moderation(commands.Cog):
                 embed.set_footer(text=f"من قبل: {ctx.author.display_name}")
                 mod_channel = self.bot.get_channel(const.mod_Channel_id)
                 await ctx.channel.send(embed=embed)
-                embed.title = ":no_entry: [Mute] - {member.display_name} :no_entry:"
+                embed.title = f":no_entry: [Mute] - {member.display_name} :no_entry:"
                 await mod_channel.send(embed=embed)
 
             else:
@@ -317,7 +317,7 @@ class Moderation(commands.Cog):
                 embed.set_footer(text=f"من قبل: {ctx.author.display_name}")
                 await ctx.channel.send(embed=embed)
                 mod_channel = self.bot.get_channel(const.mod_Channel_id)
-                embed.title = ":no_entry: [Unmute] - {member.display_name} :no_entry:"
+                embed.title = f":no_entry: [Unmute] - {member.display_name} :no_entry:"
                 await mod_channel.send(embed=embed)
             else:
                 embed = discord.Embed(color=const.exception_color, title="خطأ:", description="هذا العضو ما معه Mute أصلا!")
