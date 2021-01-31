@@ -15,11 +15,12 @@ class Custom(commands.Cog):
         codeblock += "\`\`\`cs\n"
         codeblock += "//أكتب الكود هنا\n"
         codeblock += "\`\`\`\n"
-
+        await ctx.message.delete()
         await ctx.channel.send(codeblock)
 
     @commands.command(name="google", description="لا وصف")
     async def google_async(self, ctx):
+        await ctx.message.delete()
         await ctx.channel.send("أعتقد <https://google.com> قد يعرف الجواب!")
 
     @commands.command(name="nullrefrence", description="لا وصف", aliases=["nullref", ])
@@ -30,6 +31,7 @@ class Custom(commands.Cog):
         nulltext += "Debug.Log(YourVariable == null)\n"
         nulltext += "```\n"
         nulltext += " قبل السطر الذي يحتوي على الخطأ لاختبار ما إذا كان الأمر كذلك.\n"
+        await ctx.message.delete()
         await ctx.channel.send(nulltext)
 
     @commands.command(name="nointellisense", description="لا وصف", aliases=["noint"])
@@ -38,20 +40,21 @@ class Custom(commands.Cog):
         noint += "<https://youtu.be/kT9M22nPkaA>\n"
         noint += "حل مشكلة عدم عمل Visual Studio Code مع Unity :\n"
         noint += "<https://youtu.be/J_jXkS_oUsg>\n"
+        await ctx.message.delete()
         await ctx.channel.send(noint)
 
     @commands.command(name="pleasewait", description="لا وصف", aliases=["plsw"])
     async def pleasewait_async(self, ctx):
         waittxt = "طرح السوأل اكثر من مرة او في كل القنواة لن يسرع وصول الإجابة لك!\n"
         waittxt += "حاول ان تحل المشكلة بنفسك, تحلا بل صبر, عندما يستطيع شخص مساعدتك سوف يساعد!"
-
+        await ctx.message.delete()
         await ctx.channel.send(waittxt)
 
     @commands.command(name="rules", description="لا وصف")
     async def rules_async(self, ctx):
         rules_channel = self.bot.get_channel(const.rules_channel_id)
         waittxt = f"الرجاء التقيد بالشروط والقوانين الخاصة بالمنصة لعدم التعرض للتنبيه، يمكن مراجعتها هنا: {rules_channel.mention}"
-
+        await ctx.message.delete()
         await ctx.channel.send(waittxt)
 
 
