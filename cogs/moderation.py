@@ -20,7 +20,7 @@ class Moderation(commands.Cog):
 
         for role in message.author.roles:
             if role == const.moderator_role_name: return
-        mod_channel = self.bot.get_channel(const.mod_Channel_id)
+        deletedmsgs_channel = self.bot.get_channel(const.deletedmsgs_channel_id)
         embed = discord.Embed(color=const.default_color)
 
         try:
@@ -28,11 +28,11 @@ class Moderation(commands.Cog):
             embed.add_field(name="في قناة:", value=message.channel, inline=True)
             embed.add_field(name="محتوى الرسالة:", value=message.content, inline=True)
             embed.set_footer(text=datetime.datetime.utcnow().strftime('%a, %#d %B %Y'))
-            await mod_channel.send(embed=embed)
+            await deletedmsgs_channel.send(embed=embed)
         except AttributeError:
             embed.title = f"[حذف رسالة] - خطأ "
             embed.description = "حصل خطاء ما في استرجاع الرسالة المحذوفة"
-            await mod_channel.send(embed=embed)
+            await deletedmsgs_channel.send(embed=embed)
 
     @commands.Cog.listener()
     async def on_member_update(self, before: discord.Member, after: discord.Member):
