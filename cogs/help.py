@@ -19,7 +19,7 @@ class Help(commands.Cog):
 
     @commands.command(name="help",description="إظهار جميع الفئات")
     async def show_help(self, ctx, category: str = None):
-        if ctx.channel.id != const.botchannel_id:
+        if ctx.channel.id != const.botchannel_id and ctx.channel.id != const.private_channel_id:
             bot_channel = self.bot.get_channel(const.botchannel_id)
             return await ctx.channel.send(f"لا يمكنك إستعملها هنا, إذهب الى {bot_channel.mention}!")
         """إظهار جميع الفئات"""

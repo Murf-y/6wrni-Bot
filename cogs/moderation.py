@@ -78,11 +78,9 @@ class Moderation(commands.Cog):
         embed = discord.Embed(color=const.default_color, timestamp=ctx.message.created_at,
                               title="[إخراج عضو] - {member}")
         embed.add_field(name="سبب:", value=reason)
-
+        embed.set_footer(text=f"من قبل: {ctx.author.display_name}")
         await member.kick(reason=reason)
-
         await ctx.channel.send(embed=embed)
-
         mod_channel = self.bot.get_channel(const.mod_Channel_id)
         await mod_channel.send(embed=embed)
 
@@ -146,6 +144,7 @@ class Moderation(commands.Cog):
             await ctx.channel.edit(slowmode_delay=duration)
             embed = discord.Embed(color=const.default_color,
                                   title=f" تم وضع slowmode قناة: {ctx.channel} \nالمدة: {str(datetime.timedelta(seconds=duration))}")
+            embed.set_footer(text=f"من قبل: {ctx.author.display_name}")
             await ctx.channel.send(embed=embed)
 
         else:
@@ -208,6 +207,7 @@ class Moderation(commands.Cog):
 
             )
             embed.add_field(name="سبب:", value=reason)
+            embed.set_footer(text=f"من قبل: {ctx.author.display_name}")
             await ctx.channel.send(embed=embed)
             await mod_channel.send(embed=embed)
 
@@ -239,6 +239,7 @@ class Moderation(commands.Cog):
                 color=const.default_color
             )
             embed.add_field(name="سبب:", value=reason)
+            embed.set_footer(text=f"من قبل: {ctx.author.display_name}")
             await ctx.channel.send(embed=embed)
             await mod_channel.send(embed=embed)
         except discord.NotFound:
@@ -271,15 +272,11 @@ class Moderation(commands.Cog):
             await member.add_roles(mutedrole)
             embed = discord.Embed(color=const.default_color, title=f"[Mute] - {member.display_name}")
             embed.add_field(name="سبب:",value=reason)
-            await ctx.channel.send(embed=embed)
+            embed.set_footer(text=f"من قبل: {ctx.author.display_name}")
             mod_channel = self.bot.get_channel(const.mod_Channel_id)
-            embed = discord.Embed(
-                title=f"[Mute عضو] - {member}",
-                color=const.default_color,
-
-            )
-            embed.add_field(name="سبب:",value=reason)
             await mod_channel.send(embed=embed)
+            await ctx.channel.send(embed=embed)
+
         else:
             embed= discord.Embed(color=const.exception_color,title="خطأ:",description="هذا العضو أخذ Mute سابقا!")
             await ctx.channel.send(embed=embed)
@@ -306,14 +303,9 @@ class Moderation(commands.Cog):
             await member.remove_roles(mutedrole)
             embed = discord.Embed(color=const.default_color, title=f"[Unmute] - {member.display_name}")
             embed.add_field(name="سبب:", value=reason)
+            embed.set_footer(text=f"من قبل: {ctx.author.display_name}")
             await ctx.channel.send(embed=embed)
             mod_channel = self.bot.get_channel(const.mod_Channel_id)
-            embed = discord.Embed(
-                title=f"[Unmute عضو] - {member}",
-                color=const.default_color,
-
-            )
-            embed.add_field(name="سبب:", value=reason)
             await mod_channel.send(embed=embed)
         else:
             embed = discord.Embed(color=const.exception_color, title="خطأ:", description="هذا العضو ما معه Mute أصلا!")
