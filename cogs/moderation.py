@@ -81,7 +81,7 @@ class Moderation(commands.Cog):
         embed.set_footer(text=f"من قبل: {ctx.author.display_name}")
         await member.kick(reason=reason)
         await ctx.channel.send(embed=embed)
-        embed.set_footer(text=":no_entry:"*3)
+        embed.title = f":no_entry: [إخراج عضو] - {member} :no_entry:"
         mod_channel = self.bot.get_channel(const.mod_Channel_id)
         await mod_channel.send(embed=embed)
 
@@ -243,7 +243,7 @@ class Moderation(commands.Cog):
             embed.add_field(name="سبب:", value=reason)
             embed.set_footer(text=f"من قبل: {ctx.author.display_name}")
             await ctx.channel.send(embed=embed)
-            embed.set_footer(text=":no_entry:" * 3)
+            embed.title = f":no_entry:[ازالة الحظر عن عضو] - {user.display_name} :no_entry:"
             await mod_channel.send(embed=embed)
         except discord.NotFound:
             embed = discord.Embed(
