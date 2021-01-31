@@ -8,7 +8,7 @@ reactionsemgies = ["<:unityW:735850638252048426> ",
 "<:blender:780024507867987988> ",
 "<:3d:780025103709765704>",
 "<:2d:780025147268530187>",
-"<:sound:780025496859181106>"]
+"🎵"]
 # COLORS
 default_color = 0x8658FF
 exception_color = 0xFF3B6E
