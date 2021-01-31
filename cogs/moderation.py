@@ -25,7 +25,7 @@ class Moderation(commands.Cog):
 
         try:
             embed.title = f"[حذف رسالة] - {message.author}"
-            embed.add_field(name="في قناة:", value=message.channel, inline=True)
+            embed.add_field(name="في قناة:", value=message.channel.mention, inline=True)
             embed.add_field(name="محتوى الرسالة:", value=message.content, inline=True)
             embed.set_footer(text=datetime.datetime.utcnow().strftime('%a, %#d %B %Y'))
             await deletedmsgs_channel.send(embed=embed)
