@@ -17,7 +17,7 @@ class Levels(commands.Cog):
     @commands.Cog.listener()
     async def on_message(self, message):
         if message.author.bot or message.content.startswith(
-                f'{self.bot.command_prefix}') or message.channel.id in const.NoXpchannels_id: return
+                f'{self.bot.command_prefix}') or message.channel.id in const.NoXpchannels_id or const.moderator_role_id in [role.id for role in message.author.roles]: return
 
         user_id = message.author.id
         guild_id = message.guild.id
