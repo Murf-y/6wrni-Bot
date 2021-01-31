@@ -280,7 +280,7 @@ class Moderation(commands.Cog):
                 embed.set_footer(text=f"من قبل: {ctx.author.display_name}")
                 mod_channel = self.bot.get_channel(const.mod_Channel_id)
                 await ctx.channel.send(embed=embed)
-                embed.set_footer(text=":no_entry:" * 3)
+                embed.title = ":no_entry: [Mute] - {member.display_name} :no_entry:"
                 await mod_channel.send(embed=embed)
 
             else:
@@ -317,7 +317,7 @@ class Moderation(commands.Cog):
                 embed.set_footer(text=f"من قبل: {ctx.author.display_name}")
                 await ctx.channel.send(embed=embed)
                 mod_channel = self.bot.get_channel(const.mod_Channel_id)
-                embed.set_footer(text=":no_entry:" * 3)
+                embed.title = ":no_entry: [Unmute] - {member.display_name} :no_entry:"
                 await mod_channel.send(embed=embed)
             else:
                 embed = discord.Embed(color=const.exception_color, title="خطأ:", description="هذا العضو ما معه Mute أصلا!")
