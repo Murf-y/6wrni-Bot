@@ -10,6 +10,8 @@ _3dEmoji= 780025103709765704
 _2dEmoji = 780025147268530187
 SoundEmoji = "🎵"
 
+warningEmoji = "\U000026d4"
+
 # COLORS
 default_color = 0x8658FF
 exception_color = 0xFF3B6E

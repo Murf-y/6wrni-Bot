@@ -36,6 +36,8 @@ if u want to try it out enter the [6wrni server](https://discord.gg/weQf9REBTH)
 - ### **Level**
     - #### Rank :
       shows the current xp and the current level of a member.
+    - #### Leaderboard :
+      shows te top 10 member in the server.
     - #### Delete-xp : 
       Deletes all xp from a member (require a moderator).
     - #### Give-xp : 

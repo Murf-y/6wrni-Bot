@@ -122,6 +122,28 @@ class Levels(commands.Cog):
 
     # ----------------------------------RANK Command------------------------------------------------
 
+    # ----------------------------------LEADERBOARD Command------------------------------------------------
+    @commands.command(name="leaderboard",description="إظهار اول عشر اعضاء في السيرفير",aliases=["leadb"])
+    async def leaderboard_async(self,ctx):
+        if ctx.channel.id != const.botchannel_id and ctx.channel.id != const.private_channel_id and ctx.channel.id != const.private2_channel_id:
+            bot_channel = self.bot.get_channel(const.botchannel_id)
+            return await ctx.channel.send(f"لا يمكنك إستعملها هنا, إذهب الى {bot_channel.mention}!")
+        users = await self.bot.pg_con.fetch("SELECT * FROM users ORDER BY xp desc limit 10")
+        embed = discord.Embed(color=discord.Color.dark_purple(), title="**6wrni LeaderBoard**")
+        rank = 1
+        for user in users:
+            member = ctx.guild.get_member(user['user_id'])
+            xp = user['xp']
+            lvl = 0
+            while True:
+                if xp < ((50 * (lvl ** 2)) + (50 * (lvl - 1))):
+                    break
+                lvl += 1
+            embed.add_field(name=f"{rank}-{member.display_name}", value=f"XP: {xp} -------- Level: {lvl} \n")
+            rank += 1
+        await ctx.channel.send(embed=embed)
+    # ----------------------------------LEADERBOARD Command------------------------------------------------
+
     # ----------------------------------GIVEXP Command------------------------------------------------
     @commands.command(name="give-xp", description="إضافة نسبة محددة من ال XP لعضو معين.\n\n يجب ان "
                                                   "تكون من المشرفين "

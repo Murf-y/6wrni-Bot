@@ -9,6 +9,7 @@ class User(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
+    # --------------------------------- BOT EVENTS---------------------------------------------
     @commands.Cog.listener()
     async def on_raw_reaction_add(self,payload:discord.RawReactionActionEvent):
         if payload.message_id == 805480651532795975:
@@ -79,6 +80,8 @@ class User(commands.Cog):
                 role = guild.get_role(const.users_giveable_roles_id[7])
                 member = guild.get_member(payload.user_id)
                 await member.remove_roles(role)
+    # --------------------------------- BOT EVENTS---------------------------------------------
+
     # --------------------------------- UserInfo Command---------------------------------------------
     @commands.command(name="userinfo", description="معلومات عن عضو معين", aliases=["info"])
     async def userinfo_async(self, ctx, member: discord.Member = None):
