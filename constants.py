@@ -1,7 +1,15 @@
 # EMOJIS
 crossmark_emoji = "<:1_:725771516272181379>"
 checkmark_emoji = "<:2_:725771516725297223>"
-reactionsemgies = ["<:unityW:735850638252048426>","<:unreal:780024117637152769>","<:godot:780024321040449556>","<:gamemaker:780024651187355678>","<:blender:780024507867987988>","<:3d:780025103709765704>","<:2d:780025147268530187>","\U0001f3b5"]
+UnityEmoji = "<:unityW:735850638252048426> "
+UnrealEmoji= "<:unreal:780024117637152769>"
+BlenderEmoji= "<:blender:780024507867987988>"
+GodotEmoji= "<:godot:780024321040449556> "
+GamemakerEmoji= "<:gamemaker:780024651187355678> "
+_3dEmoji= "<:3d:780025103709765704>"
+_2dEmoji = "<:2d:780025147268530187>"
+SoundEmoji = "\U0001f3b5"
+
 # COLORS
 default_color = 0x8658FF
 exception_color = 0xFF3B6E
