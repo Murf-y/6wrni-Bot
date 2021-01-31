@@ -36,7 +36,6 @@ class User(commands.Cog):
             elif payload.emoji.name == const.SoundEmoji:
                 role = payload.member.guild.get_role(const.users_giveable_roles_id[7])
                 await payload.member.add_roles(role)
-
     @commands.Cog.listener()
     async def on_raw_reaction_remove(self, payload: discord.RawReactionActionEvent):
         if payload.message_id == 805480651532795975:

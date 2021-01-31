@@ -8,7 +8,7 @@ GodotEmoji= 780024321040449556
 GamemakerEmoji= 780024651187355678
 _3dEmoji= 780025103709765704
 _2dEmoji = 780025147268530187
-SoundEmoji = "musical_note"
+SoundEmoji = ":musical_note:"
 
 # COLORS
 default_color = 0x8658FF
