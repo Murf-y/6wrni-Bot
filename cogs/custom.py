@@ -32,15 +32,17 @@ class Custom(commands.Cog):
 
     @commands.command(name="youtube",description="بحث عن موضوع معين في يوتيوب")
     async def youtube_async(self,ctx,*,search):
-
+        await ctx.message.delete()
         query_search = urllib.parse.urlencode({'search_query': search})
         content = urllib.request.urlopen('http://www.youtube.com/results?'+ query_search)
-        search_results = re.findall('r/watch\?v=(.{11})', content.read().decode())
+        search_results = re.findall(r'/watch\?v=(.{11})', content.read().decode())
         stringbuilder =""
         stringbuilder +=f" هذافيديو يوتيوب عن: {search}\n"
-        stringbuilder +=f"<{search_results[0]}>"
-        await ctx.channel.send(stringbuilder)
-
+        try:
+            stringbuilder +=f"<{search_results[0]}>"
+            await ctx.channel.send(stringbuilder)
+        except IndexError:
+            await ctx.channel.send(f"اسف, لم اتمكن من ايجاد اي فيديو يتعلق بي {search}")
 
     @commands.command(name="nullrefrence", description="لا وصف", aliases=["nullref", ])
     async def nullrefrence_async(self, ctx):
