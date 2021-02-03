@@ -39,7 +39,7 @@ class Custom(commands.Cog):
         stringbuilder =""
         stringbuilder +=f" هذافيديو يوتيوب عن: {search}\n"
         try:
-            stringbuilder +=f"<{search_results[0]}>"
+            stringbuilder +=f"<http://www.youtube.com/watch?v='+{search_results[0]}>"
             await ctx.channel.send(stringbuilder)
         except IndexError:
             await ctx.channel.send(f"اسف, لم اتمكن من ايجاد اي فيديو يتعلق بي {search}")
