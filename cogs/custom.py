@@ -1,4 +1,5 @@
 from discord.ext import commands
+import discord
 
 import constants as const
 
@@ -22,7 +23,7 @@ class Custom(commands.Cog):
 
     @commands.command(name="google", description="بحث عن موضوع معين في جوجل")
     async def google_async(self, ctx, *, sentence):
-        #await ctx.message.delete()
+
         mainurl = "<http://letmegooglethat.com/?q="
         part = ""
         for word in sentence.split():
@@ -32,7 +33,7 @@ class Custom(commands.Cog):
 
     @commands.command(name="youtube",description="بحث عن موضوع معين في يوتيوب",aliases=["ytb"])
     async def youtube_async(self,ctx,*,search):
-        #await ctx.message.delete()
+
         query_search = urllib.parse.urlencode({'search_query': search})
         content = urllib.request.urlopen('http://www.youtube.com/results?'+ query_search)
         search_results = re.findall(r'/watch\?v=(.{11})', content.read().decode())
@@ -78,6 +79,14 @@ class Custom(commands.Cog):
         await ctx.message.delete()
         await ctx.channel.send(waittxt)
 
+    @commands.command(name="rule",description="إظهار القانون الحدد")
+    async def rule_async(self, ctx, number:int):
+        if number in const.rules.keys():
+            embed = discord.Embed(color=const.default_color,title=f"قانون رقم {number}:",description=const.rules[number])
+            await ctx.channel.send(embed=embed)
+        else:
+            embed = discord.Embed(color=const.exception_color,title="خطأ:",description="هذا القانون غير موجود!")
+            await ctx.channel.send(embed=embed)
 
 def setup(bot):
     bot.add_cog(Custom(bot))

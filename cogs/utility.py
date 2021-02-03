@@ -47,6 +47,8 @@ class Utility(commands.Cog):
 
     # ----------------------------------BOTINFO Command------------------------------------------------
 
+
+
     # ----------------------------------CHANGE STATUS Command------------------------------------------------
     @commands.command(name="change-status", description="تغير الحالة الخاصة بل بوت.\n\n يجب ان تكون من المشرفين لإستخدامها. ")
     @commands.has_role(const.moderator_role_name)
