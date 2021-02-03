@@ -19,9 +19,15 @@ class Custom(commands.Cog):
         await ctx.channel.send(codeblock)
 
     @commands.command(name="google", description="لا وصف")
-    async def google_async(self, ctx):
+    async def google_async(self, ctx, *, sentence):
         await ctx.message.delete()
-        await ctx.channel.send("أعتقد <https://google.com> قد يعرف الجواب!")
+        mainurl = "<https://letmegooglethat.com/?q="
+        part = ""
+        for word in sentence.split():
+            part += f"{word}+"
+        result = f"{mainurl + part[:-1]}>"
+        await ctx.channel.send(result)
+
 
     @commands.command(name="nullrefrence", description="لا وصف", aliases=["nullref", ])
     async def nullrefrence_async(self, ctx):
@@ -45,7 +51,7 @@ class Custom(commands.Cog):
 
     @commands.command(name="pleasewait", description="لا وصف", aliases=["plsw"])
     async def pleasewait_async(self, ctx):
-        waittxt = "طرح السوأل اكثر من مرة او في كل القنواة لن يسرع وصول الإجابة لك!\n"
+        waittxt = "طرح السوأل اكثر من مرة او في كل القنوات لن يسرع وصول الإجابة لك!\n"
         waittxt += "حاول ان تحل المشكلة بنفسك, تحلا بل صبر, عندما يستطيع شخص مساعدتك سوف يساعد!"
         await ctx.message.delete()
         await ctx.channel.send(waittxt)
