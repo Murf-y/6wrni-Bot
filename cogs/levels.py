@@ -3,21 +3,18 @@ from discord.ext import commands
 
 import constants as const
 import time
-import math
-
-
 
 
 class Levels(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-
     # ----------------------------------BOT EVENTS------------------------------------------------
     @commands.Cog.listener()
     async def on_message(self, message):
         if message.author.bot or message.content.startswith(
-                f'{self.bot.command_prefix}') or message.channel.id in const.NoXpchannels_id or const.moderator_role_id in [role.id for role in message.author.roles]: return
+                f'{self.bot.command_prefix}') or message.channel.id in const.NoXpchannels_id or const.moderator_role_id in [
+            role.id for role in message.author.roles]: return
 
         user_id = message.author.id
         guild_id = message.guild.id
@@ -53,7 +50,7 @@ class Levels(commands.Cog):
                     break
                 lvl += 1
             xp -= ((50 * ((lvl - 1) ** 2)) + (50 * (lvl - 1)))
-            if xp == 0 :
+            if xp == 0:
                 await message.channel.send(f"مبروك {message.author.mention}, لقد وصلت الى المستوى {lvl} !")
                 for key in const.rewarded_roles.keys():
                     if key <= lvl:
@@ -96,7 +93,7 @@ class Levels(commands.Cog):
             user = await self.bot.pg_con.fetchrow(query, user_id, guild_id)
             rank = user['rank']
             if xp >= 0:
-                nb_of_purple_boxes = int(xp * 20/int(200 * ((1 / 2) * lvl)))
+                nb_of_purple_boxes = int(xp * 20 / int(200 * ((1 / 2) * lvl)))
                 nb_of_white_boxes = 20 - nb_of_purple_boxes
                 embed = discord.Embed(color=member.color, timestamp=ctx.message.created_at)
                 embed.set_author(name=f"[Rank] - {member.display_name}")
@@ -105,11 +102,13 @@ class Levels(commands.Cog):
                 embed.add_field(name='Rank:', value=f"# {rank}/{count}", inline=True)
                 embed.add_field(name='Level:', value=lvl, inline=True)
 
-                embed.add_field(name='Progress Bar:', value= nb_of_purple_boxes * ":purple_square:" + nb_of_white_boxes * ":white_large_square:", inline=True)
+                embed.add_field(name='Progress Bar:',
+                                value=nb_of_purple_boxes * ":purple_square:" + nb_of_white_boxes * ":white_large_square:",
+                                inline=True)
                 await ctx.send(embed=embed)
             else:
                 realxp = int(200 * ((1 / 2) * (lvl - 1))) + xp
-                nb_of_purple_boxes = int(realxp * 20/int(200 * ((1 / 2) * (lvl - 1))))
+                nb_of_purple_boxes = int(realxp * 20 / int(200 * ((1 / 2) * (lvl - 1))))
                 nb_of_white_boxes = 20 - nb_of_purple_boxes
                 embed = discord.Embed(color=member.color, timestamp=ctx.message.created_at)
                 embed.set_author(name=f"[Rank] - {member.display_name}")
@@ -117,14 +116,16 @@ class Levels(commands.Cog):
                 embed.add_field(name="XP:", value=f"{realxp}/{int(200 * ((1 / 2) * (lvl - 1)))}", inline=True)
                 embed.add_field(name='Rank:', value=f"# {rank}/{count}", inline=True)
                 embed.add_field(name='Level:', value=lvl - 1, inline=True)
-                embed.add_field(name='Progress Bar:', value= nb_of_purple_boxes * ":purple_square:" + nb_of_white_boxes * ":white_large_square:", inline=True)
+                embed.add_field(name='Progress Bar:',
+                                value=nb_of_purple_boxes * ":purple_square:" + nb_of_white_boxes * ":white_large_square:",
+                                inline=True)
                 await ctx.send(embed=embed)
 
     # ----------------------------------RANK Command------------------------------------------------
 
     # ----------------------------------LEADERBOARD Command------------------------------------------------
-    @commands.command(name="leaderboard",description="إظهار اول عشر اعضاء في السيرفير",aliases=["leadb"])
-    async def leaderboard_async(self,ctx):
+    @commands.command(name="leaderboard", description="إظهار اول عشر اعضاء في السيرفير", aliases=["leadb"])
+    async def leaderboard_async(self, ctx):
         if ctx.channel.id != const.botchannel_id and ctx.channel.id != const.private_channel_id and ctx.channel.id != const.private2_channel_id:
             bot_channel = self.bot.get_channel(const.botchannel_id)
             return await ctx.channel.send(f"لا يمكنك إستعملها هنا, إذهب الى {bot_channel.mention}!")
@@ -139,9 +140,10 @@ class Levels(commands.Cog):
                 if xp < ((50 * (lvl ** 2)) + (50 * (lvl - 1))):
                     break
                 lvl += 1
-            embed.add_field(name=f"{rank}-{member.display_name}", value=f"XP: {xp} -------- Level: {lvl} \n")
+            embed.add_field(name=f"{rank}-{member.display_name}", value=f"XP: {xp} ---- Level: {lvl} \n")
             rank += 1
         await ctx.channel.send(embed=embed)
+
     # ----------------------------------LEADERBOARD Command------------------------------------------------
 
     # ----------------------------------GIVEXP Command------------------------------------------------
@@ -150,7 +152,7 @@ class Levels(commands.Cog):
                                                   "لإستخدامها.")
     @commands.has_role(const.moderator_role_name)
     async def givexp_async(self, ctx, member: discord.Member, amount: int):
-        if amount%5 == 0 :
+        if amount % 5 == 0:
             user_id = member.id
             guild_id = ctx.guild.id
             query = "SELECT * FROM users WHERE user_id = $1 AND guild_id = $2"
@@ -192,6 +194,7 @@ class Levels(commands.Cog):
             embed = discord.Embed(color=const.exception_color, title="خطأ:",
                                   description="القيمة المحددة يجب ان تكون من مضاعفات العدد خمسة!")
             await ctx.channel.send(embed=embed)
+
     @givexp_async.error
     async def givexp_async_error(self, ctx, error):
         if isinstance(error, commands.MissingRole):

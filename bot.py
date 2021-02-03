@@ -76,8 +76,9 @@ async def on_connect():
 
 @bot.event
 async def on_ready():
-    game = discord.Game(f"إستخدم change-status<< لتغير حالتي")
-    await bot.change_presence(status=discord.Status.online, activity=game)
+    game= discord.Activity(type=discord.ActivityType.watching,name = "6wrni.com")
+    await bot.change_presence(status=discord.Status.online,
+                                   activity= game)
     print(
         f"\n--------------------\nLogged in as {bot.user.display_name}(id:{bot.user.id}) time:{datetime.datetime.now()}\n -------------------- \n")
 
