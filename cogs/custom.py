@@ -22,7 +22,7 @@ class Custom(commands.Cog):
 
     @commands.command(name="google", description="بحث عن موضوع معين في جوجل")
     async def google_async(self, ctx, *, sentence):
-        await ctx.message.delete()
+        #await ctx.message.delete()
         mainurl = "<http://letmegooglethat.com/?q="
         part = ""
         for word in sentence.split():
@@ -30,9 +30,9 @@ class Custom(commands.Cog):
         result = f"{mainurl + part[:-1]}>"
         await ctx.channel.send(result)
 
-    @commands.command(name="youtube",description="بحث عن موضوع معين في يوتيوب")
+    @commands.command(name="youtube",description="بحث عن موضوع معين في يوتيوب",aliases=["ytb"])
     async def youtube_async(self,ctx,*,search):
-        await ctx.message.delete()
+        #await ctx.message.delete()
         query_search = urllib.parse.urlencode({'search_query': search})
         content = urllib.request.urlopen('http://www.youtube.com/results?'+ query_search)
         search_results = re.findall(r'/watch\?v=(.{11})', content.read().decode())
@@ -44,7 +44,7 @@ class Custom(commands.Cog):
         except IndexError:
             await ctx.channel.send(f"اسف, لم اتمكن من ايجاد اي فيديو يتعلق بي {search}")
 
-    @commands.command(name="nullrefrence", description="لا وصف", aliases=["nullref", ])
+    @commands.command(name="nullrefrence", description="لا وصف", aliases=["nullref"])
     async def nullrefrence_async(self, ctx):
         nulltext = "NullRefrenceException\n"
         nulltext += "يعني أنك إما لم تقم بتعيين الوبجيكت إلى متغير مطلقًا، أو قمت بتعيينه على قيمة فارغة, قم بتنفيذ: \n"
