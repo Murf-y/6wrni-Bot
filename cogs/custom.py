@@ -21,7 +21,7 @@ class Custom(commands.Cog):
     @commands.command(name="google", description="لا وصف")
     async def google_async(self, ctx, *, sentence):
         await ctx.message.delete()
-        mainurl = "<https://letmegooglethat.com/?q="
+        mainurl = "<http://letmegooglethat.com/?q="
         part = ""
         for word in sentence.split():
             part += f"{word}+"
