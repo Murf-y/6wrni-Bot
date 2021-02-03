@@ -37,7 +37,7 @@ class Custom(commands.Cog):
         content = urllib.request.urlopen('http://www.youtube.com/results?'+ query_search)
         search_results = re.findall(r'/watch\?v=(.{11})', content.read().decode())
         stringbuilder =""
-        stringbuilder +=f" هذافيديو يوتيوب عن: {search}\n"
+        stringbuilder +=f" هذا فيديو يوتيوب عن: {search}\n"
         try:
             stringbuilder +=f"<http://www.youtube.com/watch?v='+{search_results[0]}>"
             await ctx.channel.send(stringbuilder)
