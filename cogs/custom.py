@@ -2,6 +2,8 @@ from discord.ext import commands
 
 import constants as const
 
+import urllib.parse,urllib.request
+import re
 
 class Custom(commands.Cog):
 
@@ -18,7 +20,7 @@ class Custom(commands.Cog):
         await ctx.message.delete()
         await ctx.channel.send(codeblock)
 
-    @commands.command(name="google", description="لا وصف")
+    @commands.command(name="google", description="بحث عن موضوع معين في جوجل")
     async def google_async(self, ctx, *, sentence):
         await ctx.message.delete()
         mainurl = "<http://letmegooglethat.com/?q="
@@ -27,6 +29,17 @@ class Custom(commands.Cog):
             part += f"{word}+"
         result = f"{mainurl + part[:-1]}>"
         await ctx.channel.send(result)
+
+    @commands.command(name="youtube",description="بحث عن موضوع معين في يوتيوب")
+    async def youtube_async(self,ctx,*,search):
+
+        query_search = urllib.parse.urlencode({'search_query': search})
+        content = urllib.request.urlopen('http://www.youtube.com/results?'+ query_search)
+        search_results = re.findall('r/watch\?v=(.{11})', content.read().decode())
+        stringbuilder =""
+        stringbuilder +=f" هذافيديو يوتيوب عن: {search}\n"
+        stringbuilder +=f"<{search_results[0]}>"
+        await ctx.channel.send(stringbuilder)
 
 
     @commands.command(name="nullrefrence", description="لا وصف", aliases=["nullref", ])

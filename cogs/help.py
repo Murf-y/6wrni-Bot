@@ -42,16 +42,10 @@ class Help(commands.Cog):
                 return await ctx.send(embed=embed)
             embed = discord.Embed(color=const.default_color, title=category,description="هذه كل الأوامر في هذه الفئة:")
             commands = _cog.get_commands()
-            if category == "Custom":
-                for command in commands:
-                    embed.add_field(name=f"{self.bot.command_prefix}{command.name}", value=f"{self.syntax(command)}\n"
-                                                                                           f"\n---------------------\n", inline=False)
-            else:
-                for command in commands:
-                    embed.add_field(name=f"{self.bot.command_prefix}{command.name}", value=f"{self.syntax(command)}\n"
-                                                                                           f"وصف: {command.description}"
-                                                                                           f"\n---------------------\n",inline=False)
-
+            for command in commands:
+                embed.add_field(name=f"{self.bot.command_prefix}{command.name}", value=f"{self.syntax(command)}\n"
+                                                                                       f"وصف: {command.description}"
+                                                                                       f"\n---------------------\n",inline=False)
             await ctx.channel.send(embed=embed)
 
 
