@@ -75,8 +75,7 @@ class Moderation(commands.Cog):
                 embed = discord.Embed(color=const.exception_color, title="خطأ:",
                                       description="لا يمكنك إستخدام هذا الأمر!")
                 return await ctx.channel.send(embed=embed)
-        embed = discord.Embed(color=const.default_color, timestamp=ctx.message.created_at,
-                              title="[kick] - {member}")
+        embed = discord.Embed(color=const.default_color, title=f"[kick] - {member}")
         embed.add_field(name="سبب:", value=reason)
         embed.set_footer(text=f"من قبل: {ctx.author.display_name}")
         await member.kick(reason=reason)

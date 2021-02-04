@@ -79,7 +79,7 @@ class Custom(commands.Cog):
         await ctx.message.delete()
         await ctx.channel.send(waittxt)
 
-    @commands.command(name="rule",description="إظهار القانون الحدد")
+    @commands.command(name="rule",description="إظهار القانون المحدد")
     async def rule_async(self, ctx, number:int):
         if number in const.rules.keys():
             embed = discord.Embed(color=const.default_color,title=f"قانون رقم {number}:",description=const.rules[number])
