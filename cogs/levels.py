@@ -152,6 +152,9 @@ class Levels(commands.Cog):
                                                   "لإستخدامها.")
     @commands.has_role(const.moderator_role_name)
     async def givexp_async(self, ctx, member: discord.Member, amount: int):
+        if amount <= 0:
+            embed = discord.Embed(color=const.exception_color,title="خطأ:",description="القيمة المحددة يجب ان تكون اكبر من صفر!")
+            return await ctx.channel.send(embed=embed)
         if amount % 5 == 0:
             user_id = member.id
             guild_id = ctx.guild.id

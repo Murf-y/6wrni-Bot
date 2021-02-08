@@ -72,4 +72,5 @@ if u want to try it out enter the [6wrni server](https://discord.gg/weQf9REBTH)
 - **MURF#6310**
 - **shadow400#4664**
 - **عبد الرحمان أبو سعدة**#1703
+- **XSIMOX#0631**
 
