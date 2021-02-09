@@ -153,7 +153,8 @@ class Levels(commands.Cog):
     @commands.has_role(const.moderator_role_name)
     async def givexp_async(self, ctx, member: discord.Member, amount: int):
         if amount <= 0:
-            embed = discord.Embed(color=const.exception_color,title="خطأ:",description="القيمة المحددة يجب ان تكون اكبر من صفر!")
+            embed = discord.Embed(color=const.exception_color, title="خطأ:",
+                                  description="القيمة المحددة يجب ان تكون اكبر من صفر!")
             return await ctx.channel.send(embed=embed)
         if amount % 5 == 0:
             user_id = member.id
@@ -211,6 +212,99 @@ class Levels(commands.Cog):
 
     # ----------------------------------GIVEXP Command------------------------------------------------
 
+    # ----------------------------------REMOVEXP Command------------------------------------------------
+    @commands.command(name="remove-xp", description="إزالة نسبة محددة من ال XP لعضو معين.\n\n يجب ان "
+                                                    "تكون من المشرفين "
+                                                    "لإستخدامها.")
+    @commands.has_role(const.moderator_role_name)
+    async def removexp_async(self, ctx, member: discord.Member, amount: int):
+
+        if amount <= 0:
+            embed = discord.Embed(color=const.exception_color, title="خطأ:",
+                                  description="القيمة المحددة يجب ان تكون اكبر من صفر!")
+            return await ctx.channel.send(embed=embed)
+        if amount % 5 == 0:
+            user_id = member.id
+            guild_id = ctx.guild.id
+            query = "SELECT * FROM users WHERE user_id = $1 AND guild_id = $2"
+            user = await self.bot.pg_con.fetch(query, user_id, guild_id)
+
+            if not user:
+                embed = discord.Embed(color=const.exception_color, title="خطأ:",
+                                      description="هذا لعضو لا يملك xp اصلا!")
+                return await ctx.channel.send(embed=embed)
+
+            query = "SELECT * FROM users WHERE user_id = $1 AND guild_id = $2"
+            user = await self.bot.pg_con.fetchrow(query, user_id, guild_id)
+
+            oldxp = user['xp']
+
+            if oldxp - amount < 0:
+                embed = discord.Embed(color=const.exception_color, title="خطأ:",
+                                      description=f"هذا العضو يملك {oldxp}xp لا يمكنك إزالة {amount} منها!")
+                return await ctx.channel.send(embed=embed)
+
+            query = "DELETE FROM users WHERE user_id = $1 AND guild_id = $2"
+            await self.bot.pg_con.execute(query, user_id, guild_id)
+
+            for role_id in [role.id for role in member.roles]:
+                if role_id in const.rewarded_roles.values():
+                    role = ctx.guild.get_role(role_id)
+                    await member.remove_roles(role)
+
+            query = "SELECT * FROM users WHERE user_id = $1 AND guild_id = $2"
+            user = await self.bot.pg_con.fetch(query, user_id, guild_id)
+
+            if not user:
+                query = "INSERT INTO users (user_id, guild_id, xp, time) VALUES ($1,$2,$3,$4)"
+                await self.bot.pg_con.execute(query, user_id, guild_id, 0, time.time())
+
+            newxp = oldxp - amount
+
+            query = "UPDATE users SET xp = $1 , time = $2 WHERE user_id = $3 AND guild_id = $4"
+            await self.bot.pg_con.execute(query, newxp, time.time(), user_id, guild_id)
+            lvl = 0
+
+            while True:
+                if newxp < ((50 * (lvl ** 2)) + (50 * (lvl - 1))):
+                    break
+                lvl += 1
+            newxp -= ((50 * ((lvl - 1) ** 2)) + (50 * (lvl - 1)))
+            if newxp == 0:
+                await ctx.channel.send(f"مبروك {member.mention}, لقد وصلت الى المستوى {lvl} !")
+            if newxp >= 0:
+                for key in const.rewarded_roles.keys():
+                    if key <= lvl:
+                        role = ctx.guild.get_role(const.rewarded_roles[key])
+                        await member.add_roles(role)
+            else:
+                for key in const.rewarded_roles.keys():
+                    if key <= (lvl - 1):
+                        role = ctx.guild.get_role(const.rewarded_roles[key])
+                        await member.add_roles(role)
+
+            embed = discord.Embed(color=const.default_color, title=f"[Remove-xp] - {member}")
+            await ctx.channel.send(embed=embed)
+
+
+        else:
+            embed = discord.Embed(color=const.exception_color, title="خطأ:",
+                                  description="القيمة المحددة يجب ان تكون من مضاعفات العدد خمسة!")
+            await ctx.channel.send(embed=embed)
+
+    @removexp_async.error
+    async def removexp_async_error(self, ctx, error):
+        if isinstance(error, commands.MissingRole):
+            embed = discord.Embed(color=const.exception_color, title="خطأ:",
+                                  description="لا يمكنك إستخدام هذا الأمر!")
+            await ctx.channel.send(embed=embed)
+        else:
+            embed = discord.Embed(color=const.exception_color, title="خطأ:",
+                                  description="يجب ذكر العضو والقيمة الذي يجب إضافتها!")
+            await ctx.channel.send(embed=embed)
+
+    # ----------------------------------REMOVEXP Command------------------------------------------------
+
     # ----------------------------------DELETEXP Command------------------------------------------------
     @commands.command(name="delete-xp", description="إزالة كل ال XP لعضو معين.\n\n يجب ان "
                                                     "تكون من المشرفين "
@@ -228,7 +322,7 @@ class Levels(commands.Cog):
                 role = ctx.guild.get_role(role_id)
                 await member.remove_roles(role)
 
-        embed = discord.Embed(color=const.default_color, title=f"[delete-xp] - {member}")
+        embed = discord.Embed(color=const.default_color, title=f"[Delete-xp] - {member}")
         await ctx.channel.send(embed=embed)
 
     @deletexp_async.error
