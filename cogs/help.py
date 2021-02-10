@@ -35,12 +35,12 @@ class Help(commands.Cog):
                     embed.add_field(name=cog, value="-------------------------",inline=False)
             await ctx.channel.send(embed=embed)
         else:
-            _cog = self.bot.get_cog(category)
+            _cog = self.bot.get_cog(category.capitalize())
             if not _cog:
                 embed = discord.Embed(color=const.exception_color)
                 embed.add_field(name="خطأ:", value="هذه الفئة غير موجودة !")
                 return await ctx.send(embed=embed)
-            embed = discord.Embed(color=const.default_color, title=category,description="هذه كل الأوامر في هذه الفئة:")
+            embed = discord.Embed(color=const.default_color, title=category.capitalize(),description="هذه كل الأوامر في هذه الفئة:")
             commands = _cog.get_commands()
             for command in commands:
                 embed.add_field(name=f"{self.bot.command_prefix}{command.name}", value=f"{self.syntax(command)}\n"
