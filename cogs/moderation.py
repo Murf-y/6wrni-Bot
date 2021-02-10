@@ -104,10 +104,10 @@ class Moderation(commands.Cog):
     # ----------------------------------CLEAR Command------------------------------------------------
     @commands.command(name="clear", description="مسح عدد معين من الرسأل.\n\nيجب ان تكون من المشرفين لإستخدامها.")
     @commands.has_role(const.moderator_role_name)
-    async def clear_async(self, ctx,member=Optional[discord.Member], *, limit: int):
+    async def clear_async(self, ctx,user:Optional[discord.User], *, limit: int):
 
         if 0 < limit <= 100:
-            if member == None:
+            if user == None:
                 await ctx.message.delete()
                 deleted = await ctx.channel.purge(limit=limit,
                                                   after=datetime.datetime.utcnow() - datetime.timedelta(days=14))
@@ -118,10 +118,10 @@ class Moderation(commands.Cog):
             else:
                 await ctx.message.delete()
                 deleted = await ctx.channel.purge(limit=limit,
-                                                  check=lambda message: message.author.id == member.id,
+                                                  check=lambda message: message.author.id == user.id,
                                                   after=datetime.datetime.utcnow() - datetime.timedelta(days=14))
                 embed = discord.Embed(color=const.default_color,
-                                      title=f" تم حذف {len(deleted)} رسالة/رسأل أرسلها {member} {const.checkmark_emoji} ")
+                                      title=f" تم حذف {len(deleted)} رسالة/رسأل أرسلها {user} {const.checkmark_emoji} ")
                 await ctx.channel.send(embed=embed, delete_after=10)
 
         else:
