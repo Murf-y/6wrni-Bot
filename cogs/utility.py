@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+import aiohttp
 
 import constants as const
 import time
@@ -23,6 +24,42 @@ class Utility(commands.Cog):
         await ctx.channel.send(embed=embed)
 
     # ----------------------------------Ping Command------------------------------------------------
+
+    # ----------------------------------PASTE Command------------------------------------------------
+    async def create_paste(self,data):
+        data = bytes(data, 'utf-8')
+        async with aiohttp.ClientSession() as session:
+            async with session.post('https://mystb.in/documents', data=data) as response:
+                if response.status == 200:
+                    res = await response.json()
+                    key = res["key"]
+                    return f"https://mystb.in/{key}.csharp"
+
+    @commands.command(name="paste",description="لصق كود في كود بلوك على mystb.in! يمكن استخدامها مرة واحدة كل عشرة ثواني!")
+    @commands.cooldown(1, 10, commands.BucketType.member)
+    async def paste_async(self,ctx, *, message):
+        if ctx.channel.id in const.allowed_paste_channelsid:
+            paste_url = await self.create_paste(message)
+            if paste_url != None:
+                await ctx.message.delete()
+                embed = discord.Embed(color=const.default_color, title="CodeBlock",
+                                      description=f"{ctx.author.mention} لصق كود بلوك بنجاح, [إضغت هنا لرأية الكود]({paste_url}) ")
+                await ctx.channel.send(embed=embed)
+            else:
+                embed = discord.Embed(color=const.exception_color,title="خطأ:",description="لم اتمكن من لصق الكود")
+                await ctx.channel.send(embed=embed)
+        else:
+            embed = discord.Embed(color=const.exception_color, title="خطأ:", description="لا يمكنك استخدامها هنا,فقط يمكن استخدام هذا الأمر في قسم التطوير والمساعدة")
+            await ctx.channel.send(embed=embed)
+    @paste_async.error
+    async def paste_async_error(self,ctx, error):
+        if isinstance(error, commands.CommandOnCooldown):
+            await ctx.send(embed=discord.Embed(color=const.exception_color,
+                                               title=f"لا يمكنك استخدام هذا الأمر لأن, إنتظر {round(error.retry_after)}s لتمكن من إعادة استخدامه!"))
+        else:
+            raise error
+
+    # ----------------------------------PASTE Command------------------------------------------------
 
     # ----------------------------------BOTINFO Command------------------------------------------------
     @commands.command(name="botinfo", description="معلومات عن 6wrni Bot")
