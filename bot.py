@@ -38,8 +38,10 @@ async def create_db_pool():
 
 
 async def init_db():
-    init_uesrs_query = "CREATE TABLE IF NOT EXISTS users ( user_id numeric NOT NULL, guild_id numeric , xp integer, time REAL)"
-    await bot.pg_con.execute(init_uesrs_query)
+    init_users_query = "CREATE TABLE IF NOT EXISTS users ( user_id numeric NOT NULL, guild_id numeric , xp integer, time REAL)"
+    init_mutes_query = "CREATE TABLE IF NOT EXISTS mutes (user_id numeric,guild_id numeric,mute_role_id numeric,expire timestamp without time zone);"
+    await bot.pg_con.execute(init_users_query)
+    await bot.pg_con.execute(init_mutes_query)
 
 
 # ---------------------------------------INITIALIZING THE BOT AND THE DATABASE------------------------------
