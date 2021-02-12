@@ -1,9 +1,25 @@
 import discord
 from discord.ext import commands
-
+import asyncio
 import constants as const
 from typing import Optional
 import datetime
+import re
+
+time_regex = re.compile("(?:(\d{1,5})(h|s|m|d))+?")
+time_dict = {"h": 3600, "s": 1, "m": 60, "d": 86400}
+
+class TimeConverter(commands.Converter):
+    async def convert(self, ctx, argument):
+        args = argument.lower()
+        matches = re.findall(time_regex, args)
+        time = 0
+        for v, k in matches:
+            try:
+                time += time_dict[k] * float(v)
+            except KeyError:
+                raise commands.BadArgument()
+        return time
 
 
 class Moderation(commands.Cog):
@@ -11,7 +27,52 @@ class Moderation(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
+    async def re_preform_mutes(self):
+        await self.bot.wait_until_ready()
+        mutes = await self.bot.pg_con.fetch("SELECT * FROM mutes")
+        if mutes is None:
+            return
+        for mute in mutes:
+            guild = self.bot.get_guild(const.guild_id)
+            member_id = mute['user_id']
+            role = guild.get_role(mute['mute_role_id'])
+            when = mute['expire']
+            task = self.bot.loop.create_task(self.perform_unmute(member_id=member_id, role=role, when=when))
+            task.add_done_callback(self.unmute_error)
+
+    async def perform_unmute(self, *, member_id: int, role: discord.Role, when: datetime.datetime):
+        if when > datetime.datetime.utcnow():
+            await discord.utils.sleep_until(when)
+
+        guild = self.bot.get_guild(const.guild_id)
+        member = guild.get_member(member_id)
+
+        query = "DELETE FROM mutes WHERE guild_id = $1 AND user_id = $2;"
+        if member is not None:
+            await member.remove_roles(role)
+        await self.bot.pg_con.execute(query, const.guild_id, member_id)
+
+    @staticmethod
+    def unmute_error(task: asyncio.Task):
+        if task.exception():
+            task.print_stack()
+        else:
+            print(f"A Unmute has been done sucssefully")
+
     # ----------------------------------MOD EVENTS ------------------------------------------------
+    @commands.Cog.listener()
+    async def on_ready(self):
+        await self.re_preform_mutes()
+
+    @commands.Cog.listener()
+    async def on_member_join(self, member: discord.Member):
+        await self.bot.wait_until_ready()
+        query = "SELECT * FROM mutes WHERE user_id = $1 AND guild_id = $2"
+        mute = await self.bot.pg_con.fetchrow(query, member.id, member.guild.id)
+        if mute is not None:
+            if mute['expire'] > datetime.datetime.utcnow():
+                mute_role = member.guild.get_role(const.muted_role_id)
+                await member.add_roles(mute_role)
 
     @commands.Cog.listener()
     async def on_message_delete(self, message):
@@ -64,6 +125,48 @@ class Moderation(commands.Cog):
             return await mod_channel.send(embed=embed)
 
     # ----------------------------------MOD EVENTS ------------------------------------------------
+
+    # ----------------------------------TEMPMUTE Command------------------------------------------------
+    @commands.command(name="tempmute", description="ميوت عضو معين لوقت محدد ولسبب إختياري. الوقت يكون بل صيغة التالية(s/m/h/d)\n\n يجب ان تكون من المشرفين لإستخدامها.")
+    @commands.has_role(const.moderator_role_name)
+    async def tempmute_async(self, ctx: commands.Context, member: discord.Member, duration: TimeConverter, *,
+                             reason: Optional[str] = "غير محدد"):
+        if duration > 0:
+            mute_role = ctx.guild.get_role(const.muted_role_id)
+            await member.add_roles(mute_role)
+            when = datetime.datetime.utcnow() + datetime.timedelta(seconds=duration)
+            task = self.bot.loop.create_task(self.perform_unmute(member_id=member.id, role=mute_role, when=when))
+            task.add_done_callback(self.unmute_error)
+            query = "INSERT INTO mutes (guild_id, user_id, mute_role_id, expire) VALUES ($1, $2, $3, $4)"
+            await self.bot.pg_con.execute(query, const.guild_id, member.id, mute_role.id, when)
+
+            embed = discord.Embed(color=const.default_color, title=f"[TempMute] - {member}")
+            embed.add_field(name="سوف يتم إزالة الميوت في:",
+                            value=f"{when.strftime('%a, %#d %B %Y, %H:%M:%S')} UTC")
+            embed.add_field(name="reason:", value=reason)
+            await ctx.send(embed=embed)
+            mod_channel = self.bot.get_channel(const.mod_Channel_id)
+            embed.title = f":no_entry: [TempMute] - {member} :no_entry:"
+            await mod_channel.send(embed=embed)
+        else:
+            raise commands.BadArgument()
+
+
+
+    @tempmute_async.error
+    async def tempmute_async_error(self, ctx, error):
+        if isinstance(error, commands.MissingRole):
+            embed = discord.Embed(color=const.exception_color, title="خطأ:",
+                                  description="لا يمكنك إستخدام هذا الأمر!")
+            await ctx.channel.send(embed=embed)
+        elif isinstance(error, commands.BadArgument):
+            embed = discord.Embed(color=const.exception_color, title="خطأ:",
+                                  description="يجب ذكر العضو!\n والصيغة المعتمدة للوقت هيا s/m/h/d فقط!\example:6s/6m/6h/6d n")
+            await ctx.send(embed=embed)
+        else:
+            raise error
+
+    # ----------------------------------TEMPMUTE Command------------------------------------------------
 
     # ----------------------------------KICK Command------------------------------------------------
     @commands.command(name="kick", description="إخراج عضو من السيرفير لي سبب اختياري.\n\n يجب ان تكون من المشرفين "
@@ -325,6 +428,8 @@ class Moderation(commands.Cog):
             mutedrole = ctx.guild.get_role(const.muted_role_id)
 
             if mutedrole in member.roles:
+                query = "DELETE FROM mutes WHERE guild_id = $1 AND user_id = $2;"
+                await self.bot.pg_con.execute(query, const.guild_id, member.id)
                 await member.remove_roles(mutedrole)
                 embed = discord.Embed(color=const.default_color, title=f"[Unmute] - {member.display_name}")
                 embed.add_field(name="سبب:", value=reason)
