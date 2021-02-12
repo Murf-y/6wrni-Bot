@@ -144,6 +144,7 @@ class Moderation(commands.Cog):
             embed.add_field(name="سوف يتم إزالة الميوت في:",
                             value=f"{when.strftime('%a, %#d %B %Y, %H:%M:%S')} UTC")
             embed.add_field(name="reason:", value=reason)
+            embed.set_footer(text=f"من قبل: {ctx.author.display_name}")
             await ctx.send(embed=embed)
             mod_channel = self.bot.get_channel(const.mod_Channel_id)
             embed.title = f":no_entry: [TempMute] - {member} :no_entry:"
