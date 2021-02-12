@@ -2,7 +2,6 @@
 import discord
 from discord.ext import commands
 
-
 import asyncpg
 import os
 
@@ -19,9 +18,6 @@ DATABASE_URL = os.environ['DATABASE_URL']
 TOKEN = os.environ['TOKEN']
 PREFIX = os.environ['PREFIX']
 VERSION = os.environ['VERSION']
-
-
-
 
 intents = discord.Intents.default()
 intents.members = True
@@ -44,8 +40,6 @@ async def create_db_pool():
 async def init_db():
     init_uesrs_query = "CREATE TABLE IF NOT EXISTS users ( user_id numeric NOT NULL, guild_id numeric , xp integer, time REAL)"
     await bot.pg_con.execute(init_uesrs_query)
-
-
 
 
 # ---------------------------------------INITIALIZING THE BOT AND THE DATABASE------------------------------
@@ -76,9 +70,9 @@ async def on_connect():
 
 @bot.event
 async def on_ready():
-    game= discord.Activity(type=discord.ActivityType.watching,name = "6wrni.com")
+    game = discord.Activity(type=discord.ActivityType.watching, name="6wrni.com")
     await bot.change_presence(status=discord.Status.online,
-                                   activity= game)
+                              activity=game)
     print(
         f"\n--------------------\nLogged in as {bot.user.display_name}(id:{bot.user.id}) time:{datetime.datetime.now()}\n -------------------- \n")
 
@@ -105,7 +99,12 @@ async def on_member_join(member):
     await member.add_roles(role)
 
 
+@bot.event
+async def on_member_remove(member: discord.Member):
+    mod_channel = bot.get_channel(const.mod_Channel_id)
 
+    embed = discord.Embed(color=const.default_color, title=f"[خروج عضو] - {member}")
+    await mod_channel.send(embed=embed)
 
 
 @bot.listen('on_message')

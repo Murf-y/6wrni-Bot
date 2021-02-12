@@ -59,6 +59,13 @@ class Levels(commands.Cog):
 
         await self.bot.process_commands(message)
 
+    @commands.Cog.listener()
+    async def on_member_remove(self,member:discord.Member):
+        user_id = member.id
+        guild_id = member.guild.id
+        query = "DELETE FROM users WHERE user_id = $1 AND guild_id = $2"
+        await self.bot.pg_con.execute(query, user_id, guild_id)
+
     # ----------------------------------BOT EVENTS------------------------------------------------
 
     # ----------------------------------RANK Command------------------------------------------------
