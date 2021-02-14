@@ -250,10 +250,10 @@ class Moderation(commands.Cog):
     # ----------------------------------CLEAR Command------------------------------------------------
 
     # ----------------------------------SLOWMODE Command------------------------------------------------
-    @commands.command(name="slowmode", description="وضع slowmode على قناة و يحدد الوقت بل ثواني فقط, يمكن ازالته بوضع "
+    @commands.command(name="slowmode", description="وضع slowmode على قناة و يحدد الوقت بل صيغة التالية s/m/h, يمكن ازالته بوضع "
                                                    "القيمة الى صفر.\n\nيجب ان تكون من المشرفين لإستخدامها. ")
     @commands.has_role(const.moderator_role_name)
-    async def slowmode_async(self, ctx, duration: int):
+    async def slowmode_async(self, ctx, duration: TimeConverter):
         if 0 <= duration <= 21600:
             await ctx.channel.edit(slowmode_delay=duration)
             embed = discord.Embed(color=const.default_color,
