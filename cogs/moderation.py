@@ -109,7 +109,7 @@ class Moderation(commands.Cog):
                         return await mod_channel.send(embed=embed)
             for role in before.roles:
                 if role not in after.roles:
-                    if role != mutedrole:
+                    if role.id != const.muted_role_id:
                         embed = discord.Embed(color=const.default_color,
                                               title=f"[ازالة رول] - {before}")
                         embed.add_field(name="رول:", value=role.mention)
