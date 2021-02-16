@@ -100,7 +100,7 @@ async def on_member_join(member):
     guild = bot.get_guild(const.guild_id)
     role = guild.get_role(const.new_member_role_id)
     await member.add_roles(role)
-    embed = discord.Embed(color=const.default_color,title=f"[دخول عضو] - {member}")
+    embed = discord.Embed(color=const.default_color,desciption=f"[دخول عضو] - {member.mention}")
     embed.add_field(name="تاريخ إنشاء الحساب:",
                     value=f"{member.created_at.strftime('%a, %#d %B %Y')}\n", inline=False)
     embed.set_footer(text=f"ID:{member.id}")
@@ -111,7 +111,7 @@ async def on_member_join(member):
 async def on_member_remove(member: discord.Member):
     mod_channel = bot.get_channel(const.mod_Channel_id)
 
-    embed = discord.Embed(color=const.default_color, title=f"[خروج عضو] - {member}")
+    embed = discord.Embed(color=const.default_color, description=f"[خروج عضو] - {member.mention}")
     embed.set_footer(text=f"ID:{member.id}")
     embed.set_thumbnail(url=member.avatar_url)
     await mod_channel.send(embed=embed)

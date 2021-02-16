@@ -199,7 +199,7 @@ class Levels(commands.Cog):
                     if key <= (lvl - 1):
                         role = ctx.guild.get_role(const.rewarded_roles[key])
                         await member.add_roles(role)
-            embed = discord.Embed(color=const.default_color, title=f"[Give-xp] - {member}")
+            embed = discord.Embed(color=const.default_color, description=f"[Give-xp] - {member.mention}")
             await ctx.channel.send(embed=embed)
         else:
             embed = discord.Embed(color=const.exception_color, title="خطأ:",
@@ -290,7 +290,7 @@ class Levels(commands.Cog):
                         role = ctx.guild.get_role(const.rewarded_roles[key])
                         await member.add_roles(role)
 
-            embed = discord.Embed(color=const.default_color, title=f"[Remove-xp] - {member}")
+            embed = discord.Embed(color=const.default_color, description=f"[Remove-xp] - {member.mention}")
             await ctx.channel.send(embed=embed)
 
 
@@ -329,7 +329,7 @@ class Levels(commands.Cog):
                 role = ctx.guild.get_role(role_id)
                 await member.remove_roles(role)
 
-        embed = discord.Embed(color=const.default_color, title=f"[Delete-xp] - {member}")
+        embed = discord.Embed(color=const.default_color, description=f"[Delete-xp] - {member.mention}")
         await ctx.channel.send(embed=embed)
 
     @deletexp_async.error

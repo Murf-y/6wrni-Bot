@@ -85,7 +85,7 @@ class Moderation(commands.Cog):
         embed = discord.Embed(color=const.default_color)
 
         try:
-            embed.title = f"[حذف رسالة] - {message.author}"
+            embed.description = f"[حذف رسالة] - {message.author.mention}"
             embed.add_field(name="في قناة:", value=message.channel.mention, inline=True)
             embed.add_field(name="محتوى الرسالة:", value=message.content, inline=True)
             embed.set_footer(text=datetime.datetime.utcnow().strftime('%a, %#d %B %Y'))
@@ -103,7 +103,7 @@ class Moderation(commands.Cog):
                 if role not in before.roles:
                     if role.id not in (const.muted_role_id,const.new_member_role_id):
                         embed = discord.Embed(color=const.default_color,
-                                              title=f"[اخذ رول] - {before}")
+                                              description=f"[اخذ رول] - {before.mention}")
                         embed.add_field(name="رول:", value=role.mention)
                         embed.set_footer(text=datetime.datetime.utcnow().strftime('%a, %#d %B %Y'))
                         return await mod_channel.send(embed=embed)
@@ -111,14 +111,14 @@ class Moderation(commands.Cog):
                 if role not in after.roles:
                     if role.id != const.muted_role_id:
                         embed = discord.Embed(color=const.default_color,
-                                              title=f"[ازالة رول] - {before}")
+                                              description=f"[ازالة رول] - {before.mention}")
                         embed.add_field(name="رول:", value=role.mention)
                         embed.set_footer(text=datetime.datetime.utcnow().strftime('%a, %#d %B %Y'))
                         return await mod_channel.send(embed=embed)
 
         if before.nick != after.nick:
             embed = discord.Embed(color=const.default_color,
-                                  title=f"[تغيير اللقب] - {before}")
+                                  description=f"[تغيير اللقب] - {before.mention}")
             embed.add_field(name="اصبح اللقب:", value=after.nick)
             embed.set_footer(text=datetime.datetime.utcnow().strftime('%a, %#d %B %Y'))
             return await mod_channel.send(embed=embed)
@@ -139,14 +139,14 @@ class Moderation(commands.Cog):
             query = "INSERT INTO mutes (guild_id, user_id, mute_role_id, expire) VALUES ($1, $2, $3, $4)"
             await self.bot.pg_con.execute(query, const.guild_id, member.id, mute_role.id, when)
 
-            embed = discord.Embed(color=const.default_color, title=f"[TempMute] - {member}")
+            embed = discord.Embed(color=const.default_color, description=f"[TempMute] - {member.mention}")
             embed.add_field(name="سوف يتم إزالة الميوت في:",
                             value=f"{when.strftime('%a, %#d %B %Y, %H:%M:%S')} UTC")
             embed.add_field(name="reason:", value=reason)
             embed.set_footer(text=f"من قبل: {ctx.author.display_name}")
             await ctx.send(embed=embed)
             mod_channel = self.bot.get_channel(const.mod_Channel_id)
-            embed.title = f":no_entry: [TempMute] - {member} :no_entry:"
+            embed.description = f":no_entry: [TempMute] - {member.mention} :no_entry:"
             await mod_channel.send(embed=embed)
         else:
             raise commands.BadArgument()
@@ -178,12 +178,12 @@ class Moderation(commands.Cog):
                 embed = discord.Embed(color=const.exception_color, title="خطأ:",
                                       description="لا يمكنك إستخدام هذا الأمر!")
                 return await ctx.channel.send(embed=embed)
-        embed = discord.Embed(color=const.default_color, title=f"[kick] - {member}")
+        embed = discord.Embed(color=const.default_color, description=f"[kick] - {member.mention}")
         embed.add_field(name="سبب:", value=reason)
         embed.set_footer(text=f"من قبل: {ctx.author.display_name}")
         await member.kick(reason=reason)
         await ctx.channel.send(embed=embed)
-        embed.title = f":no_entry: [kick] - {member} :no_entry:"
+        embed.description = f":no_entry: [kick] - {member.mention} :no_entry:"
         mod_channel = self.bot.get_channel(const.mod_Channel_id)
         await mod_channel.send(embed=embed)
 
@@ -224,7 +224,7 @@ class Moderation(commands.Cog):
                                                   check=lambda message: message.author.id == user.id,
                                                   after=datetime.datetime.utcnow() - datetime.timedelta(days=14))
                 embed = discord.Embed(color=const.default_color,
-                                      title=f" تم حذف {len(deleted)} رسالة/رسأل أرسلها {user} {const.checkmark_emoji} ")
+                                      description=f" تم حذف {len(deleted)} رسالة/رسأل أرسلها {user.mention} {const.checkmark_emoji} ")
                 await ctx.channel.send(embed=embed, delete_after=10)
 
         else:
@@ -256,7 +256,7 @@ class Moderation(commands.Cog):
         if 0 <= duration <= 21600:
             await ctx.channel.edit(slowmode_delay=duration)
             embed = discord.Embed(color=const.default_color,
-                                  title=f" تم وضع slowmode قناة: {ctx.channel} \nالمدة: {str(datetime.timedelta(seconds=duration))}")
+                                  title=f" تم وضع slowmode قناة: {ctx.channel.mention} \nالمدة: {str(datetime.timedelta(seconds=duration))}")
             embed.set_footer(text=f"من قبل: {ctx.author.display_name}")
             await ctx.channel.send(embed=embed)
 
@@ -314,15 +314,14 @@ class Moderation(commands.Cog):
             await ctx.guild.ban(user=user, reason=reason, delete_message_days=0)
             mod_channel = self.bot.get_channel(const.mod_Channel_id)
             embed = discord.Embed(
-                title=f"[Ban] - {user}",
-                description=f"تم طرد {user}",
+                description=f"[Ban] - {user.mention}",
                 color=const.default_color,
 
             )
             embed.add_field(name="سبب:", value=reason)
             embed.set_footer(text=f"من قبل: {ctx.author.display_name}")
             await ctx.channel.send(embed=embed)
-            embed.title = f":no_entry: [Ban] - {user.display_name} :no_entry:"
+            embed.description = f":no_entry: [Ban] - {user.mention} :no_entry:"
             await mod_channel.send(embed=embed)
 
     @ban_async.error
@@ -348,14 +347,13 @@ class Moderation(commands.Cog):
             await ctx.guild.unban(user=user, reason=reason)
             mod_channel = self.bot.get_channel(const.mod_Channel_id)
             embed = discord.Embed(
-                title=f"[Unban] - {user.display_name}",
-                description=f"تم ازالة الحظر عن {user}",
+                description=f"[Unban] - {user.mention}",
                 color=const.default_color
             )
             embed.add_field(name="سبب:", value=reason)
             embed.set_footer(text=f"من قبل: {ctx.author.display_name}")
             await ctx.channel.send(embed=embed)
-            embed.title = f":no_entry: [Unban] - {user.display_name} :no_entry:"
+            embed.description = f":no_entry: [Unban] - {user.mention} :no_entry:"
             await mod_channel.send(embed=embed)
         except discord.NotFound:
             embed = discord.Embed(
@@ -388,12 +386,12 @@ class Moderation(commands.Cog):
 
             if mutedrole not in member.roles:
                 await member.add_roles(mutedrole)
-                embed = discord.Embed(color=const.default_color, title=f"[Mute] - {member.display_name}")
+                embed = discord.Embed(color=const.default_color, description=f"[Mute] - {member.mention}")
                 embed.add_field(name="سبب:", value=reason)
                 embed.set_footer(text=f"من قبل: {ctx.author.display_name}")
                 mod_channel = self.bot.get_channel(const.mod_Channel_id)
                 await ctx.channel.send(embed=embed)
-                embed.title = f":no_entry: [Mute] - {member.display_name} :no_entry:"
+                embed.description = f":no_entry: [Mute] - {member.mention} :no_entry:"
                 await mod_channel.send(embed=embed)
 
             else:
@@ -431,12 +429,12 @@ class Moderation(commands.Cog):
                 query = "DELETE FROM mutes WHERE guild_id = $1 AND user_id = $2;"
                 await self.bot.pg_con.execute(query, const.guild_id, member.id)
                 await member.remove_roles(mutedrole)
-                embed = discord.Embed(color=const.default_color, title=f"[Unmute] - {member.display_name}")
+                embed = discord.Embed(color=const.default_color, description=f"[Unmute] - {member.mention}")
                 embed.add_field(name="سبب:", value=reason)
                 embed.set_footer(text=f"من قبل: {ctx.author.display_name}")
                 await ctx.channel.send(embed=embed)
                 mod_channel = self.bot.get_channel(const.mod_Channel_id)
-                embed.title = f":no_entry: [Unmute] - {member.display_name} :no_entry:"
+                embed.description = f":no_entry: [Unmute] - {member.mention} :no_entry:"
                 await mod_channel.send(embed=embed)
             else:
                 embed = discord.Embed(color=const.exception_color, title="خطأ:",
