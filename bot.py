@@ -94,18 +94,26 @@ async def on_command_completion(ctx):
 async def on_member_join(member):
     welcome_channel = bot.get_channel(const.welcome_channel_id)
     channels_channel = bot.get_channel(const.channels_channel_id)
+    mod_channel = bot.get_channel(const.mod_Channel_id)
     await welcome_channel.send(
         f" اهلا بك {member.mention} ! الرجاء زيارة {channels_channel.mention} لتتعرف على وظائف الغرف !")
     guild = bot.get_guild(const.guild_id)
     role = guild.get_role(const.new_member_role_id)
     await member.add_roles(role)
-
+    embed = discord.Embed(color=const.default_color,title=f"[دخول عضو] - {member}")
+    embed.add_field(name="تاريخ إنشاء الحساب:",
+                    value=f"{member.created_at.strftime('%a, %#d %B %Y')}\n", inline=False)
+    embed.set_footer(text=f"ID:{member.id}")
+    embed.set_thumbnail(url=member.avatar_url)
+    await mod_channel.send(embed=embed)
 
 @bot.event
 async def on_member_remove(member: discord.Member):
     mod_channel = bot.get_channel(const.mod_Channel_id)
 
     embed = discord.Embed(color=const.default_color, title=f"[خروج عضو] - {member}")
+    embed.set_footer(text=f"ID:{member.id}")
+    embed.set_thumbnail(url=member.avatar_url)
     await mod_channel.send(embed=embed)
 
 
