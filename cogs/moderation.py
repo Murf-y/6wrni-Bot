@@ -98,11 +98,10 @@ class Moderation(commands.Cog):
     @commands.Cog.listener()
     async def on_member_update(self, before: discord.Member, after: discord.Member):
         mod_channel = self.bot.get_channel(const.mod_Channel_id)
-        mutedrole = after.guild.get_role(const.muted_role_id)
         if before.roles != after.roles:
             for role in after.roles:
                 if role not in before.roles:
-                    if role != mutedrole:
+                    if role.id not in (const.muted_role_id,const.new_member_role_id):
                         embed = discord.Embed(color=const.default_color,
                                               title=f"[اخذ رول] - {before}")
                         embed.add_field(name="رول:", value=role.mention)
