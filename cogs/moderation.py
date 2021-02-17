@@ -8,6 +8,13 @@ import re
 
 time_regex = re.compile("(?:(\d{1,5})(h|s|m|d))+?")
 time_dict = {"h": 3600, "s": 1, "m": 60, "d": 86400}
+TIME_DURATION_UNITS = (
+    ('week',60*60*24*7),
+    ('day',60*60*24),
+    ('hour',60*60),
+    ('min',60),
+    ('sec',1)
+)
 
 class TimeConverter(commands.Converter):
     async def convert(self, ctx, argument):
@@ -27,6 +34,16 @@ class Moderation(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
+    @staticmethod
+    def seconds_to_humandr(seconds):
+        if seconds == 0:
+            return '0'
+        parts=[]
+        for unit,div in TIME_DURATION_UNITS:
+            amount,seconds = divmod(int(seconds),div)
+            if amount>0:
+                parts.append('{}{}{}'.format(amount,unit,"" if amount == 1 else "s"))
+        return ','.join(parts)
     async def re_preform_mutes(self):
         await self.bot.wait_until_ready()
         mutes = await self.bot.pg_con.fetch("SELECT * FROM mutes")
@@ -140,10 +157,10 @@ class Moderation(commands.Cog):
             await self.bot.pg_con.execute(query, const.guild_id, member.id, mute_role.id, when)
 
             embed = discord.Embed(color=const.default_color, description=f"[TempMute] - {member.mention}")
-            embed.add_field(name="سوف يتم إزالة الميوت في:",
-                            value=f"{when.strftime('%a, %#d %B %Y, %H:%M:%S')} UTC")
+            embed.add_field(name="سوف يتم إزالة الميوت بعد:",
+                            value=self.seconds_to_humandr(duration))
             embed.add_field(name="reason:", value=reason)
-            embed.set_footer(text=f"من قبل: {ctx.author.display_name}")
+            embed.set_footer(text=f"moderator: {ctx.author.display_name} | Muted till {when.strftime('%a, %#d %B %Y, %H:%M:%S')} UTC")
             await ctx.send(embed=embed)
             mod_channel = self.bot.get_channel(const.mod_Channel_id)
             embed.description = f":no_entry: [TempMute] - {member.mention} :no_entry:"
@@ -252,18 +269,19 @@ class Moderation(commands.Cog):
     @commands.command(name="slowmode", description="وضع slowmode على قناة و يحدد الوقت بل صيغة التالية s/m/h, يمكن ازالته بوضع "
                                                    "القيمة الى صفر.\n\nيجب ان تكون من المشرفين لإستخدامها. ")
     @commands.has_role(const.moderator_role_name)
-    async def slowmode_async(self, ctx, duration: TimeConverter):
+    async def slowmode_async(self, ctx, duration: TimeConverter , channel = Optional[discord.TextChannel]):
+        channel = ctx.channel if not channel else channel
         if 0 <= duration <= 21600:
-            await ctx.channel.edit(slowmode_delay=duration)
+            await channel.edit(slowmode_delay=duration)
             embed = discord.Embed(color=const.default_color,
-                                  title=f" تم وضع slowmode قناة: {ctx.channel.mention} \nالمدة: {str(datetime.timedelta(seconds=duration))}")
-            embed.set_footer(text=f"من قبل: {ctx.author.display_name}")
+                                  title=f" تم وضع slowmode قناة: {ctx.channel.mention} \nالمدة: {self.seconds_to_humandr(duration)}")
+            embed.set_footer(text=f"moderator: {ctx.author.display_name}")
             await ctx.channel.send(embed=embed)
 
         else:
             embed = discord.Embed(
                 title="خطأ:",
-                description=f"القيمة المحدد غير مقبولة.\n يجب ان تكون بين 0 و 21600 فقط!",
+                description=f"القيمة المحدد غير مقبولة.\n يجب ان تكون بين صفر و ستة ساعات فقط!",
                 color=const.exception_color,
             )
             await ctx.channel.send(embed=embed)
