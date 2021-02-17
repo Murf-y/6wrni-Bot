@@ -274,7 +274,7 @@ class Moderation(commands.Cog):
         if 0 <= duration <= 21600:
             await channel.edit(slowmode_delay=duration)
             embed = discord.Embed(color=const.default_color,
-                                  title=f" تم وضع slowmode قناة: {channel.mention} \nالمدة: {self.seconds_to_humandr(duration)}")
+                                  title=f" تم وضع slowmode قناة: {channel.mention} ",description=f"المدة: {self.seconds_to_humandr(duration)}")
             embed.set_footer(text=f"moderator: {ctx.author.display_name}")
             await ctx.channel.send(embed=embed)
 
