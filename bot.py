@@ -101,8 +101,6 @@ async def on_member_join(member):
     role = guild.get_role(const.new_member_role_id)
     await member.add_roles(role)
     embed = discord.Embed(color=const.default_color,desciption=f"[دخول عضو] - {member.mention}")
-    embed.add_field(name="تاريخ إنشاء الحساب:",
-                    value=f"{member.created_at.strftime('%a, %#d %B %Y')}\n", inline=False)
     embed.set_footer(text=f"ID:{member.id}")
     embed.set_thumbnail(url=member.avatar_url)
     await mod_channel.send(embed=embed)
