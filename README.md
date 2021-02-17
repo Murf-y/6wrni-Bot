@@ -60,6 +60,8 @@ if u want to try it out enter the [6wrni server](https://discord.gg/weQf9REBTH)
 - ### **Utility**
     - #### Botinfo :
       shows information of the bot.
+    - ### Paste:
+      creates a mystbin paste including the text that was provided with the command.
     - #### Ping :
       shows current bot latency.
     - #### change-status :
