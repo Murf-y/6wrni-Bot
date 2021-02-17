@@ -271,6 +271,7 @@ class Moderation(commands.Cog):
     @commands.has_role(const.moderator_role_name)
     async def slowmode_async(self, ctx, duration: TimeConverter , channel = Optional[discord.TextChannel]):
         chnl = ctx.channel if channel==None else channel
+        chnl = self.bot.get_channel(chnl.id)
         if 0 <= duration <= 21600:
             await chnl.edit(slowmode_delay=duration)
             embed = discord.Embed(color=const.default_color,
