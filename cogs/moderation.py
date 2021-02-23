@@ -329,7 +329,7 @@ class Moderation(commands.Cog):
             )
             await ctx.channel.send(embed=embed)
         except discord.NotFound:
-            await ctx.guild.ban(user=user, reason=reason, delete_message_days=0)
+            await ctx.guild.ban(user=user, reason=reason, delete_message_days=7)
             mod_channel = self.bot.get_channel(const.mod_Channel_id)
             embed = discord.Embed(
                 description=f"[Ban] - {user.mention}",
