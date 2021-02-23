@@ -87,6 +87,11 @@ class Custom(commands.Cog):
         else:
             embed = discord.Embed(color=const.exception_color,title="خطأ:",description="هذا القانون غير موجود!")
             await ctx.channel.send(embed=embed)
-
+    @commands.command(name="pixelperunit",description="لا وصف",aliases=["ppu"])
+    async def pixelperunit_async(self,ctx):
+        ppu_text="إذا الصورة صغيرة الحل ان تغير قيمة Pixels Per Unit للصورة الأصلية, يمكنك إختيار الملف الأساسي وتغييرها كما في الصورة:\n"
+        ppu_text+= "https://cdn-images-1.medium.com/max/1600/1*8MR8PhIlwG3xZR9dU4Cq2A.png"
+        await ctx.message.delete()
+        await ctx.channel.send(ppu_text)
 def setup(bot):
     bot.add_cog(Custom(bot))
