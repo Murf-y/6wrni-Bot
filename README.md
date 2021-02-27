@@ -4,7 +4,7 @@ An Arabic discord Bot made with discord.py for 6wrni community server.
 
 
 
-## Runnig the bot:
+## Running the bot:
 Don't try to, since it was based to work on one server only so just don't bother.
 if u want to try it out enter the [6wrni server](https://discord.gg/weQf9REBTH)
 
