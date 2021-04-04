@@ -85,7 +85,7 @@ class User(commands.Cog):
     # --------------------------------- UserInfo Command---------------------------------------------
     @commands.command(name="userinfo", description="معلومات عن عضو معين", aliases=["info"])
     async def userinfo_async(self, ctx, member: discord.Member = None):
-        if ctx.channel.id != const.botchannel_id and ctx.channel.id != const.private_channel_id and ctx.channel.id != const.private2_channel_id:
+        if ctx.channel.id != const.botchannel_id and ctx.channel.id != const.private_channel_id and ctx.channel.id != const.private2_channel_id and ctx.channel.id != const.mod_Channel_id:
             bot_channel = self.bot.get_channel(const.botchannel_id)
             return await ctx.channel.send(f"لا يمكنك إستعملها هنا, إذهب الى {bot_channel.mention}!")
         member = ctx.author if not member else member
@@ -110,7 +110,7 @@ class User(commands.Cog):
     # --------------------------------- GIVEROLE Command---------------------------------------------
     @commands.command(name="giverole", description="يحصل مستخدمها على الرول المحدد!")
     async def giverole_async(self, ctx, *, role: discord.Role):
-        if ctx.channel.id != const.botchannel_id and ctx.channel.id != const.private_channel_id and ctx.channel.id != const.private2_channel_id:
+        if ctx.channel.id != const.botchannel_id and ctx.channel.id != const.private_channel_id and ctx.channel.id != const.private2_channel_id and ctx.channel.id != const.mod_Channel_id:
             bot_channel = self.bot.get_channel(const.botchannel_id)
             return await ctx.channel.send(f"لا يمكنك إستعملها هنا, إذهب الى {bot_channel.mention}!")
         if role.id in const.users_giveable_roles_id:
@@ -136,7 +136,7 @@ class User(commands.Cog):
     # --------------------------------- REMOVEROLE Command---------------------------------------------
     @commands.command(name="removerole", description="إزالة الرول المحدد!")
     async def removerole_async(self, ctx, *, role: discord.Role):
-        if ctx.channel.id != const.botchannel_id and ctx.channel.id != const.private_channel_id and ctx.channel.id != const.private2_channel_id:
+        if ctx.channel.id != const.botchannel_id and ctx.channel.id != const.private_channel_id and ctx.channel.id != const.private2_channel_id and ctx.channel.id != const.mod_Channel_id:
             bot_channel = self.bot.get_channel(const.botchannel_id)
             return await ctx.channel.send(f"لا يمكنك إستعملها هنا, إذهب الى {bot_channel.mention}!")
         if role.id in const.users_giveable_roles_id:
@@ -162,7 +162,7 @@ class User(commands.Cog):
     # --------------------------------- ROLES Command---------------------------------------------
     @commands.command(name="roles", description="إظهار كل الرتب الذي يمكن ان يأخذها العضو يدويا!")
     async def roles_async(self, ctx):
-        if ctx.channel.id != const.botchannel_id and ctx.channel.id != const.private_channel_id and ctx.channel.id != const.private2_channel_id:
+        if ctx.channel.id != const.botchannel_id and ctx.channel.id != const.private_channel_id and ctx.channel.id != const.private2_channel_id and ctx.channel.id != const.mod_Channel_id:
             bot_channel = self.bot.get_channel(const.botchannel_id)
             return await ctx.channel.send(f"لا يمكنك إستعملها هنا, إذهب الى {bot_channel.mention}!")
         roles = ""

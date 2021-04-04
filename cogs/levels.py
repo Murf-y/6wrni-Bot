@@ -71,7 +71,7 @@ class Levels(commands.Cog):
     # ----------------------------------RANK Command------------------------------------------------
     @commands.command(name="rank", description="إظهار XP و level للمستخدم")
     async def show_rank(self, ctx, member: discord.Member = None):
-        if ctx.channel.id != const.botchannel_id and ctx.channel.id != const.private_channel_id and ctx.channel.id != const.private2_channel_id:
+        if ctx.channel.id != const.botchannel_id and ctx.channel.id != const.private_channel_id and ctx.channel.id != const.private2_channel_id and ctx.channel.id != const.mod_Channel_id:
             bot_channel = self.bot.get_channel(const.botchannel_id)
             return await ctx.channel.send(f"لا يمكنك إستعملها هنا, إذهب الى {bot_channel.mention}!")
         member = ctx.author if not member else member
@@ -133,7 +133,7 @@ class Levels(commands.Cog):
     # ----------------------------------LEADERBOARD Command------------------------------------------------
     @commands.command(name="leaderboard", description="إظهار اول عشر اعضاء في السيرفير", aliases=["leadb"])
     async def leaderboard_async(self, ctx):
-        if ctx.channel.id != const.botchannel_id and ctx.channel.id != const.private_channel_id and ctx.channel.id != const.private2_channel_id:
+        if ctx.channel.id != const.botchannel_id and ctx.channel.id != const.private_channel_id and ctx.channel.id != const.private2_channel_id and ctx.channel.id != const.mod_Channel_id:
             bot_channel = self.bot.get_channel(const.botchannel_id)
             return await ctx.channel.send(f"لا يمكنك إستعملها هنا, إذهب الى {bot_channel.mention}!")
         users = await self.bot.pg_con.fetch("SELECT * FROM users ORDER BY xp desc limit 10")

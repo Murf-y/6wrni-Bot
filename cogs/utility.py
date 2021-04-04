@@ -18,7 +18,7 @@ class Utility(commands.Cog):
     # ----------------------------------Ping Command------------------------------------------------
     @commands.command(name="ping", description=" وقت استجابة البوت", aliases=["latency"])
     async def ping_async(self, ctx):
-        if ctx.channel.id != const.botchannel_id and ctx.channel.id != const.private_channel_id and ctx.channel.id != const.private2_channel_id:
+        if ctx.channel.id != const.botchannel_id and ctx.channel.id != const.private_channel_id and ctx.channel.id != const.private2_channel_id and ctx.channel.id != const.mod_Channel_id:
             bot_channel = self.bot.get_channel(const.botchannel_id)
             return await ctx.channel.send(f"لا يمكنك إستعملها هنا, إذهب الى {bot_channel.mention}!")
         embed = discord.Embed(color=const.default_color,
@@ -69,7 +69,7 @@ class Utility(commands.Cog):
     # ----------------------------------BOTINFO Command------------------------------------------------
     @commands.command(name="botinfo", description="معلومات عن 6wrni Bot")
     async def b_info_async(self, ctx):
-        if ctx.channel.id != const.botchannel_id and ctx.channel.id != const.private_channel_id and ctx.channel.id != const.private2_channel_id:
+        if ctx.channel.id != const.botchannel_id and ctx.channel.id != const.private_channel_id and ctx.channel.id != const.private2_channel_id and ctx.channel.id != const.mod_Channel_id:
             bot_channel = self.bot.get_channel(const.botchannel_id)
             return await ctx.channel.send(f"لا يمكنك إستعملها هنا, إذهب الى {bot_channel.mention}!")
         current_time = time.time()
