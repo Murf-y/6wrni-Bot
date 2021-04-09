@@ -113,7 +113,7 @@ class Levels(commands.Cog):
 
                 embed.add_field(name='Progress Bar:',
                                 value=nb_of_purple_boxes * ":purple_square:" + nb_of_white_boxes * ":white_large_square:",
-                                inline=True)
+                                inline=False)
                 await ctx.send(embed=embed)
             else:
                 realxp = int(200 * ((1 / 2) * (lvl - 1))) + xp
@@ -128,7 +128,7 @@ class Levels(commands.Cog):
                 embed.add_field(name='Level:', value=lvl - 1, inline=True)
                 embed.add_field(name='Progress Bar:',
                                 value=nb_of_purple_boxes * ":purple_square:" + nb_of_white_boxes * ":white_large_square:",
-                                inline=True)
+                                inline=False)
                 await ctx.send(embed=embed)
 
     # ----------------------------------RANK Command------------------------------------------------
