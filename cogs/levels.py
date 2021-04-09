@@ -108,7 +108,7 @@ class Levels(commands.Cog):
                 embed.set_thumbnail(url=member.avatar_url)
                 embed.add_field(name="Total-Xp",value=f"{total_xp}", inline=True)
                 embed.add_field(name="XP:", value=f"{xp}/{int(200 * ((1 / 2) * lvl))}", inline=True)
-                embed.add_field(name='Rank:', value=f"# {rank}/{count}", inline=True)
+                embed.add_field(name='Rank:', value=f"# {rank}/{count}", inline=False)
                 embed.add_field(name='Level:', value=f"{lvl}", inline=True)
 
                 embed.add_field(name='Progress Bar:',
@@ -124,7 +124,7 @@ class Levels(commands.Cog):
                 embed.set_thumbnail(url=member.avatar_url)
                 embed.add_field(name="Total-Xp",value=f"{total_xp}", inline=True)
                 embed.add_field(name="XP:", value=f"{realxp}/{int(200 * ((1 / 2) * (lvl - 1)))}", inline=True)
-                embed.add_field(name='Rank:', value=f"# {rank}/{count}", inline=True)
+                embed.add_field(name='Rank:', value=f"# {rank}/{count}", inline=False)
                 embed.add_field(name='Level:', value=lvl - 1, inline=True)
                 embed.add_field(name='Progress Bar:',
                                 value=nb_of_purple_boxes * ":purple_square:" + nb_of_white_boxes * ":white_large_square:",
