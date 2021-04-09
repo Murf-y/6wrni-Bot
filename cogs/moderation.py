@@ -175,6 +175,7 @@ class Moderation(commands.Cog):
         if isinstance(error, commands.MissingRole):
             embed = discord.Embed(color=const.exception_color, title="خطأ:",
                                   description="لا يمكنك إستخدام هذا الأمر!")
+            embed.set_footer(text=f"طلب من قبل: {ctx.author}")
             await ctx.channel.send(embed=embed)
         elif isinstance(error, commands.BadArgument):
             embed = discord.Embed(color=const.exception_color, title="خطأ:",
@@ -209,6 +210,7 @@ class Moderation(commands.Cog):
         if isinstance(error, commands.MissingRole):
             embed = discord.Embed(color=const.exception_color, title="خطأ:",
                                   description="لا يمكنك إستخدام هذا الأمر!")
+            embed.set_footer(text=f"طلب من قبل: {ctx.author}")
             await ctx.channel.send(embed=embed)
         elif isinstance(error, commands.MemberNotFound):
             embed = discord.Embed(color=const.exception_color, title="خطأ:",
@@ -232,7 +234,7 @@ class Moderation(commands.Cog):
                 deleted = await ctx.channel.purge(limit=limit,
                                                   after=datetime.datetime.utcnow() - datetime.timedelta(days=14))
                 embed = discord.Embed(color=const.default_color,
-                                      title=f" تم حذف {len(deleted)} رسالة/رسأل{const.checkmark_emoji} ")
+                                      title=f" تم حذف {len(deleted)} رسالة/رسائل{const.checkmark_emoji} ")
                 await ctx.channel.send(embed=embed, delete_after=10)
 
             else:
@@ -241,7 +243,7 @@ class Moderation(commands.Cog):
                                                   check=lambda message: message.author.id == user.id,
                                                   after=datetime.datetime.utcnow() - datetime.timedelta(days=14))
                 embed = discord.Embed(color=const.default_color,
-                                      description=f" تم حذف {len(deleted)} رسالة/رسأل أرسلها {user.mention} {const.checkmark_emoji} ")
+                                      description=f" تم حذف {len(deleted)} رسالة/رسائل أرسلها {user.mention} {const.checkmark_emoji} ")
                 await ctx.channel.send(embed=embed, delete_after=10)
 
         else:
@@ -257,6 +259,7 @@ class Moderation(commands.Cog):
         if isinstance(error, commands.MissingRole):
             embed = discord.Embed(color=const.exception_color, title="خطأ:",
                                   description="لا يمكنك إستخدام هذا الأمر!")
+            embed.set_footer(text=f"طلب من قبل: {ctx.author}")
             await ctx.channel.send(embed=embed)
         else:
             embed = discord.Embed(color=const.exception_color, title="خطأ:",
@@ -291,6 +294,7 @@ class Moderation(commands.Cog):
         if isinstance(error, commands.MissingRole):
             embed = discord.Embed(color=const.exception_color, title="خطأ:",
                                   description="لا يمكنك إستخدام هذا الأمر!")
+            embed.set_footer(text=f"طلب من قبل: {ctx.author}")
             await ctx.channel.send(embed=embed)
         else:
             embed = discord.Embed(color=const.exception_color, title="خطأ:",
@@ -347,6 +351,7 @@ class Moderation(commands.Cog):
         if isinstance(error, commands.MissingRole):
             embed = discord.Embed(color=const.exception_color, title="خطأ:",
                                   description="لا يمكنك إستخدام هذا الأمر!")
+            embed.set_footer(text=f"طلب من قبل: {ctx.author}")
             await ctx.channel.send(embed=embed)
         else:
             embed = discord.Embed(color=const.exception_color, title="خطأ:",
@@ -386,6 +391,7 @@ class Moderation(commands.Cog):
         if isinstance(error, commands.MissingRole):
             embed = discord.Embed(color=const.exception_color, title="خطأ:",
                                   description="لا يمكنك إستخدام هذا الأمر!")
+            embed.set_footer(text=f"طلب من قبل: {ctx.author}")
             await ctx.channel.send(embed=embed)
         else:
             embed = discord.Embed(color=const.exception_color, title="خطأ:",
@@ -426,6 +432,7 @@ class Moderation(commands.Cog):
         if isinstance(error, commands.MissingRole):
             embed = discord.Embed(color=const.exception_color, title="خطأ:",
                                   description="لا يمكنك إستخدام هذا الأمر!")
+            embed.set_footer(text=f"طلب من قبل: {ctx.author}")
             await ctx.channel.send(embed=embed)
         else:
             embed = discord.Embed(color=const.exception_color, title="خطأ:",
@@ -468,6 +475,7 @@ class Moderation(commands.Cog):
         if isinstance(error, commands.MissingRole):
             embed = discord.Embed(color=const.exception_color, title="خطأ:",
                                   description="لا يمكنك إستخدام هذا الأمر!")
+            embed.set_footer(text=f"طلب من قبل: {ctx.author}")
             await ctx.channel.send(embed=embed)
         else:
             embed = discord.Embed(color=const.exception_color, title="خطأ:",

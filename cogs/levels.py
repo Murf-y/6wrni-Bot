@@ -86,7 +86,8 @@ class Levels(commands.Cog):
             await ctx.send(f"ليس لديك XP, إرسل بعد الرسائل أولا!")
 
         else:
-            xp = user[0]['xp']
+            total_xp = user[0]['xp']
+            xp = total_xp
             lvl = 0
             while True:
                 if xp < ((50 * (lvl ** 2)) + (50 * (lvl - 1))):
@@ -105,9 +106,10 @@ class Levels(commands.Cog):
                 embed = discord.Embed(color=member.color, timestamp=ctx.message.created_at)
                 embed.set_author(name=f"[Rank] - {member.display_name}")
                 embed.set_thumbnail(url=member.avatar_url)
+                embed.add_field(name="Total-Xp",value=f"{total_xp}")
                 embed.add_field(name="XP:", value=f"{xp}/{int(200 * ((1 / 2) * lvl))}", inline=True)
                 embed.add_field(name='Rank:', value=f"# {rank}/{count}", inline=True)
-                embed.add_field(name='Level:', value=lvl, inline=True)
+                embed.add_field(name='Level:', value=f"{lvl}", inline=True)
 
                 embed.add_field(name='Progress Bar:',
                                 value=nb_of_purple_boxes * ":purple_square:" + nb_of_white_boxes * ":white_large_square:",
@@ -120,6 +122,7 @@ class Levels(commands.Cog):
                 embed = discord.Embed(color=member.color, timestamp=ctx.message.created_at)
                 embed.set_author(name=f"[Rank] - {member.display_name}")
                 embed.set_thumbnail(url=member.avatar_url)
+                embed.add_field(name="Total-Xp",value=f"{total_xp}")
                 embed.add_field(name="XP:", value=f"{realxp}/{int(200 * ((1 / 2) * (lvl - 1)))}", inline=True)
                 embed.add_field(name='Rank:', value=f"# {rank}/{count}", inline=True)
                 embed.add_field(name='Level:', value=lvl - 1, inline=True)
@@ -211,6 +214,7 @@ class Levels(commands.Cog):
         if isinstance(error, commands.MissingRole):
             embed = discord.Embed(color=const.exception_color, title="خطأ:",
                                   description="لا يمكنك إستخدام هذا الأمر!")
+            embed.set_footer(text=f"طلب من قبل: {ctx.author}")
             await ctx.channel.send(embed=embed)
         else:
             embed = discord.Embed(color=const.exception_color, title="خطأ:",
@@ -304,6 +308,7 @@ class Levels(commands.Cog):
         if isinstance(error, commands.MissingRole):
             embed = discord.Embed(color=const.exception_color, title="خطأ:",
                                   description="لا يمكنك إستخدام هذا الأمر!")
+            embed.set_footer(text=f"طلب من قبل: {ctx.author}")
             await ctx.channel.send(embed=embed)
         else:
             embed = discord.Embed(color=const.exception_color, title="خطأ:",
@@ -337,6 +342,7 @@ class Levels(commands.Cog):
         if isinstance(error, commands.MissingRole):
             embed = discord.Embed(color=const.exception_color, title="خطأ:",
                                   description="لا يمكنك إستخدام هذا الأمر!")
+            embed.set_footer(text=f"طلب من قبل: {ctx.author}")
             await ctx.channel.send(embed=embed)
 
         else:
