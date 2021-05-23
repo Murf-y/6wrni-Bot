@@ -16,6 +16,11 @@ TIME_DURATION_UNITS = (
     ('sec',1)
 )
 
+
+def is_mod_or_owner(ctx):
+    return const.moderator_role_id in [role.id for role in ctx.author.roles] or ctx.author.id == ctx.guild.owner_id
+
+
 class TimeConverter(commands.Converter):
     async def convert(self, ctx, argument):
         args = argument.lower()
@@ -144,7 +149,7 @@ class Moderation(commands.Cog):
 
     # ----------------------------------TEMPMUTE Command------------------------------------------------
     @commands.command(name="tempmute", description="ميوت عضو معين لوقت محدد ولسبب إختياري. الوقت يكون بل صيغة التالية(s/m/h/d)\n\n يجب ان تكون من المشرفين لإستخدامها.")
-    @commands.has_role(const.moderator_role_name)
+    @commands.check(is_mod_or_owner)
     async def tempmute_async(self, ctx: commands.Context, member: discord.Member, duration: TimeConverter, *,
                              reason: Optional[str] = "غير محدد"):
         if duration > 0:
@@ -172,7 +177,7 @@ class Moderation(commands.Cog):
 
     @tempmute_async.error
     async def tempmute_async_error(self, ctx, error):
-        if isinstance(error, commands.MissingRole):
+        if isinstance(error, commands.CheckFailure):
             embed = discord.Embed(color=const.exception_color, title="خطأ:",
                                   description="لا يمكنك إستخدام هذا الأمر!")
             embed.set_footer(text=f"طلب من قبل: {ctx.author}")
@@ -189,7 +194,7 @@ class Moderation(commands.Cog):
     # ----------------------------------KICK Command------------------------------------------------
     @commands.command(name="kick", description="إخراج عضو من السيرفير لي سبب اختياري.\n\n يجب ان تكون من المشرفين "
                                                "لإستخدامها.")
-    @commands.has_role(const.moderator_role_name)
+    @commands.check(is_mod_or_owner)
     async def kick_async(self, ctx, member: discord.Member, *, reason: Optional[str] = "غير محدد"):
         for role in member.roles:
             if role.name == const.moderator_role_name:
@@ -207,7 +212,7 @@ class Moderation(commands.Cog):
 
     @kick_async.error
     async def kick_async_error(self, ctx, error):
-        if isinstance(error, commands.MissingRole):
+        if isinstance(error, commands.CheckFailure):
             embed = discord.Embed(color=const.exception_color, title="خطأ:",
                                   description="لا يمكنك إستخدام هذا الأمر!")
             embed.set_footer(text=f"طلب من قبل: {ctx.author}")
@@ -225,7 +230,7 @@ class Moderation(commands.Cog):
 
     # ----------------------------------CLEAR Command------------------------------------------------
     @commands.command(name="clear", description="مسح عدد معين من الرسأل.\n\nيجب ان تكون من المشرفين لإستخدامها.")
-    @commands.has_role(const.moderator_role_name)
+    @commands.check(is_mod_or_owner)
     async def clear_async(self, ctx, limit: int, user: Optional[discord.Member]):
 
         if 0 < limit <= 100:
@@ -256,7 +261,7 @@ class Moderation(commands.Cog):
 
     @clear_async.error
     async def clear_async_error(self, ctx, error):
-        if isinstance(error, commands.MissingRole):
+        if isinstance(error, commands.CheckFailure):
             embed = discord.Embed(color=const.exception_color, title="خطأ:",
                                   description="لا يمكنك إستخدام هذا الأمر!")
             embed.set_footer(text=f"طلب من قبل: {ctx.author}")
@@ -271,7 +276,7 @@ class Moderation(commands.Cog):
     # ----------------------------------SLOWMODE Command------------------------------------------------
     @commands.command(name="slowmode", description="وضع slowmode على قناة و يحدد الوقت بل صيغة التالية s/m/h, يمكن ازالته بوضع "
                                                    "القيمة الى صفر.\n\nيجب ان تكون من المشرفين لإستخدامها. ")
-    @commands.has_role(const.moderator_role_name)
+    @commands.check(is_mod_or_owner)
     async def slowmode_async(self, ctx, channel:Optional[discord.TextChannel],duration:TimeConverter):
         channel = ctx.channel if not channel else channel
         if 0 <= duration <= 21600:
@@ -291,7 +296,7 @@ class Moderation(commands.Cog):
 
     @slowmode_async.error
     async def slowmode_async_error(self, ctx, error):
-        if isinstance(error, commands.MissingRole):
+        if isinstance(error, commands.CheckFailure):
             embed = discord.Embed(color=const.exception_color, title="خطأ:",
                                   description="لا يمكنك إستخدام هذا الأمر!")
             embed.set_footer(text=f"طلب من قبل: {ctx.author}")
@@ -306,7 +311,7 @@ class Moderation(commands.Cog):
     # ----------------------------------BAN Command------------------------------------------------
     @commands.command(name="ban", description="حظر عضو من السيرفير لي سبب اختياري, يمكن طرد العضو حتى لو لم يكن في "
                                               "السيرفير.\n\n يجب ان تكون من المشرفين لإستخدامها. ")
-    @commands.has_role(const.moderator_role_name)
+    @commands.check(is_mod_or_owner)
     async def ban_async(self, ctx, user: discord.User, *, reason: Optional[str] = "غير محدد"):
 
         if user.id == self.bot.user.id:
@@ -348,7 +353,7 @@ class Moderation(commands.Cog):
 
     @ban_async.error
     async def ban_async_error(self, ctx, error):
-        if isinstance(error, commands.MissingRole):
+        if isinstance(error, commands.CheckFailure):
             embed = discord.Embed(color=const.exception_color, title="خطأ:",
                                   description="لا يمكنك إستخدام هذا الأمر!")
             embed.set_footer(text=f"طلب من قبل: {ctx.author}")
@@ -363,7 +368,7 @@ class Moderation(commands.Cog):
     # ----------------------------------UNBAN Command------------------------------------------------
     @commands.command(name="unban", description="ازالة الحظر عن عضو لسبب اختياري.\n\n يجب ان تكون من المشرفين "
                                                 "لإستخدامها.")
-    @commands.has_role(const.moderator_role_name)
+    @commands.check(is_mod_or_owner)
     async def unban_async(self, ctx, user: discord.User, *, reason: Optional[str] = "غير محدد"):
         try:
             await ctx.guild.fetch_ban(user)
@@ -388,7 +393,7 @@ class Moderation(commands.Cog):
 
     @unban_async.error
     async def unban_async_error(self, ctx, error):
-        if isinstance(error, commands.MissingRole):
+        if isinstance(error, commands.CheckFailure):
             embed = discord.Embed(color=const.exception_color, title="خطأ:",
                                   description="لا يمكنك إستخدام هذا الأمر!")
             embed.set_footer(text=f"طلب من قبل: {ctx.author}")
@@ -402,7 +407,7 @@ class Moderation(commands.Cog):
 
     # ----------------------------------MUTE Command------------------------------------------------
     @commands.command(name="mute", description="ميوت عضو معين لسبب إختياري,.\n\n يجب ان تكون من المشرفين لإستخدامها.")
-    @commands.has_role(const.moderator_role_name)
+    @commands.check(is_mod_or_owner)
     async def mute_async(self, ctx, user: discord.User, *, reason: Optional[str] = "غير محدد"):
         member = ctx.guild.get_member(user.id)
         if member != None:
@@ -429,7 +434,7 @@ class Moderation(commands.Cog):
 
     @mute_async.error
     async def mute_async_error(self, ctx, error):
-        if isinstance(error, commands.MissingRole):
+        if isinstance(error, commands.CheckFailure):
             embed = discord.Embed(color=const.exception_color, title="خطأ:",
                                   description="لا يمكنك إستخدام هذا الأمر!")
             embed.set_footer(text=f"طلب من قبل: {ctx.author}")
@@ -444,7 +449,7 @@ class Moderation(commands.Cog):
     # ----------------------------------UNMUTE Command------------------------------------------------
     @commands.command(name="unmute",
                       description="إزالة الميوت عن عضو معين لسبب إختياري,.\n\n يجب ان تكون من المشرفين لإستخدامها.")
-    @commands.has_role(const.moderator_role_name)
+    @commands.check(is_mod_or_owner)
     async def unmute_async(self, ctx, user: discord.User, *, reason: Optional[str] = "غير محدد"):
         member = ctx.guild.get_member(user.id)
         if member != None:
@@ -472,7 +477,7 @@ class Moderation(commands.Cog):
 
     @unmute_async.error
     async def unmute_async_error(self, ctx, error):
-        if isinstance(error, commands.MissingRole):
+        if isinstance(error, commands.CheckFailure):
             embed = discord.Embed(color=const.exception_color, title="خطأ:",
                                   description="لا يمكنك إستخدام هذا الأمر!")
             embed.set_footer(text=f"طلب من قبل: {ctx.author}")

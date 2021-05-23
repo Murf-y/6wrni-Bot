@@ -4,6 +4,8 @@ from discord.ext import commands
 import constants as const
 import time
 
+def is_mod_or_owner(ctx):
+    return const.moderator_role_id in [role.id for role in ctx.author.roles] or ctx.author.id == ctx.guild.owner_id
 
 
 class Levels(commands.Cog):
@@ -161,7 +163,7 @@ class Levels(commands.Cog):
     @commands.command(name="give-xp", description="إضافة نسبة محددة من ال XP لعضو معين.\n\n يجب ان "
                                                   "تكون من المشرفين "
                                                   "لإستخدامها.")
-    @commands.has_role(const.moderator_role_name)
+    @commands.check(is_mod_or_owner)
     async def givexp_async(self, ctx, member: discord.Member, amount: int):
         if amount <= 0:
             embed = discord.Embed(color=const.exception_color, title="خطأ:",
@@ -212,7 +214,7 @@ class Levels(commands.Cog):
 
     @givexp_async.error
     async def givexp_async_error(self, ctx, error):
-        if isinstance(error, commands.MissingRole):
+        if isinstance(error, commands.CheckFailure):
             embed = discord.Embed(color=const.exception_color, title="خطأ:",
                                   description="لا يمكنك إستخدام هذا الأمر!")
             embed.set_footer(text=f"طلب من قبل: {ctx.author}")
@@ -228,7 +230,7 @@ class Levels(commands.Cog):
     @commands.command(name="remove-xp", description="إزالة نسبة محددة من ال XP لعضو معين.\n\n يجب ان "
                                                     "تكون من المشرفين "
                                                     "لإستخدامها.")
-    @commands.has_role(const.moderator_role_name)
+    @commands.check(is_mod_or_owner)
     async def removexp_async(self, ctx, member: discord.Member, amount: int):
 
         if amount <= 0:
@@ -306,7 +308,7 @@ class Levels(commands.Cog):
 
     @removexp_async.error
     async def removexp_async_error(self, ctx, error):
-        if isinstance(error, commands.MissingRole):
+        if isinstance(error, commands.CheckFailure):
             embed = discord.Embed(color=const.exception_color, title="خطأ:",
                                   description="لا يمكنك إستخدام هذا الأمر!")
             embed.set_footer(text=f"طلب من قبل: {ctx.author}")
@@ -322,7 +324,7 @@ class Levels(commands.Cog):
     @commands.command(name="delete-xp", description="إزالة كل ال XP لعضو معين.\n\n يجب ان "
                                                     "تكون من المشرفين "
                                                     "لإستخدامها.")
-    @commands.has_role(const.moderator_role_name)
+    @commands.check(is_mod_or_owner)
     async def deletexp_async(self, ctx, member: discord.Member):
         user_id = member.id
         guild_id = ctx.guild.id
@@ -340,7 +342,7 @@ class Levels(commands.Cog):
 
     @deletexp_async.error
     async def deletexp_async_error(self, ctx, error):
-        if isinstance(error, commands.MissingRole):
+        if isinstance(error, commands.CheckFailure):
             embed = discord.Embed(color=const.exception_color, title="خطأ:",
                                   description="لا يمكنك إستخدام هذا الأمر!")
             embed.set_footer(text=f"طلب من قبل: {ctx.author}")
