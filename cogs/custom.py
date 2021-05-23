@@ -6,6 +6,10 @@ import constants as const
 import urllib.parse,urllib.request
 import re
 
+def is_mod_or_owner(ctx):
+    return const.moderator_role_id in [role.id for role in ctx.author.roles] or ctx.author.id == ctx.guild.owner_id
+
+
 class Custom(commands.Cog):
 
     def __init__(self, bot):
@@ -93,5 +97,14 @@ class Custom(commands.Cog):
         ppu_text+= "https://cdn-images-1.medium.com/max/1600/1*8MR8PhIlwG3xZR9dU4Cq2A.png"
         await ctx.message.delete()
         await ctx.channel.send(ppu_text)
+
+    @commands.command(name="test")
+    @commands.check(is_mod_or_owner)
+    async def test(self,ctx):
+        await ctx.send("test works")
+    @test.error
+    async def test_error(self,ctx,error):
+        if isinstance(error,commands.CheckFailure):
+            await ctx.send("u cannot use this test")
 def setup(bot):
     bot.add_cog(Custom(bot))
