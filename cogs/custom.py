@@ -13,6 +13,12 @@ class Custom(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
+    @commands.command(name="usegoogle", description="لا وصف", aliases=["ug"])
+    async def usegoogle_async(self, ctx):
+        usegoogle = "رجاء قبل ان تسأل عن مشكلة, اسأل جوجل , تربح الوقت و معلومات أكثر! "
+        await ctx.message.delete()
+        await ctx.channel.send(usegoogle)
+
     @commands.command(name="codeblock", description="لا وصف", aliases=["cb"])
     async def codeblock_async(self, ctx):
         codeblock = "استخدم الكود بلوك لارسال الكود في رسالة!\n"
@@ -70,7 +76,7 @@ class Custom(commands.Cog):
     @commands.command(name="pleasewait", description="لا وصف", aliases=["plsw"])
     async def pleasewait_async(self, ctx):
         waittxt = "طرح السوأل اكثر من مرة او في كل القنوات لن يسرع وصول الإجابة لك!\n"
-        waittxt += "حاول ان تحل المشكلة بنفسك, تحلا بل صبر, عندما يستطيع شخص مساعدتك سوف يساعد!"
+        waittxt += "حاول ان تحل المشكلة بنفسك, تحلا بالصبر, عندما يستطيع شخص مساعدتك سوف يساعد!"
         await ctx.message.delete()
         await ctx.channel.send(waittxt)
 

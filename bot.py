@@ -33,6 +33,8 @@ bot = commands.Bot(command_prefix=PREFIX,
 bot.version = VERSION
 
 
+
+
 async def create_db_pool():
     bot.pg_con = await asyncpg.create_pool(DATABASE_URL,ssl="require")
 

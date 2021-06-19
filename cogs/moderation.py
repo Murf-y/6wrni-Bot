@@ -147,6 +147,32 @@ class Moderation(commands.Cog):
 
     # ----------------------------------MOD EVENTS ------------------------------------------------
 
+    # -------------------------------Mute List command --------------------------------------------
+    @commands.command(name="mutelist", description="إظهار اقرب عشرة ميوت في السيرفير.")
+    @commands.check(is_mod_or_owner)
+    async def mutelist_async(self,ctx : commands.Context):
+        query = "SELECT  * FROM mutes ORDER BY expire ASC limit 10"
+        mutes = await self.bot.pg_con.fetch(query)
+        embed = discord.Embed(color = const.default_color,title="Mute list")
+        for mute in mutes:
+            user_id = mute['user_id']
+            user : discord.User= self.bot.get_user(user_id)
+            timestamp = mute['expire']
+            duration = timestamp.split('.')
+
+            embed.add_field(name=user.name,description=duration[0])
+        await ctx.channel.send(embed=embed)
+    @mutelist_async.error
+    async def mutelist_async_error(self, ctx, error):
+        if isinstance(error, commands.CheckFailure):
+            embed = discord.Embed(color=const.exception_color, title="خطأ:",
+                                  description="لا يمكنك إستخدام هذا الأمر!")
+            embed.set_footer(text=f"طلب من قبل: {ctx.author}")
+            await ctx.channel.send(embed=embed)
+        else:
+            raise error
+    # -------------------------------Mute List command --------------------------------------------
+
     # ----------------------------------TEMPMUTE Command------------------------------------------------
     @commands.command(name="tempmute", description="ميوت عضو معين لوقت محدد ولسبب إختياري. الوقت يكون بل صيغة التالية(s/m/h/d)\n\n يجب ان تكون من المشرفين لإستخدامها.")
     @commands.check(is_mod_or_owner)
