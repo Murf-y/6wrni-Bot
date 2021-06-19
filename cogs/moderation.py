@@ -166,7 +166,7 @@ class Moderation(commands.Cog):
             embed.set_footer(text="UTC time")
             await ctx.channel.send(embed=embed)
         else:
-            embed = discord.Embed(title="Mute list", description ="Mute list is currently empty , go mute someone :)")
+            embed = discord.Embed(color=const.default_color,title="Mute list", description ="Mute list is currently empty , go mute someone :)")
             await ctx.channel.send(embed=embed)
     @mutelist_async.error
     async def mutelist_async_error(self, ctx, error):
