@@ -157,10 +157,11 @@ class Moderation(commands.Cog):
         for mute in mutes:
             user_id = mute['user_id']
             user : discord.User= self.bot.get_user(user_id)
-            timestamp = mute['expire']
+            timestamp= mute['expire']
+            d = timestamp.strftime('%a, %#d %B %Y, %H:%M:%S')
             duration = str(timestamp).split('.')
 
-            embed.add_field(name=user.name,value=duration[0])
+            embed.add_field(name=user.name,value=d)
         embed.set_footer(text="UTC time")
         await ctx.channel.send(embed=embed)
     @mutelist_async.error
