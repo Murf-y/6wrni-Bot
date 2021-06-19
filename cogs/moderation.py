@@ -161,6 +161,7 @@ class Moderation(commands.Cog):
             duration = str(timestamp).split('.')
 
             embed.add_field(name=user.name,value=duration[0])
+        embed.set_footer(text="UTC time")
         await ctx.channel.send(embed=embed)
     @mutelist_async.error
     async def mutelist_async_error(self, ctx, error):
