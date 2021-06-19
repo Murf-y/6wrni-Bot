@@ -160,7 +160,7 @@ class Moderation(commands.Cog):
             timestamp = mute['expire']
             duration = str(timestamp).split('.')
 
-            embed.add_field(name=user.name,description=duration[0])
+            embed.add_field(name=user.name,value=duration[0])
         await ctx.channel.send(embed=embed)
     @mutelist_async.error
     async def mutelist_async_error(self, ctx, error):
