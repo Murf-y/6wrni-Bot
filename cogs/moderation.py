@@ -153,15 +153,14 @@ class Moderation(commands.Cog):
     async def mutelist_async(self,ctx : commands.Context):
         query = "SELECT  * FROM mutes ORDER BY expire ASC limit 10"
         mutes = await self.bot.pg_con.fetch(query)
-        embed = discord.Embed(color = const.default_color,title="Mute list")
+        embed = discord.Embed(color = const.default_color,title="Mute list", description="-----------------------------")
         for mute in mutes:
             user_id = mute['user_id']
             user : discord.User= self.bot.get_user(user_id)
             timestamp= mute['expire']
-            d = timestamp.strftime('%a, %#d %B %Y, %H:%M:%S')
-            duration = str(timestamp).split('.')
+            duration = timestamp.strftime('%a, %#d %B %Y, %H:%M:%S')
 
-            embed.add_field(name=user.name,value=d)
+            embed.add_field(name=f"{user.name} | {user_id}",value=f"{duration}\n-----------------------------")
         embed.set_footer(text="UTC time")
         await ctx.channel.send(embed=embed)
     @mutelist_async.error
