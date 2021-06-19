@@ -158,7 +158,7 @@ class Moderation(commands.Cog):
             user_id = mute['user_id']
             user : discord.User= self.bot.get_user(user_id)
             timestamp = mute['expire']
-            duration = timestamp.split('.')
+            duration = str(timestamp).split('.')
 
             embed.add_field(name=user.name,description=duration[0])
         await ctx.channel.send(embed=embed)
