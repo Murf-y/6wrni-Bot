@@ -187,9 +187,7 @@ class Moderation(commands.Cog):
         if duration > 0:
             mute_role = ctx.guild.get_role(const.muted_role_id)
             await member.add_roles(mute_role)
-            dm_embed = discord.Embed(color=const.exception_color,title=f"Temporarily Muted",description="You have been muted for violating our rules. Dont worry you will be unmuted after this specific duration, but make sure to not violate the rules again or you will get banned for ever!")
-            dm_embed.add_field(name="Duration: ", value=self.seconds_to_humandr(duration))
-            await member.send(embed=dm_embed)
+
             when = datetime.datetime.utcnow() + datetime.timedelta(seconds=duration)
             task = self.bot.loop.create_task(self.perform_unmute(member_id=member.id, role=mute_role, when=when))
             task.add_done_callback(self.unmute_error)
@@ -239,9 +237,7 @@ class Moderation(commands.Cog):
         embed = discord.Embed(color=const.default_color, description=f"[kick] - {member.mention}")
         embed.add_field(name="سبب:", value=reason)
         embed.set_footer(text=f"من قبل: {ctx.author.display_name}")
-        dm_embed = discord.Embed(color=const.exception_color, title=f"Kicked From 6wrni Server",
-                                 description="You have been Kicked from the 6wrni server for violating our rules!")
-        await member.send(embed=dm_embed)
+
         await member.kick(reason=reason)
         await ctx.channel.send(embed=embed)
         embed.description = f":no_entry: [kick] - {member.mention} :no_entry:"
@@ -376,12 +372,7 @@ class Moderation(commands.Cog):
             )
             await ctx.channel.send(embed=embed)
         except discord.NotFound:
-            dm_embed = discord.Embed(color=const.exception_color, title=f"Ban",
-                                     description="You have been Banned from 6wrni server for violating our rules!")
-            guild : discord.Guild = ctx.guild
-            member : discord.Member = guild.get_member(user.id)
-            if member:
-                await member.send(embed=dm_embed)
+
             await ctx.guild.ban(user=user, reason=reason, delete_message_days=7)
             mod_channel = self.bot.get_channel(const.mod_Channel_id)
             embed = discord.Embed(
@@ -459,9 +450,7 @@ class Moderation(commands.Cog):
 
             if mutedrole not in member.roles:
                 await member.add_roles(mutedrole)
-                dm_embed = discord.Embed(color=const.exception_color, title=f"Muted",
-                                         description="You have been muted for violating our rules!")
-                await member.send(embed=dm_embed)
+
                 embed = discord.Embed(color=const.default_color, description=f"[Mute] - {member.mention}")
                 embed.add_field(name="سبب:", value=reason)
                 embed.set_footer(text=f"من قبل: {ctx.author.display_name}")
