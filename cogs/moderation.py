@@ -161,8 +161,8 @@ class Moderation(commands.Cog):
                 user : discord.User= self.bot.get_user(user_id)
                 timestamp= mute['expire']
                 duration = timestamp.strftime('%a, %#d %B %Y, %H:%M:%S')
-
-                embed.add_field(name=f"{user.name} | {user_id}",value=f"{duration}\n-----------------------------")
+                if user:
+                    embed.add_field(name=f"{user.name} | {user_id}",value=f"{duration}\n-----------------------------")
             embed.set_footer(text="UTC time")
             await ctx.channel.send(embed=embed)
         else:
