@@ -101,12 +101,19 @@ async def on_member_join(member):
         f" اهلا بك {member.mention} ! الرجاء زيارة {channels_channel.mention} لتتعرف على وظائف الغرف !")
     guild = bot.get_guild(const.guild_id)
     role = guild.get_role(const.new_member_role_id)
+    mod_role: discord.Role = guild.get_role(const.moderator_role_id)
     await member.add_roles(role)
     embed = discord.Embed(color=const.default_color)
     embed.add_field(name=f"[دخول عضو]",value=member.mention)
+    embed.add_field(name="تاريخ إنشاء الحساب:",
+                    value=f"{member.created_at.strftime('%a, %#d %B %Y, %H:%M:%S')}\n", inline=False)
+    embed.add_field(name="تاريخ انضمام العضو:",
+                    value=f"{member.joined_at.strftime('%a, %#d %B %Y, %H:%M:%S')}\n", inline=False)
     embed.set_footer(text=f"ID:{member.id}")
     embed.set_thumbnail(url=member.avatar_url)
     await mod_channel.send(embed=embed)
+    if member.created_at.day == member.joined_at.day and member.created_at.month == member.joined_at.month and member.created_at.year == member.joined_at.year:
+        await mod_channel.send(f"{mod_role.mention}\n {member.mention} هذا العضو تاريخ إنشاء حسابه نفس تاريخ إنضمامه للسيرفير! ")
 
 @bot.event
 async def on_member_remove(member: discord.Member):

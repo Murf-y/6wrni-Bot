@@ -96,9 +96,9 @@ class User(commands.Cog):
         embed.add_field(name="الإسم:", value=member)
         embed.add_field(name="Id:", value=f"{member.id}\n")
         embed.add_field(name="تاريخ إنشاء الحساب:",
-                        value=f"{member.created_at.strftime('%a, %#d %B %Y')}\n", inline=False)
+                        value=f"{member.created_at.strftime('%a, %#d %B %Y, %H:%M:%S')}\n", inline=False)
         embed.add_field(name="تاريخ انضمام العضو:",
-                        value=f"{member.joined_at.strftime('%a, %#d %B %Y')}\n", inline=False)
+                        value=f"{member.joined_at.strftime('%a, %#d %B %Y, %H:%M:%S')}\n", inline=False)
         embed.add_field(name="اعلى رتبة:",
                         value=member.top_role.mention)
 
