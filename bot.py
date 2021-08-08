@@ -121,6 +121,7 @@ async def on_member_join(member):
         )
         embed.add_field(name="سبب:", value="New account")
         embed.set_footer(text="من قبل:6wrni bot ")
+        await mod_channel.send(embed=embed)
         await guild.ban(user=member, reason="new account", delete_message_days=7)
 @bot.event
 async def on_member_remove(member: discord.Member):
