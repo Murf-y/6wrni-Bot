@@ -187,7 +187,7 @@ class Moderation(commands.Cog):
         if duration > 0:
             mute_role = ctx.guild.get_role(const.muted_role_id)
             await member.add_roles(mute_role)
-            dm_embed = discord.Embed(color=const.exception_color,title=f"Temporarily Muted",description="You have been muted for violating our rules :( Dont worry you will be unmuted after this specific duration, but make sure to not violate the rules again or you will get banned for ever!")
+            dm_embed = discord.Embed(color=const.exception_color,title=f"Temporarily Muted",description="You have been muted for violating our rules. Dont worry you will be unmuted after this specific duration, but make sure to not violate the rules again or you will get banned for ever!")
             dm_embed.add_field(name="Duration: ", value=self.seconds_to_humandr(duration))
             await member.send(embed=dm_embed)
             when = datetime.datetime.utcnow() + datetime.timedelta(seconds=duration)
