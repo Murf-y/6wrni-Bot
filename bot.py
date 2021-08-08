@@ -113,8 +113,15 @@ async def on_member_join(member):
     embed.set_thumbnail(url=member.avatar_url)
     await mod_channel.send(embed=embed)
     if member.created_at.day == member.joined_at.day and member.created_at.month == member.joined_at.month and member.created_at.year == member.joined_at.year:
-        await mod_channel.send(f"{mod_role.mention}\n {member.mention} هذا العضو تاريخ إنشاء حسابه نفس تاريخ إنضمامه للسيرفير! ")
+        await mod_channel.send(f"{member.mention} هذا العضو تاريخ إنشاء حسابه نفس تاريخ إنضمامه للسيرفير اذا رح يتم طرده! ")
+        embed = discord.Embed(
+            description=f":no_entry: [Ban] - {member.mention} :no_entry:",
+            color=const.default_color,
 
+        )
+        embed.add_field(name="سبب:", value="New account")
+        embed.set_footer(text="من قبل:6wrni bot ")
+        await guild.ban(user=member, reason="new account", delete_message_days=7)
 @bot.event
 async def on_member_remove(member: discord.Member):
     mod_channel = bot.get_channel(const.mod_Channel_id)
