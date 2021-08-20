@@ -114,7 +114,7 @@ async def on_member_join(member):
     embed.set_thumbnail(url=member.avatar_url)
     await mod_channel.send(embed=embed)
 
-    await counter_channel.edit(name=f"{guild.member_count} عدد لأعضاء: ")
+    await counter_channel.edit(name=f"{guild.member_count}")
 
 @bot.event
 async def on_member_remove(member: discord.Member):
@@ -126,7 +126,7 @@ async def on_member_remove(member: discord.Member):
     embed.set_footer(text=f"ID:{member.id}")
     embed.set_thumbnail(url=member.avatar_url)
     await mod_channel.send(embed=embed)
-    await counter_channel.edit(name=f"{guild.member_count} عدد لأعضاء: ")
+    await counter_channel.edit(name=f"{guild.member_count}")
 
 @bot.listen('on_message')
 async def on_message(message):
