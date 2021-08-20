@@ -97,6 +97,7 @@ async def on_member_join(member):
     welcome_channel = bot.get_channel(const.welcome_channel_id)
     channels_channel = bot.get_channel(const.channels_channel_id)
     mod_channel = bot.get_channel(const.mod_Channel_id)
+    counter_channel = bot.get_channel(const.counter_channel_id)
     await welcome_channel.send(
         f" اهلا بك {member.mention} ! الرجاء زيارة {channels_channel.mention} لتتعرف على وظائف الغرف !")
     guild = bot.get_guild(const.guild_id)
@@ -112,27 +113,20 @@ async def on_member_join(member):
     embed.set_footer(text=f"ID:{member.id}")
     embed.set_thumbnail(url=member.avatar_url)
     await mod_channel.send(embed=embed)
-    if member.created_at.day == member.joined_at.day and member.created_at.month == member.joined_at.month and member.created_at.year == member.joined_at.year:
-        await mod_channel.send(f"{member.mention} هذا العضو تاريخ إنشاء حسابه نفس تاريخ إنضمامه للسيرفير اذا رح يتم طرده! ")
-        embed = discord.Embed(
-            description=f":no_entry: [Ban] - {member.mention} :no_entry:",
-            color=const.default_color,
 
-        )
-        embed.add_field(name="سبب:", value="New account")
-        embed.set_footer(text="من قبل:6wrni bot ")
-        await mod_channel.send(embed=embed)
-        await guild.ban(user=member, reason="new account", delete_message_days=7)
+    await counter_channel.edit(name=f"{guild.member_count} عدد لأعضاء: ")
+
 @bot.event
 async def on_member_remove(member: discord.Member):
     mod_channel = bot.get_channel(const.mod_Channel_id)
-
+    counter_channel = bot.get_channel(const.counter_channel_id)
+    guild = bot.get_guild(const.guild_id)
     embed = discord.Embed(color=const.default_color)
     embed.add_field(name=f"[خروج عضو]",value=member.mention)
     embed.set_footer(text=f"ID:{member.id}")
     embed.set_thumbnail(url=member.avatar_url)
     await mod_channel.send(embed=embed)
-
+    await counter_channel.edit(name=f"{guild.member_count} عدد لأعضاء: ")
 
 @bot.listen('on_message')
 async def on_message(message):

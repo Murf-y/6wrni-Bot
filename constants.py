@@ -21,6 +21,7 @@ exception_color = 0xFF3B6E
 
 # ----------------------------------- CHANNELS--------------------------------------------------
 mod_Channel_id = 739171444864319545
+counter_channel_id = 878366062767398952
 welcome_channel_id = 674564988622340098
 channels_channel_id = 675765066813014067
 rules_channel_id = 676047368185184286
