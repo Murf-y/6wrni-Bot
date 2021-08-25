@@ -180,7 +180,7 @@ class Moderation(commands.Cog):
     # -------------------------------Mute List command --------------------------------------------
 
     # ----------------------------------TEMPMUTE Command------------------------------------------------
-    @commands.command(name="tempmute", description="ميوت عضو معين لوقت محدد ولسبب إختياري. الوقت يكون بل صيغة التالية(s/m/h/d)\n\n يجب ان تكون من المشرفين لإستخدامها.")
+    @commands.command(name="tempmute", description="ميوت عضو معين لوقت محدد ولسبب إختياري. الوقت يكون بل صيغة التالية(s/m/h/d)\n\n يجب ان تكون من المشرفين لإستخدامها.", aliases=["tm"])
     @commands.check(is_mod_or_owner)
     async def tempmute_async(self, ctx: commands.Context, member: discord.Member, duration: TimeConverter, *,
                              reason: Optional[str] = "غير محدد"):
@@ -226,7 +226,7 @@ class Moderation(commands.Cog):
 
     # ----------------------------------KICK Command------------------------------------------------
     @commands.command(name="kick", description="إخراج عضو من السيرفير لي سبب اختياري.\n\n يجب ان تكون من المشرفين "
-                                               "لإستخدامها.")
+                                               "لإستخدامها.", aliases=["k"])
     @commands.check(is_mod_or_owner)
     async def kick_async(self, ctx, member: discord.Member, *, reason: Optional[str] = "غير محدد"):
         for role in member.roles:
@@ -263,7 +263,7 @@ class Moderation(commands.Cog):
     # ----------------------------------KICK Command------------------------------------------------
 
     # ----------------------------------CLEAR Command------------------------------------------------
-    @commands.command(name="clear", description="مسح عدد معين من الرسأل.\n\nيجب ان تكون من المشرفين لإستخدامها.")
+    @commands.command(name="clear", description="مسح عدد معين من الرسأل.\n\nيجب ان تكون من المشرفين لإستخدامها.", aliases=["c"])
     @commands.check(is_mod_or_owner)
     async def clear_async(self, ctx, limit: int, user: Optional[discord.Member]):
 
@@ -309,7 +309,7 @@ class Moderation(commands.Cog):
 
     # ----------------------------------SLOWMODE Command------------------------------------------------
     @commands.command(name="slowmode", description="وضع slowmode على قناة و يحدد الوقت بل صيغة التالية s/m/h, يمكن ازالته بوضع "
-                                                   "القيمة الى صفر.\n\nيجب ان تكون من المشرفين لإستخدامها. ")
+                                                   "القيمة الى صفر.\n\nيجب ان تكون من المشرفين لإستخدامها. ", aliases=["sm"])
     @commands.check(is_mod_or_owner)
     async def slowmode_async(self, ctx, channel:Optional[discord.TextChannel],duration:TimeConverter):
         channel = ctx.channel if not channel else channel
@@ -344,7 +344,7 @@ class Moderation(commands.Cog):
 
     # ----------------------------------BAN Command------------------------------------------------
     @commands.command(name="ban", description="حظر عضو من السيرفير لي سبب اختياري, يمكن طرد العضو حتى لو لم يكن في "
-                                              "السيرفير.\n\n يجب ان تكون من المشرفين لإستخدامها. ")
+                                              "السيرفير.\n\n يجب ان تكون من المشرفين لإستخدامها. ", aliases=["b"])
     @commands.check(is_mod_or_owner)
     async def ban_async(self, ctx, user: discord.User, *, reason: Optional[str] = "غير محدد"):
 
@@ -402,7 +402,7 @@ class Moderation(commands.Cog):
 
     # ----------------------------------UNBAN Command------------------------------------------------
     @commands.command(name="unban", description="ازالة الحظر عن عضو لسبب اختياري.\n\n يجب ان تكون من المشرفين "
-                                                "لإستخدامها.")
+                                                "لإستخدامها.", aliases=["ub"])
     @commands.check(is_mod_or_owner)
     async def unban_async(self, ctx, user: discord.User, *, reason: Optional[str] = "غير محدد"):
         try:
@@ -441,7 +441,7 @@ class Moderation(commands.Cog):
     # ----------------------------------UNBAN Command------------------------------------------------
 
     # ----------------------------------MUTE Command------------------------------------------------
-    @commands.command(name="mute", description="ميوت عضو معين لسبب إختياري,.\n\n يجب ان تكون من المشرفين لإستخدامها.")
+    @commands.command(name="mute", description="ميوت عضو معين لسبب إختياري,.\n\n يجب ان تكون من المشرفين لإستخدامها.", aliases=["m"])
     @commands.check(is_mod_or_owner)
     async def mute_async(self, ctx, user: discord.User, *, reason: Optional[str] = "غير محدد"):
         member = ctx.guild.get_member(user.id)
@@ -484,7 +484,7 @@ class Moderation(commands.Cog):
 
     # ----------------------------------UNMUTE Command------------------------------------------------
     @commands.command(name="unmute",
-                      description="إزالة الميوت عن عضو معين لسبب إختياري,.\n\n يجب ان تكون من المشرفين لإستخدامها.")
+                      description="إزالة الميوت عن عضو معين لسبب إختياري,.\n\n يجب ان تكون من المشرفين لإستخدامها.", aliases=["um"])
     @commands.check(is_mod_or_owner)
     async def unmute_async(self, ctx, user: discord.User, *, reason: Optional[str] = "غير محدد"):
         member = ctx.guild.get_member(user.id)

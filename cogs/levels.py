@@ -162,7 +162,7 @@ class Levels(commands.Cog):
     # ----------------------------------GIVEXP Command------------------------------------------------
     @commands.command(name="give-xp", description="إضافة نسبة محددة من ال XP لعضو معين.\n\n يجب ان "
                                                   "تكون من المشرفين "
-                                                  "لإستخدامها.")
+                                                  "لإستخدامها.", aliases=["gxp"])
     @commands.check(is_mod_or_owner)
     async def givexp_async(self, ctx, member: discord.Member, amount: int):
         if amount <= 0:
@@ -229,7 +229,7 @@ class Levels(commands.Cog):
     # ----------------------------------REMOVEXP Command------------------------------------------------
     @commands.command(name="remove-xp", description="إزالة نسبة محددة من ال XP لعضو معين.\n\n يجب ان "
                                                     "تكون من المشرفين "
-                                                    "لإستخدامها.")
+                                                    "لإستخدامها.", aliases=["rxp"])
     @commands.check(is_mod_or_owner)
     async def removexp_async(self, ctx, member: discord.Member, amount: int):
 
@@ -323,7 +323,7 @@ class Levels(commands.Cog):
     # ----------------------------------DELETEXP Command------------------------------------------------
     @commands.command(name="delete-xp", description="إزالة كل ال XP لعضو معين.\n\n يجب ان "
                                                     "تكون من المشرفين "
-                                                    "لإستخدامها.")
+                                                    "لإستخدامها.", aliases=["dxp"])
     @commands.check(is_mod_or_owner)
     async def deletexp_async(self, ctx, member: discord.Member):
         user_id = member.id
