@@ -106,6 +106,25 @@ class Utility(commands.Cog):
             await ctx.channel.send(embed=embed)
     # ----------------------------------CHANGE STATUS Command------------------------------------------------
 
+    # ----------------------------------Custom embed message Command------------------------------------------------
+    @commands.command(name="embed", description="إنشاء رسالة خاصة بكود بلوك")
+    @commands.has_role(const.moderator_role_name)
+    async def embed_async(self, ctx : commands.Context, channel: discord.TextChannel,*, message):
+        embed: discord.Embed = discord.Embed(color=const.default_color, title="Custom Embed",description=message)
+        embed.set_footer(text=f"sent by 6wrni Bot")
+        await channel.send(embed=embed)
+    @embed_async.error
+    async def embed_async_error(self, ctx, error):
+        if isinstance(error, commands.MissingRole):
+            embed = discord.Embed(color=const.exception_color, title="خطأ:",
+                                  description="لا يمكنك إستخدام هذا الأمر!")
+            await ctx.channel.send(embed=embed)
+        else:
+            embed = discord.Embed(color=const.exception_color, title="خطأ:",
+                                  description="حصل خطأ, حاول مرة أخرة")
+            await ctx.channel.send(embed=embed)
+
+
 
 def setup(bot):
     bot.add_cog(cog=Utility(bot))
