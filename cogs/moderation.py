@@ -5,6 +5,7 @@ import constants as const
 from typing import Optional
 import datetime
 import re
+import socket
 
 time_regex = re.compile("(?:(\d{1,5})(h|s|m|d))+?")
 time_dict = {"h": 3600, "s": 1, "m": 60, "d": 86400}
@@ -20,7 +21,11 @@ TIME_DURATION_UNITS = (
 def is_mod_or_owner(ctx):
     return const.moderator_role_id in [role.id for role in ctx.author.roles] or ctx.author.id == ctx.guild.owner_id
 
-
+def get_ip_by_host(host):
+    try:
+        return socket.gethostbyname(host)
+    except socket.gaierror:
+        return None
 class TimeConverter(commands.Converter):
     async def convert(self, ctx, argument):
         args = argument.lower()
@@ -85,6 +90,33 @@ class Moderation(commands.Cog):
     @commands.Cog.listener()
     async def on_ready(self):
         await self.re_preform_mutes()
+    
+    @commands.Cog.listener()
+    async def on_message(self, message: discord.Message):
+        # check if the message is from a bot
+        if message.author.id == self.bot.user.id: return
+
+        # check if the message is in a filtered channel
+        if message.channel.id not in const.check_spam_channels: return
+
+        spllited_msg = message.content.lower().split()
+        for word in spllited_msg:
+            if "https" in word or "http" in word or "www" in word:
+                for discord_scamy_word in const.discord_scamy_words:
+                    if discord_scamy_word in word:
+                        spllited_word = word.split("/")
+                        if len(spllited_word) >= 3:
+                            potential_host = spllited_word[2]
+                            potential_ip = get_ip_by_host(potential_host)
+                            embed = embed = discord.Embed(color=const.default_color, title="Discord Spam Detected", description=f"أرسل سبام لينك لكن الينك لا يعمل, رجاء عدم فتحه في حال لم يتم حذفه. {message.author.mention}") if potential_ip is None else discord.Embed(color=const.default_color, title="تم رصد ديسكورد سبام", description=f"أرسل سبام لينك , رجاء عدم فتحه في حال لم يتم حذفه. {message.author.mention}") 
+                            embed.set_footer(text=f"Spammer ID | {message.author.id} | Report Him!")
+                            await message.channel.send(embed = embed)
+                            await message.channel.send(f"{message.guild.get_role(const.moderator_role_id).mention} رجاء تحقق من الموضوع.")
+                            await message.author.add_roles(message.guild.get_role(const.muted_role_id))
+                            await message.delete()
+                        break
+
+    
 
     @commands.Cog.listener()
     async def on_member_join(self, member: discord.Member):
