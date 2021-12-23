@@ -108,11 +108,13 @@ class Moderation(commands.Cog):
                         if len(spllited_word) >= 3:
                             potential_host = spllited_word[2]
                             potential_ip = get_ip_by_host(potential_host)
-                            embed = embed = discord.Embed(color=const.default_color, title="Discord Spam Detected", description=f"أرسل سبام لينك لكن الينك لا يعمل, رجاء عدم فتحه في حال لم يتم حذفه. {message.author.mention}") if potential_ip is None else discord.Embed(color=const.default_color, title="تم رصد ديسكورد سبام", description=f"أرسل سبام لينك , رجاء عدم فتحه في حال لم يتم حذفه. {message.author.mention}") 
+                            embed = embed = discord.Embed(color=const.default_color, title="Discord Spam Detected", description=f"أرسل سبام لينك لكن الينك لا يعمل, رجاء عدم فتحه في حال لم يتم حذفه. {message.author.mention}") if potential_ip is None else discord.Embed(color=const.default_color, title="Discord Spam Detected", description=f"أرسل سبام لينك , رجاء عدم فتحه في حال لم يتم حذفه. {message.author.mention}") 
                             embed.set_footer(text=f"Spammer ID | {message.author.id} | Report Him!")
                             await message.channel.send(embed = embed)
-                            await message.channel.send(f"{message.guild.get_role(const.moderator_role_id).mention} رجاء تحقق من الموضوع.")
-                            await message.author.add_roles(message.guild.get_role(const.muted_role_id))
+                            mod_role : discord.Role = message.guild.get_role(const.moderator_role_id)
+                            await message.channel.send(f"{mod_role.mention} رجاء التحقق من الموضوع.")
+                            mute_role = message.guild.get_role(const.mute_role_id)
+                            await message.author.add_roles(mute_role)
                             await message.delete()
                         break
 
