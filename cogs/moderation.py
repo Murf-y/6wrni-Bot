@@ -112,8 +112,9 @@ class Moderation(commands.Cog):
                             embed.set_footer(text=f"Spammer ID | {message.author.id} | Report Him!")
                             await message.channel.send(embed = embed)
                             mod_role : discord.Role = message.guild.get_role(const.moderator_role_id)
-                            await message.channel.send(f"{mod_role.mention} رجاء التحقق من الموضوع.")
-                            mute_role = message.guild.get_role(const.mute_role_id)
+                            await message.channel.send(mod_role.mention)
+                            await message.channel.send("رجاء التحقق من الموضوع.")
+                            mute_role = message.guild.get_role(const.muted_role_id)
                             await message.author.add_roles(mute_role)
                             await message.delete()
                         break
