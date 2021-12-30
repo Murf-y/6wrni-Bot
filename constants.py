@@ -38,7 +38,7 @@ check_spam_channels = [798227310779957258, 798227617659486233, 77393553931632641
 # ----------------------------------- SPAM--------------------------------------------------
 discord_legit_ips = ['162.159.134.234', '162.159.138.232', '172.67.222.182'] 
 #                     discord.gg,       discord.com,        discord.gift
-discord_scamy_words = ["discord","dliscord","nitro","dliscord","dilscord","steam","discoord","discord-gifft","gift","steam-gift"]
+discord_scamy_words = ["discord","dliscord","nitro","dliscord","dilscord","steam","scord","discoord","discord-gifft","gift","steam-gift"]
 # ----------------------------------- SPAM--------------------------------------------------
 
 
