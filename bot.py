@@ -96,10 +96,11 @@ async def on_command_completion(ctx):
 async def on_member_join(member):
     welcome_channel = bot.get_channel(const.welcome_channel_id)
     channels_channel = bot.get_channel(const.channels_channel_id)
+    rules_channel = bot.get_channel(const.rules_channel_id)
     mod_channel = bot.get_channel(const.mod_Channel_id)
     counter_channel = bot.get_channel(const.counter_channel_id)
     await welcome_channel.send(
-        f" اهلا بك {member.mention} ! الرجاء زيارة {channels_channel.mention} لتتعرف على وظائف الغرف !")
+        f"  اهلا بك {member.mention} ! الرجاء زيارة {channels_channel.mention} {rules_channel.mention} لتتعرف على وظائف الغرف ورجاء احترام القوانين الموجودة في ")
     guild = bot.get_guild(const.guild_id)
     role = guild.get_role(const.new_member_role_id)
     mod_role: discord.Role = guild.get_role(const.moderator_role_id)

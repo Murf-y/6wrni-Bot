@@ -86,7 +86,7 @@ class Levels(commands.Cog):
         user = await self.bot.pg_con.fetch(query, user_id, guild_id)
 
         if not user:
-            await ctx.send(f"ليس لديك XP, إرسل بعد الرسائل أولا!")
+            await ctx.send(f"ليس لديك XP, إرسل بعض الرسائل أولا!")
 
         else:
             total_xp = user[0]['xp']
